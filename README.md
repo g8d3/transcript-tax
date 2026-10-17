@@ -3,7 +3,10 @@
 Working paper: what a "trivial" agent turn costs, measured on one machine over one
 night. 65 runs, 3 harnesses, ~8 cents of provider spend.
 
-**Status: unpublished draft.** Nothing here has been posted anywhere.
+**Status: published 2026-10-17.** The paper is served at
+<https://focalis.cc/tps/> (and via GitHub Pages at
+<https://g8d3.github.io/transcript-tax/>). Nothing else from our sales pack has been
+posted on social media.
 
 ## Files
 
@@ -56,6 +59,21 @@ values) — a 0.01 s difference, corrected in this repo.
 4. **Providers differ per cell** (pi used `deepseek-v4.1-flash`, pirust used
    `deepseek-chat`, zero used its own `medium` path). Cross-harness gaps are
    confounded; within-harness patterns are the robust result.
+
+## Hire us (this is the pitch; the rest of the repo is not)
+
+We run agent fleets ourselves and we measure this tax on them. If your fleet's bill
+scales with turns x context and nobody can explain the line item:
+
+- **The audit**: we instrument your loops, measure where the wall-clock and the
+tokens go per turn (boot / pre-response / stream / tools), and hand you a breakdown
+page plus a ranked cut list derived from *your* profile. Read-only first.
+- What we do **not** sell: cache discipline, startup-scan scoping, a size
+coefficient. All three failed to reproduce in our data — see the retractions above.
+- The offer page, prices and the arguments against buying are here:
+<https://focalis.cc/audit/>. Run `roi.py --sweep` there first; if the numbers say no,
+we will too.
+- Contact: **hola@focalis.cc**.
 
 ## License
 
