@@ -374,4 +374,38 @@ differ by 1.4 s in median (4.2 s vs 2.8 s). The one real comparison available (2
   sizes *your* loops actually reach. That is a measurement, and it is what the audit
   sells — not a coefficient from n=8.
 
+## 9. Fifth addition (20:5xZ): the fleet window, published, and what the residual does when you instrument it
+
+Section 1.3 quotes our own live fleet: **500 turns, 8.7 s wall per turn, 34% model /
+29% tools / 37% unaccounted**. That log is the file the monitor appends to and it
+**rotates**, so the window those percentages came from no longer exists on disk. Two
+things follow, and both are now checkable:
+
+- **The exporter and the window are published** in [`fleet/`](fleet/): `publish_fleet.py`
+  copies a window with `sessionId` replaced by an opaque label and nothing else changed
+  (the rows contain no prompt text and no tool output), and `analyze` recomputes the
+  decomposition, the tail and the wasted rate from a window. The window published
+  alongside it (`fleet-turns-2026-10-17.jsonl`, 500 turns, 15:16Z → 20:40Z) is **not** the
+  one §1.3 used — it is a heavier workload (mean 16.3 s/turn, p50 7.3 s, p90 29.3 s), and
+  saying so is the point of publishing it.
+- **The residual collapses once you measure the provider roundtrip.** Same window, two
+  methods:
+
+| method | model | tools | roundtrip | residual | p50 residual |
+|---|---|---|---|---|---|
+| as §1.3 computed it (pre-v23 monitor) | 25% | 23% | *inside "residual"* | 52% | 2700 ms |
+| monitor v23+ (`preResponseMs` measured first) | 25% | 23% | 52% | **0%** | **4 ms** |
+
+That is the strongest confirmation of §5 available: the 1.5-2.2 s per turn that older rows
+called "unaccounted" **was the provider roundtrip**, not a mysterious harness overhead. It
+is measured now (`preResponseMs`, turn start → the provider's first message), it is the
+single largest slice of a real turn on this window, and what is left unattributed is
+milliseconds. A dashboard that reports "37% unaccounted" today is reporting its own blind
+spot, because the field exists.
+
+Method note for anyone recomputing: the pre-v23 column is produced by *not* subtracting
+`preResponseMs` (that is what the older rows did by construction); rows without the field
+behave identically in both columns, and rows whose three segments exceed the turn wall are
+counted as clamped rather than shown negative (none in this window).
+
 *No part of this report was published. Draft only; local files.*
