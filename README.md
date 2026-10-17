@@ -43,11 +43,14 @@ values) — a 0.01 s difference, corrected in this repo.
 1. **§1.2 is corrected by §5.** The LLM-span clock (`message_start` →
    `message_end`) does not reliably cover the provider roundtrip: for short
    single-chunk replies it collapses to ~0 ms. "The LLM is free, unaccounted
-   dominates" is partly a measurement artifact. The wall floor and the cache-state
-   effect are measured outside the harness and stand.
-2. **n is small** (10 pongs per cell, one machine, one night). Jitter is ~1 s.
+   dominates" is partly a measurement artifact. The wall floor is measured outside
+   the harness and stands.
+2. **TL;DR 4 and §1.3 are retracted by §6.** Cache state did not separate the slow
+   runs from the fast ones: the same `cache_tok` value covers a 16.6 s run and two
+   ~3 s runs. Do not quote "cache hits dominate wall time" or "miss rate 5 in 10".
+3. **n is small** (10 pongs per cell, one machine, one night). Jitter is ~1 s.
    Nothing here resolves sub-second differences between harnesses.
-3. **Providers differ per cell** (pi used `deepseek-v4.1-flash`, pirust used
+4. **Providers differ per cell** (pi used `deepseek-v4.1-flash`, pirust used
    `deepseek-chat`, zero used its own `medium` path). Cross-harness gaps are
    confounded; within-harness patterns are the robust result.
 
