@@ -24,6 +24,10 @@
 > 9216 cached appears in both a 16.6 s run and two ~3 s runs. The four slow runs form a
 > contiguous streak (runs 2-5), which reads as a transient provider/path state rather
 > than per-run cache state. "Cache hits dominate wall time" should not be quoted.
+>
+> **Third correction, 07:00Z: §1.6's startup-scan claim and §3's startup fix are
+> retracted — read §7.** Startup costs the same from a 298 MB session store and a
+> near-empty one, so that was unverified guesswork, not a lever we can sell.
 
 ![Steady-state wall by cell](fig1_steady_wall.png)
 *Figure 1 — Steady-state PONG wall per cell (runs 1–10). Red bar = median. zero-L spread is cache-miss runs, not size effect.*
@@ -145,7 +149,10 @@ What converts this from latency trivia to a cost line:
   1. **Compact/aggressively summarize past ~100 KB.** The §1.5 curve bends upward past ~150 KB and the MB regime buys 5 s/turn regardless of harness.
   2. **Budget per turn, not per task:** `turn_budget = floor_s (≈3) + expected_provider_s + input_tokens × price + miss_penalty × miss_rate`. Measure your own miss rate (our zero-L sample: 5/10 cold) before promising task SLAs.
   3. **Prefer harnesses that minimize re-send** (Go-layer compaction to ~9 k in zero's case) *if* the fidelity loss is acceptable — verify task success, not just wall, before switching.
-  4. **Fix the startup scan.** ~200 MB session-dir scan per invocation (§1.6) is pure waste at fleet scale; index or scope it and the floor drops for every turn of every agent.
+4. ~~**Fix the startup scan.**~~ **Retracted — see §7.** Startup does not scale with
+the session store (298 MB and near-empty workspaces start identically), so this is not
+a cut we can stand behind. The measured levers are context size and re-send
+minimization; cache discipline is unconfirmed (§6).
 
 ## 4. Reproducibility
 
@@ -264,5 +271,33 @@ cannot test the cache hypothesis at all — it can only fail to confirm it.
   it proves are the per-turn floor and the multi-second tail — and both are visible in
   the live-fleet sample (`/tmp/night/fleet-scan/FINDINGS.md`: unaccounted p50 1.6 s,
   p90 4.6 s, worst turn 85 s, and a per-model floor that does not move with the model).
+
+## 7. Third correction: the "startup scans ~200 MB of sessions" claim is not reproducible
+
+§1.6 lists it as a verified prior finding and §3 turns it into a recommendation
+("fix the startup scan"). Tested directly:
+
+| measurement | value |
+|---|---|
+| `pi --version` from a workspace whose session dir is **298 MB** | 244, 247, 247, 248, 246 ms |
+| `pi --version` from a workspace whose session dir is **tiny** | 242, 243, 241, 253, 241 ms |
+| `pi --export --session <file>` (parse + load a session) | 246 ms |
+| sessions dir total on this machine | 407 MB (the "~200 MB" figure is also stale) |
+
+Identical startup cost whether the session store is 298 MB or near-empty, and
+loading a session file explicitly costs 246 ms — the same as bare startup. Whatever
+startup does, it does not scale with the session directory. A no-op turn A/B between
+the two workspaces (3 runs each, `--offline -c`) also showed no consistent difference
+(medians 3.1 s vs 2.9 s, inside the ~1 s jitter this dataset already documents).
+
+**What changes:** §3's rule 4 ("fix the startup scan and the floor drops for every
+turn") loses its basis and must not be sold. The floor is real and measured; the
+*explanation* "startup scan" is not. §1.6's other half — "0.03 s CPU + ~2.6 s idle
+wait pre-dispatch" — is consistent with everything else measured here (the wait is
+provider/dispatch, not CPU) and stands.
+
+**Cut-list consequence:** the levers this dataset supports are context size (§1.5
+series) and re-send minimization (§1.7). Cache discipline is unconfirmed (§6).
+Startup scoping was our unverified guess and should not be sold as a fix.
 
 *No part of this report was published. Draft only; local files.*
