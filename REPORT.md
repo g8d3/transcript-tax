@@ -381,7 +381,7 @@ Section 1.3 quotes our own live fleet: **500 turns, 8.7 s wall per turn, 34% mod
 **rotates**, so the window those percentages came from no longer exists on disk. Two
 things follow, and both are now checkable:
 
-- **The exporter and the window are published** in [`fleet/`](fleet/): `publish_fleet.py`
+- **The exporter and the window are published** in [`fleet/`](https://github.com/g8d3/transcript-tax/tree/master/fleet): `publish_fleet.py`
   copies a window with `sessionId` replaced by an opaque label and nothing else changed
   (the rows contain no prompt text and no tool output), and `analyze` recomputes the
   decomposition, the tail and the wasted rate from a window. The window published
