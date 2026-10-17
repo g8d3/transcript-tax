@@ -86,7 +86,8 @@ def main() -> None:
 {CTA}
 <footer>Source, data and reproduction: <code>bench.csv</code> + <code>analyze.py</code> in this
 repository (<a href="https://github.com/g8d3/transcript-tax">github.com/g8d3/transcript-tax</a>).
-Text and data CC BY 4.0. Figures are inlined; the page has no external requests.
+Text and data CC BY 4.0. Figures are inlined; the page has no external requests of its
+own (the hosted copy gets Cloudflare's cookieless page-view beacon).
 Hosted copy: <a href="{REPORT_URL}">{REPORT_URL}</a>.</footer>
 </body></html>
 """
