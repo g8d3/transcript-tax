@@ -36,6 +36,8 @@ SKIP = ("/cdn-cgi/l/email-protection", "github.com/signup", "github.com/login", 
 
 SEEDS = [
     "https://focalis.cc/",
+    "https://focalis.cc/about.html",
+    "https://focalis.cc/contact.html",
     "https://focalis.cc/audit/",
     "https://focalis.cc/audit/preview/",
     "https://focalis.cc/audit/sample/",
