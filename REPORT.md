@@ -18,6 +18,12 @@
 > between provider and harness (§1.2 "the LLM is not the cost") is partly a measurement
 > artifact. §5 explains and quantifies it. Do not quote §1.2's "unaccounted dominates"
 > without §5.
+>
+> **Second correction, 06:30Z: claim 4 does not survive a re-check — read §6.** Grouping
+> the zero-L pongs by `cache_tok` does not separate the slow runs from the fast ones:
+> 9216 cached appears in both a 16.6 s run and two ~3 s runs. The four slow runs form a
+> contiguous streak (runs 2-5), which reads as a transient provider/path state rather
+> than per-run cache state. "Cache hits dominate wall time" should not be quoted.
 
 ![Steady-state wall by cell](fig1_steady_wall.png)
 *Figure 1 — Steady-state PONG wall per cell (runs 1–10). Red bar = median. zero-L spread is cache-miss runs, not size effect.*
@@ -214,5 +220,49 @@ provider/harness split.
 
 Raw artifacts: `/tmp/night/pi-tax/` (this matrix, `run*.sh` + logs), `/tmp/night/tps-tax/FINDINGS.md`
 (append tax), `/tmp/night/pi-startup/FINDINGS.md` (independent reproduction by a second agent).
+
+## 6. Second correction: claim 4 (cache state predicts wall) is not supported
+
+Found by re-checking every headline number against `bench.csv` with `analyze.py`
+rather than by hand. This one removes a claim we were about to sell on.
+
+### 6.1 The test
+
+TL;DR 4 and §1.3 say cache state predicts wall time better than token count does. Group
+the zero-L PONG runs by `cache_tok` and look at the walls:
+
+| cache_tok | wall times (s) |
+|---|---|
+| 0 | 10.12 |
+| 2048 | 3.27, 3.45 |
+| 9088 | 3.11 |
+| **9216** | **16.55, 2.94, 3.18** |
+| **9344** | **20.00, 6.38, 2.83** |
+
+The same cache value covers both the slowest and the fastest runs. Of the four slow
+runs (>6 s), only one reported zero cached tokens; the other three reported 9.2-9.3 k
+cached. Two runs that reported the *lowest* non-zero cache (2048) were among the fastest.
+Across every cell in the dataset, `cache_tok == 0` produced walls of 3.27 s and 10.12 s.
+
+### 6.2 What the data does support
+
+The four slow runs are **runs 2, 3, 4, 5 — a contiguous streak** that then recovers
+(runs 6-10 back at ~3 s) while `cache_tok` moves in the opposite direction (2048 →
+9344). A transient provider-side or path-level state fits that shape; a per-run cache
+property does not. n=10 with no cache variation in the pi cells means this dataset
+cannot test the cache hypothesis at all — it can only fail to confirm it.
+
+### 6.3 What changes
+
+- **Do not quote TL;DR 4 or §1.3.** "Cache hits dominate wall time", "the predictor is
+  `cache_tok`", and "miss rate 5 in 10" are all unsupported. The honest statement is:
+  four of ten runs in one cell were 2-6x slower with no measured signature we can name.
+- **Still stands:** claim 1 (the wall floor, measured outside the harness), claim 3 (the
+  2 MB ladder is invalid), claim 5's arithmetic (context re-sent per turn is the bill),
+  and the correction in §5.
+- **Sales consequence:** cache discipline is not the lever this data proves. The levers
+  it proves are the per-turn floor and the multi-second tail — and both are visible in
+  the live-fleet sample (`/tmp/night/fleet-scan/FINDINGS.md`: unaccounted p50 1.6 s,
+  p90 4.6 s, worst turn 85 s, and a per-model floor that does not move with the model).
 
 *No part of this report was published. Draft only; local files.*
