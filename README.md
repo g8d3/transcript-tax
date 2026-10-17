@@ -48,6 +48,9 @@ values) — a 0.01 s difference, corrected in this repo.
 2. **TL;DR 4 and §1.3 are retracted by §6.** Cache state did not separate the slow
    runs from the fast ones: the same `cache_tok` value covers a 16.6 s run and two
    ~3 s runs. Do not quote "cache hits dominate wall time" or "miss rate 5 in 10".
+2b. **§1.6's startup scan is retracted by §7** (startup costs the same from a 298 MB
+   session store and a near-empty one), and **TL;DR 2's size coefficient is retracted
+   by §8** (it was 10x off its own table, and a fresh rebuild attempt failed).
 3. **n is small** (10 pongs per cell, one machine, one night). Jitter is ~1 s.
    Nothing here resolves sub-second differences between harnesses.
 4. **Providers differ per cell** (pi used `deepseek-v4.1-flash`, pirust used
