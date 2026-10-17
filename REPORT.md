@@ -48,6 +48,8 @@
 | zero-L (2 MB*) | 10 | **3.36 s** | 7.18 s | 6.00 | 2.83–20.00 | 24.94 s |
 
 Source: `/tmp/night/bench.csv`. pirust rows are wall-only (no token instrumentation).
+These are *process wall* figures (`time pi -p ...`), so they include process boot —
+which §5.4 decomposes as ~929 ms of the ~2.4-3.4 s (and shows to be removable).
 
 Claim 1 follows directly: excluding the cache-miss outliers, every cell's center sits in a ~1 s band (2.4–3.4 s) despite different harnesses and nominal context sizes.
 
