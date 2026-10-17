@@ -17,6 +17,7 @@ import markdown
 
 HERE = Path(__file__).parent
 OUT = HERE / "article.html"
+REPORT_URL = "https://focalis.cc/tps/"
 
 CSS = """
 :root { color-scheme: light dark; }
@@ -35,6 +36,27 @@ blockquote { border-left: 3px solid color-mix(in srgb, currentColor 35%, transpa
   margin: 1.4rem 0; padding: .2rem 0 .2rem 1rem; }
 em { color: color-mix(in srgb, currentColor 80%, transparent); }
 footer { margin-top: 3rem; font-size: .85rem; opacity: .75; }
+.cta { margin-top: 3rem; padding: 1rem 1.1rem; border: 1px solid color-mix(in srgb, currentColor 25%, transparent);
+  border-radius: .5rem; font-size: .95rem; }
+.cta p { margin: .3rem 0; }
+"""
+
+# The offer, at the end of the paper. Same on the hosted copy and in the repo.
+OFFER_URL = "https://focalis.cc/audit/"
+CONTACT = "hola@focalis.cc"
+CTA = f"""
+<div class="cta">
+  <p><strong>Who measured this:</strong> we run agent fleets ourselves and this is the
+  instrument we use on them. If your fleet's bill scales with turns x context and nobody
+  can explain the line item, we audit one loop, publish the per-turn breakdown, and hand
+  you the cut list derived from <em>your</em> profile.</p>
+  <p>Prices, the arguments against buying, and a calculator you can run on your own
+  numbers: <a href="{OFFER_URL}">{OFFER_URL}</a> — or write to
+  <a href="mailto:{CONTACT}">{CONTACT}</a>.</p>
+  <p>We do not sell cache discipline, startup-scan scoping or a size coefficient: our own
+  data retracted all three (sections 6-8), and retracting them publicly is part of what
+  you are buying.</p>
+</div>
 """
 
 
@@ -61,8 +83,11 @@ def main() -> None:
 <style>{CSS}</style></head>
 <body>
 {body}
+{CTA}
 <footer>Source, data and reproduction: <code>bench.csv</code> + <code>analyze.py</code> in this
-repository. Text and data CC BY 4.0. Figures are inlined; the page has no external requests.</footer>
+repository (<a href="https://github.com/g8d3/transcript-tax">github.com/g8d3/transcript-tax</a>).
+Text and data CC BY 4.0. Figures are inlined; the page has no external requests.
+Hosted copy: <a href="{REPORT_URL}">{REPORT_URL}</a>.</footer>
 </body></html>
 """
     OUT.write_text(html)

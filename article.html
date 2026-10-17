@@ -19,6 +19,9 @@ blockquote { border-left: 3px solid color-mix(in srgb, currentColor 35%, transpa
   margin: 1.4rem 0; padding: .2rem 0 .2rem 1rem; }
 em { color: color-mix(in srgb, currentColor 80%, transparent); }
 footer { margin-top: 3rem; font-size: .85rem; opacity: .75; }
+.cta { margin-top: 3rem; padding: 1rem 1.1rem; border: 1px solid color-mix(in srgb, currentColor 25%, transparent);
+  border-radius: .5rem; font-size: .95rem; }
+.cta p { margin: .3rem 0; }
 </style></head>
 <body>
 <h1>Transcript Tax 2026: what a "trivial" agent turn really costs</h1>
@@ -730,6 +733,22 @@ differ by 1.4 s in median (4.2 s vs 2.8 s). The one real comparison available (2
   sells — not a coefficient from n=8.</li>
 </ul>
 <p><em>No part of this report was published. Draft only; local files.</em></p>
+
+<div class="cta">
+  <p><strong>Who measured this:</strong> we run agent fleets ourselves and this is the
+  instrument we use on them. If your fleet's bill scales with turns x context and nobody
+  can explain the line item, we audit one loop, publish the per-turn breakdown, and hand
+  you the cut list derived from <em>your</em> profile.</p>
+  <p>Prices, the arguments against buying, and a calculator you can run on your own
+  numbers: <a href="https://focalis.cc/audit/">https://focalis.cc/audit/</a> — or write to
+  <a href="mailto:hola@focalis.cc">hola@focalis.cc</a>.</p>
+  <p>We do not sell cache discipline, startup-scan scoping or a size coefficient: our own
+  data retracted all three (sections 6-8), and retracting them publicly is part of what
+  you are buying.</p>
+</div>
+
 <footer>Source, data and reproduction: <code>bench.csv</code> + <code>analyze.py</code> in this
-repository. Text and data CC BY 4.0. Figures are inlined; the page has no external requests.</footer>
+repository (<a href="https://github.com/g8d3/transcript-tax">github.com/g8d3/transcript-tax</a>).
+Text and data CC BY 4.0. Figures are inlined; the page has no external requests.
+Hosted copy: <a href="https://focalis.cc/tps/">https://focalis.cc/tps/</a>.</footer>
 </body></html>
