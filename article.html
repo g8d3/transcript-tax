@@ -482,14 +482,61 @@ the harness.</li>
   row above is in the same class as the "313 tokens in 9 ms" phantom the monitor already
   filters). Fixed in e095 v19: a window shorter than 50 ms is recorded unrated instead of
   as a rate.</li>
+<li><strong>The provider window is measurable, just not from <code>message_start</code></strong> — see §5.4:
+  turn_start → message_start is 1.2–1.6 s and stable, so a fleet audit can stand on that
+  number even though it cannot split it into dispatch vs provider.</li>
 <li><strong>§1.6's "0.03 s CPU + ~2.6 s idle wait pre-dispatch"</strong> is the most consistent evidence
   available and should be read as <em>provider or dispatch-gate wait</em>, not as CPU work.</li>
 </ul>
-<h3>5.4 Follow-up that would settle it</h3>
-<p>Instrument from request dispatch — Pi's <code>provider_stream_event</code> gives the provider's own
-stream events — instead of from <code>message_start</code>, then re-run the PONG cells. Until then,
-quote the floor and the cache-hit effect (both wall-clock, both reproduced), not the
-provider/harness split.</p>
+<h3>5.4 Follow-up — ANSWERED 07:20Z, and it corrects this section's own advice</h3>
+<p>This section originally said to instrument from request dispatch via Pi's
+<code>provider_stream_event</code>. That was wrong: the hook fires with the response, exactly like
+<code>message_start</code>.</p>
+<p>Measured externally instead (<code>pi -p --mode json</code> as a subprocess, every NDJSON line
+timestamped on arrival, 5 reps, <code>/tmp/night/provsplit/FINDINGS.md</code>):</p>
+<table>
+<thead>
+<tr>
+<th>segment</th>
+<th>median</th>
+<th>min–max</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>boot — process start → first event</td>
+<td><strong>929 ms</strong></td>
+<td>911–984</td>
+</tr>
+<tr>
+<td><strong>turn_start → assistant <code>message_start</code></strong></td>
+<td><strong>1451 ms</strong></td>
+<td>1193–1605</td>
+</tr>
+<tr>
+<td><code>message_start</code> → first text delta</td>
+<td>1 ms</td>
+<td>1–359</td>
+</tr>
+<tr>
+<td>first text → <code>message_end</code></td>
+<td>2 ms</td>
+<td>2–9</td>
+</tr>
+<tr>
+<td><strong>total process wall</strong></td>
+<td><strong>2453 ms</strong></td>
+<td>2121–2901</td>
+</tr>
+</tbody>
+</table>
+<p>The provider roundtrip happens entirely <strong>before</strong> <code>message_start</code>, which is why
+<code>llmDurationMs</code> reads milliseconds for a network call. The missing time is now located:
+<strong>turn_start → message_start, 1.2–1.6 s, stable across reps</strong> (against <code>llmDurationMs</code>
+values of 1/88/286/364 ms for the same prompt). It cannot be split further from outside
+— dispatch, gating and provider latency are inside it — so the deliverable is the
+<em>bound</em>, not a split. Boot is ~0.93 s per invocation, not the 0.25 s <code>pi --version</code>
+suggests, and it is invisible in the turn rows because <code>turn_start</code> fires after it.</p>
 <p>Raw artifacts: <code>/tmp/night/pi-tax/</code> (this matrix, <code>run*.sh</code> + logs), <code>/tmp/night/tps-tax/FINDINGS.md</code>
 (append tax), <code>/tmp/night/pi-startup/FINDINGS.md</code> (independent reproduction by a second agent).</p>
 <h2>6. Second correction: claim 4 (cache state predicts wall) is not supported</h2>

@@ -215,15 +215,36 @@ the harness.
   row above is in the same class as the "313 tokens in 9 ms" phantom the monitor already
   filters). Fixed in e095 v19: a window shorter than 50 ms is recorded unrated instead of
   as a rate.
+- **The provider window is measurable, just not from `message_start`** — see §5.4:
+  turn_start → message_start is 1.2–1.6 s and stable, so a fleet audit can stand on that
+  number even though it cannot split it into dispatch vs provider.
 - **§1.6's "0.03 s CPU + ~2.6 s idle wait pre-dispatch"** is the most consistent evidence
   available and should be read as *provider or dispatch-gate wait*, not as CPU work.
 
-### 5.4 Follow-up that would settle it
+### 5.4 Follow-up — ANSWERED 07:20Z, and it corrects this section's own advice
 
-Instrument from request dispatch — Pi's `provider_stream_event` gives the provider's own
-stream events — instead of from `message_start`, then re-run the PONG cells. Until then,
-quote the floor and the cache-hit effect (both wall-clock, both reproduced), not the
-provider/harness split.
+This section originally said to instrument from request dispatch via Pi's
+`provider_stream_event`. That was wrong: the hook fires with the response, exactly like
+`message_start`.
+
+Measured externally instead (`pi -p --mode json` as a subprocess, every NDJSON line
+timestamped on arrival, 5 reps, `/tmp/night/provsplit/FINDINGS.md`):
+
+| segment | median | min–max |
+|---|---|---|
+| boot — process start → first event | **929 ms** | 911–984 |
+| **turn_start → assistant `message_start`** | **1451 ms** | 1193–1605 |
+| `message_start` → first text delta | 1 ms | 1–359 |
+| first text → `message_end` | 2 ms | 2–9 |
+| **total process wall** | **2453 ms** | 2121–2901 |
+
+The provider roundtrip happens entirely **before** `message_start`, which is why
+`llmDurationMs` reads milliseconds for a network call. The missing time is now located:
+**turn_start → message_start, 1.2–1.6 s, stable across reps** (against `llmDurationMs`
+values of 1/88/286/364 ms for the same prompt). It cannot be split further from outside
+— dispatch, gating and provider latency are inside it — so the deliverable is the
+*bound*, not a split. Boot is ~0.93 s per invocation, not the 0.25 s `pi --version`
+suggests, and it is invisible in the turn rows because `turn_start` fires after it.
 
 Raw artifacts: `/tmp/night/pi-tax/` (this matrix, `run*.sh` + logs), `/tmp/night/tps-tax/FINDINGS.md`
 (append tax), `/tmp/night/pi-startup/FINDINGS.md` (independent reproduction by a second agent).
