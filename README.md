@@ -59,4 +59,6 @@ values) — a 0.01 s difference, corrected in this repo.
 
 ## License
 
-Text and data: CC BY 4.0. `analyze.py`: MIT.
+`LICENSE` holds both: code (`analyze.py`, `build_article.py`) under MIT, text,
+figures and `bench.csv` under CC BY 4.0. When citing, cite the revision — sections 5-8
+are corrections, and a claim retracted there should not be quoted against the paper.
