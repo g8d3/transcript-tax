@@ -19,13 +19,13 @@
 > artifact. §5 explains and quantifies it. Do not quote §1.2's "unaccounted dominates"
 > without §5.
 >
-> **Second correction, 06:30Z: claim 4 does not survive a re-check — read §6.** Grouping
+> **Second correction, 06:02Z: claim 4 does not survive a re-check — read §6.** Grouping
 > the zero-L pongs by `cache_tok` does not separate the slow runs from the fast ones:
 > 9216 cached appears in both a 16.6 s run and two ~3 s runs. The four slow runs form a
 > contiguous streak (runs 2-5), which reads as a transient provider/path state rather
 > than per-run cache state. "Cache hits dominate wall time" should not be quoted.
 >
-> **Third correction, 07:00Z: §1.6's startup-scan claim and §3's startup fix are
+> **Third correction, 06:09Z: §1.6's startup-scan claim and §3's startup fix are
 > retracted — read §7.** Startup costs the same from a 298 MB session store and a
 > near-empty one, so that was unverified guesswork, not a lever we can sell.
 
@@ -164,7 +164,7 @@ minimization; cache discipline is unconfirmed (§6).
 - Figures: generated from `bench.csv` with matplotlib (`fig1_steady_wall.png`, `fig2_zero_cache.png`, `fig3_size_scaling.png`, `fig4_pi_unaccounted.png`).
 - Spend ledger: `/tmp/night/cost.acc` (~$0.08 total; ceiling was $30 / $15 protocol cap — not approached).
 
-## 5. Correction (added after §1–§4 were written): the LLM-span clock is not the provider roundtrip
+## 5. Correction (05:45Z, added after §1–§4 were written): the LLM-span clock is not the provider roundtrip
 
 Found while turning the report's own metric into a product guardrail. It qualifies
 claim 1's attribution and §1.2 directly, so it goes in before anything is published.
@@ -223,7 +223,7 @@ the harness.
 - **§1.6's "0.03 s CPU + ~2.6 s idle wait pre-dispatch"** is the most consistent evidence
   available and should be read as *provider or dispatch-gate wait*, not as CPU work.
 
-### 5.4 Follow-up — ANSWERED 07:20Z, and it corrects this section's own advice
+### 5.4 Follow-up — ANSWERED 06:14Z, and it corrects this section's own advice
 
 This section originally said to instrument from request dispatch via Pi's
 `provider_stream_event`. That was wrong: the hook fires with the response, exactly like
@@ -259,7 +259,7 @@ provider's latency (1.45 s, unattackable from here) or the transcript the turn c
 Raw artifacts: `/tmp/night/pi-tax/` (this matrix, `run*.sh` + logs), `/tmp/night/tps-tax/FINDINGS.md`
 (append tax), `/tmp/night/pi-startup/FINDINGS.md` (independent reproduction by a second agent).
 
-## 6. Second correction: claim 4 (cache state predicts wall) is not supported
+## 6. Second correction (06:02Z): claim 4 (cache state predicts wall) is not supported
 
 Found by re-checking every headline number against `bench.csv` with `analyze.py`
 rather than by hand. This one removes a claim we were about to sell on.
@@ -303,7 +303,7 @@ cannot test the cache hypothesis at all — it can only fail to confirm it.
   the live-fleet sample (`/tmp/night/fleet-scan/FINDINGS.md`: unaccounted p50 1.6 s,
   p90 4.6 s, worst turn 85 s, and a per-model floor that does not move with the model).
 
-## 7. Third correction: the "startup scans ~200 MB of sessions" claim is not reproducible
+## 7. Third correction (06:09Z): the "startup scans ~200 MB of sessions" claim is not reproducible
 
 §1.6 lists it as a verified prior finding and §3 turns it into a recommendation
 ("fix the startup scan"). Tested directly:
@@ -331,7 +331,7 @@ provider/dispatch, not CPU) and stands.
 series) and re-send minimization (§1.7). Cache discipline is unconfirmed (§6).
 Startup scoping was our unverified guess and should not be sold as a fix.
 
-## 8. Fourth correction: the size coefficient was mis-stated 10x, and the ladder would not rebuild
+## 8. Fourth correction (06:10Z): the size coefficient was mis-stated 10x, and the ladder would not rebuild
 
 Claim 2 is the last surviving lever, so it got the same treatment as the others.
 
