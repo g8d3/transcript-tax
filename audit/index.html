@@ -1,0 +1,586 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Agent Fleet Tax Audit — measure the tax, then cut it</title>
+<meta name="description" content="A measured per-turn overhead tax on agent fleets: what it costs, how we find it, and what we cut.">
+<style>
+:root { color-scheme: light dark; --fg: #14161a; --bg: #fff; --muted: #5b6270;
+  --line: #e3e6ec; --accent: #1c5fd4; --card: #f7f8fa; }
+@media (prefers-color-scheme: dark) { :root { --fg:#e8eaed; --bg:#101215; --muted:#9aa2b1;
+  --line:#282c33; --accent:#79aaff; --card:#171a1f; } }
+* { box-sizing: border-box; }
+body { margin:0; background:var(--bg); color:var(--fg);
+  font:16px/1.65 -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; }
+header { border-bottom:1px solid var(--line); padding:1rem 1.2rem; position:sticky; top:0;
+  background:color-mix(in srgb, var(--bg) 92%, transparent); backdrop-filter:blur(6px); }
+header nav a { color:var(--muted); text-decoration:none; margin-right:1rem; font-size:.92rem; }
+header nav a:hover { color:var(--accent); }
+.grid { display:grid; grid-template-columns:repeat(auto-fit,minmax(16rem,1fr)); gap:.8rem 1.2rem; margin:1rem 0; }
+.grid label, form label { display:flex; flex-direction:column; gap:.25rem; font-size:.9rem; color:var(--muted); }
+.grid input, .grid select { padding:.45rem .5rem; border:1px solid var(--line); border-radius:.4rem;
+  background:var(--bg); color:var(--fg); font:inherit; }
+label.check { flex-direction:row; align-items:center; gap:.5rem; margin:.6rem 0; }
+details { border:1px solid var(--line); border-radius:.5rem; padding:.6rem .8rem; margin:1rem 0; }
+details summary { cursor:pointer; color:var(--muted); font-size:.9rem; }
+.roi-table { width:100%; border-collapse:collapse; margin:1rem 0; }
+.roi-table th { text-align:left; font-weight:500; color:var(--muted); padding:.4rem .6rem .4rem 0; width:55%; }
+.roi-table td { text-align:right; padding:.4rem 0; font-variant-numeric:tabular-nums; }
+.roi-table tr { border-bottom:1px solid var(--line); }
+.verdict { font-weight:600; margin-top:.6rem; }
+.verdict.pays { color:#1a7f37; } .verdict.marginal { color:#9a6700; } .verdict.no { color:#b42318; }
+.note { color:var(--muted); font-size:.9rem; }
+@media (prefers-color-scheme: dark) { .verdict.pays { color:#57d07a; } .verdict.marginal { color:#e3b341; } .verdict.no { color:#f97066; } }
+main { max-width:52rem; margin:0 auto; padding:0 1.2rem 4rem; }
+h1 { font-size:2.05rem; line-height:1.2; margin:2.2rem 0 .4rem; }
+h2 { font-size:1.35rem; margin-top:2.8rem; border-top:1px solid var(--line); padding-top:1.4rem; }
+h3 { font-size:1.1rem; margin-top:1.8rem; }
+table { border-collapse:collapse; width:100%; margin:1.2rem 0; font-size:.93rem; display:block; overflow-x:auto; }
+th,td { border:1px solid var(--line); padding:.45rem .6rem; text-align:left; }
+th { background:var(--card); }
+code,pre { font-family:ui-monospace,SFMono-Regular,Menlo,monospace; font-size:.9em; }
+pre { background:var(--card); padding:.8rem; overflow-x:auto; border-radius:6px; }
+blockquote { border-left:3px solid var(--line); margin:1.3rem 0; padding:.2rem 0 .2rem 1rem; color:var(--muted); }
+ul { padding-left:1.2rem; }
+.cta { background:var(--card); border:1px solid var(--line); border-radius:10px; padding:1.2rem 1.3rem; margin:2rem 0; }
+.cta a { color:var(--accent); font-weight:600; text-decoration:none; }
+.banner { background:var(--card); border:1px dashed var(--line); color:var(--muted);
+  font-size:.85rem; padding:.5rem .8rem; border-radius:6px; margin:1.2rem 0; }
+footer { border-top:1px solid var(--line); color:var(--muted); font-size:.85rem;
+  padding:1.4rem 1.2rem; max-width:52rem; margin:0 auto; }
+</style></head>
+<body>
+<header><nav>
+  <a href="#findings">The finding</a><a href="#what-we-do">What we do</a>
+  <a href="#pricing">Pricing</a><a href="#calc">Calculator</a>
+  <a href="#faq">Questions</a><a href="#start">Start</a>
+</nav></header>
+<main>
+  <div class="banner">Published 2026-10-17. The full paper, the raw 65-run CSV and the
+  analysis script are public: <a href="https://focalis.cc/tps/">https://focalis.cc/tps/</a> ·
+  <a href="https://github.com/g8d3/transcript-tax">repo (MIT / CC BY 4.0)</a>. We also publish the three
+  mechanisms we retracted from our own pitch.</div>
+  <section id="findings"><p>Your agents are slow and expensive even when they do nothing. We prove it with numbers, then we fix it.</p>
+<h2 id="the-finding-65-runs-3-harnesses-one-night">The finding (65 runs, 3 harnesses, one night)</h2>
+<ul>
+<li>A no-op turn — reply with exactly one word, call no tools — costs <strong>2.4 to 3.4 s median</strong> on every harness tested.</li>
+<li><strong>We measured where the time is, from outside the harness.</strong> A one-word turn: <strong>929 ms</strong> of process boot, then <strong>1451 ms</strong> before the provider's response arrives (1193-1605 ms across reps), then <strong>2 ms</strong> of model output. The roundtrip lands <em>before</em> the clock the harness itself reports, which is why tools that read the harness log tell you the model took 2 ms. We cannot split that 1451 ms into dispatch vs provider — nobody outside can — and we say so rather than guess.</li>
+<li>Transcript size costs something, but we cannot give you a coefficient: our prior series (n=8) shows ~1 s at 30-108 KB, 1.5-1.7 s at 170-228 KB and ~5 s at megabyte scale, and when we tried to rebuild that ladder to fit a slope, the big ingests did not stick (paper section 8). We measure your curve, per loop, at the sizes your loops actually reach.</li>
+<li><strong>Cache state did NOT predict wall time in our sample — we checked, and we say so.</strong> We expected the same 9.4k input to be fast on a cache hit and slow on a miss. Grouping the runs by cached tokens does not separate them: 9216 cached appears in a 16.6 s run and in two ~3 s runs. Four of ten runs in that cell were 2-6x slower with no measured signature, in a contiguous streak that then recovered. We report that as unexplained, not as a cache finding.</li>
+<li><strong>Rates from short replies are easy to fake and we do not use them.</strong> A one-word reply is often delivered in a single chunk, which collapses any window you divide tokens by; we guard that in our own tool rather than quote the number.</li>
+<li>Fleet math: <strong>1,000 no-op turns burn ~50 minutes of pure overhead.</strong> 10 loops x 100 turns a day = ~52 minutes a day of it, before any useful work happens — and ~2.4 wall-hours a day on real work (measured mean 8.7 s/turn).</li>
+<li><strong>On real work it holds up, and you cannot buy your way out of it.</strong> Our own fleet's turn logs (500 live turns, one machine): <strong>8.7 s wall per turn — 34% model, 29% tools, 37% unaccounted</strong>. Per model, the unaccounted floor barely moves (p50 1.5-2.5 s) while the model slice's p50 ranges from 1 ms to 9.1 s: switching models changes the model slice, not the tax.</li>
+<li><strong>The tail is worse than the median.</strong> p90 unaccounted is 3.4-5.9 s and the worst turns hit 85 s (and 128 s on a provider that was returning errors). At fleet scale you meet that tail often.</li>
+<li><strong>4.4% of our turns produced nothing</strong> (failed, aborted, empty) in the same sample. We do not quote a dollar figure for that waste: every one of those errors ran on a model with no public list price, so the honest number is the rate, not a cost.</li>
+</ul>
+<p>Source: working paper <code>Transcript Tax 2026</code> (65 runs, spend ~8 cents, methods and caveats inline). We show you the raw CSV, the per-run logs, and the breakdown before we sell you anything.</p>
+<p><strong>We ship the instrument, not just the report.</strong> The monitor we audit with is open and runs in your own workspace: every turn row carries <code>preResponseMs</code> — turn start to the provider's first token — beside the model span, as a <code>Pre</code> field in the turn rows and in <code>/tps turns</code>. It also flags the turns that burn budget and produce nothing, and it will not print a fabricated rate for a one-word reply (a collapsed window reads as "–", never as a number). You keep the tool after we leave. (Verified on our own machine: the panel serves the exact build that carries the column, byte-identical hash, and the live turn rows have been recording <code>preResponseMs</code> since we fixed the deployment.)</p>
+<h2 id="what-we-do">What we do</h2>
+<p>A read-only audit of your agent fleet. It is a measurement service: we have retracted
+three of our own mechanisms (paper sections 6-8), so what we sell is the instrumented
+number on your loops and a cut list derived from <em>your</em> profile, not a preset playbook.</p>
+<ol>
+<li><strong>Measure</strong> — instrument your loops with per-turn wall, model span, unaccounted span, input tokens, cached tokens.</li>
+<li><strong>Locate the tax</strong> — boot, pre-response, stream and tools per turn, measured from outside the harness; the token re-spend of carried context; the slow-turn tail; and the share of turns that burn budget and produce nothing. We report pre-response as a bound and do not pretend to split it into dispatch vs provider: the provider's own stream events fire with the response, so nothing outside the loop separates them.</li>
+<li><strong>Cut it</strong> — the one lever we have measured as real and removable is boot: 929 ms of every turn if your loop spawns a process per turn, zero if it keeps one warm. For a 10-loop fleet that is 65 wall-hours a year, gone. Beyond that, the cuts come from your own profile (context carried per turn, the slow-turn tail). We do not sell cache discipline, startup-scan scoping or a size slope: all three failed to reproduce in our data (paper sections 6, 7 and 8).</li>
+<li><strong>Lock it in</strong> — per-turn budget formula and a regression check you keep running after we leave.</li>
+</ol>
+<p>No rewrites. No new vendor. No access to customer funds, keys, or production secrets. Read-only first, changes behind your review.</p>
+<h2 id="who-it-is-for">Who it is for</h2>
+<ul>
+<li>Teams running 5+ agents (support, trading, research, ops) where latency compounds.</li>
+<li><strong>Fleets whose annual token line is large</strong> — from our own sweep, the audit pays for itself inside a quarter once token spend clears roughly <strong>$19k/year</strong> (35% input cut). At Opus-class prices that is a 10-loop fleet; at Sonnet-class, ~30 loops.</li>
+<li><strong>Cheap-model fleets still pay the wall tax, not the token tax.</strong> A 10-loop DeepSeek fleet spends ~$1.4k/year in tokens — we will not sell that fleet a token saving. It still burns ~208 wall-hours/year at a 3 s floor, and a cache miss costs 3-6x wall at identical tokens. For those, we price against operator time and loop capacity, or we say no.</li>
+<li>Anyone whose agent bill scales with turns x context and nobody can explain the line item.</li>
+</ul>
+<p>Run <code>roi.py --sweep</code> yourself before you talk to us; if it says no, we will too.</p>
+<h2 id="read-the-numbers-first">Read the numbers first</h2>
+<p>The full paper — methods, the 65-run dataset, the three mechanisms we retracted, and
+our own fleet's 500 live turns — is public, with the raw CSV and the analysis script:</p>
+<ul>
+<li>Paper: <strong>https://focalis.cc/tps/</strong> — same text, no tracking, no external requests.</li>
+<li>Repo (code + <code>bench.csv</code> + figures, MIT / CC BY 4.0): <strong>https://github.com/g8d3/transcript-tax</strong></li>
+</ul>
+<p>If the numbers do not survive your reading, tell us and we drop the pitch.</p>
+<h2 id="who-we-are">Who we are</h2>
+<p>Nova Radar — a risk radar for Solana. We run versioned trading strategies with every decision in a hash-chained log and real trades carrying on-chain signatures. Measuring overhead is how we keep our own radar fast. Now we sell the measurement.</p>
+<h2 id="next-step">Next step</h2>
+<p>Pick a tier in <code>pricing.md</code>. The audit starts with one loop, one day, one breakdown page. If the numbers do not show a tax worth cutting, you pay the base fee and keep the data.</p>
+<p>The starting questions, and the rest of the working paper, are public. Write to
+<strong>hola@focalis.cc</strong> with the word <code>TAX</code> in the subject and the three questions we
+send are the same ones we publish.</p>
+<p>No promises of sub-second miracles. Just the tax, measured, then lowered.</p></section>
+  <section id="pricing"><p>All tiers are fixed-fee, prepaid 50 percent, balance on delivery of the report. No success fee, no token-based billing, no access to funds or keys ever.</p>
+<h2 id="does-it-pay-for-itself-run-roi-py-sweep-first">Does it pay for itself? (run <code>roi.py --sweep</code> first)</h2>
+<table>
+<thead>
+<tr>
+<th>fleet</th>
+<th>class</th>
+<th>token $/yr</th>
+<th>Tier 2 payback</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>10 loops x 100 turns</td>
+<td>DeepSeek-class</td>
+<td>$1,410</td>
+<td>769 working days — <strong>do not buy</strong></td>
+</tr>
+<tr>
+<td>10 loops x 100 turns</td>
+<td>Sonnet-class</td>
+<td>$12,600</td>
+<td>90 working days</td>
+</tr>
+<tr>
+<td>10 loops x 100 turns</td>
+<td>Opus-class</td>
+<td>$63,000</td>
+<td>18 working days</td>
+</tr>
+<tr>
+<td>100 loops x 200 turns</td>
+<td>DeepSeek-class</td>
+<td>$28,200</td>
+<td>38 working days</td>
+</tr>
+</tbody>
+</table>
+<p>Saving assumed: 35% of the input-token line at a 70% cache hit. The audit is a
+<strong>token-cost</strong> play only above roughly <strong>$19k/year</strong> of token spend. Below that we
+sell the wall-clock case (a ~3 s floor per turn, 3-6x wall on a cache miss) or we
+tell you not to buy. We would rather lose the deal than defend an ROI we cannot
+show you.</p>
+<h2 id="tier-1-single-loop-measure-290-usd">Tier 1 — Single-Loop Measure — 290 USD</h2>
+<p>For one agent loop that feels slow.</p>
+<ul>
+<li>Instrument 1 loop for up to 3 days</li>
+<li>50+ no-op and live turns measured: wall, model span, unaccounted span, input and cached tokens</li>
+<li>1 breakdown page: where the ~2 to 3 s go in your loop</li>
+<li>Turn-budget formula with your numbers</li>
+<li>30-min readout call</li>
+<li>Delivery: 5 business days from access</li>
+</ul>
+<h2 id="tier-2-fleet-audit-1-400-usd">Tier 2 — Fleet Audit — 1,400 USD</h2>
+<p>For teams running 3 to 10 agents. Most popular.</p>
+<ul>
+<li>Everything in Tier 1, for up to 5 loops</li>
+<li>Cache measured and reported (hit rate, cached tokens per turn, wall at fixed input) — reported, not prescribed: it did not separate fast from slow turns in our own data (paper §6)</li>
+<li>Transcript-size curve for your loops (when to compact: our default gate is ~100 KB)</li>
+<li>Prioritized cut list with expected seconds and token savings per fix</li>
+<li>Regression check script you keep (fails CI if steady-state wall regresses)</li>
+<li>60-min readout + 30-day follow-up questions by message</li>
+<li>Delivery: 10 business days from access</li>
+</ul>
+<h2 id="tier-3-fleet-audit-cut-3-900-usd">Tier 3 — Fleet Audit + Cut — 3,900 USD</h2>
+<p>We measure, then we implement the cuts with you.</p>
+<ul>
+<li>Everything in Tier 2, for up to 12 loops</li>
+<li>Implementation of the cuts <strong>your</strong> profile shows, behind your code review. We do not arrive with a preset list: cache discipline, startup-scan scoping and a size slope all failed to reproduce in our own data (paper sections 6-8), so we will not sell them. The one we have measured as real and removable is per-invocation boot (929 ms per turn if your loop spawns a process per turn); beyond that, whatever your numbers show</li>
+<li>Before/after proof: same 50-turn protocol re-run, wall and token deltas signed off</li>
+<li>Reference target: 20 to 50 percent off steady-state wall on measured loops, or the implementation half is refunded. If your profile shows no lever worth pulling, we tell you before you pay the implementation half</li>
+<li>90-day regression window: if the tax creeps back, we re-diagnose once free</li>
+<li>Delivery: 20 business days from access</li>
+</ul>
+<h2 id="retainer-fleet-tax-monitoring-490-usd-month">Retainer — Fleet Tax Monitoring — 490 USD/month</h2>
+<p>For teams that already had an audit (or run our monitor) and do not want the tax to
+creep back. This is the recurring product: the audit is the diagnosis, this is the
+watch. Cancel any month.</p>
+<ul>
+<li>Continuous per-turn telemetry from your loops (our monitor writes it to the
+  workspace; a supervisor reads it, no agent access needed)</li>
+<li>Monthly one-page report: wall floor per loop, cache-hit rate, share of turns that
+  failed or produced nothing, spend by session, context pressure against each window</li>
+<li>Alert when the floor, the miss rate or the waste rate regresses more than 20% from
+  the audited baseline</li>
+<li>Quarterly re-measurement with the same 50-turn protocol, plus maintenance of the
+  regression script you kept</li>
+<li>One standing 30-min slot per month, or by message</li>
+</ul>
+<p>Why it is priced monthly and not per token: nothing we sell is billed on your usage.
+A retainer is worth it exactly when the monthly saving or the avoided regression
+exceeds 490 USD — check it with <code>roi.py</code> before you buy. If your fleet is below the
+threshold, we will say so.</p>
+<h2 id="rules-common-to-all-tiers">Rules common to all tiers</h2>
+<ul>
+<li>Read-only instrumentation first. Write access only in Tier 3, only to agreed files, only with review.</li>
+<li>We never touch secrets, wallets, customer data, or production keys. You redact before we read.</li>
+<li>Extra loop beyond tier: 180 USD each (Tier 2/3 only).</li>
+<li>Rush (half the delivery time): plus 40 percent, subject to slot.</li>
+<li>Payment: transfer or stablecoin invoice; work starts on first payment clearing.</li>
+</ul></section>
+  
+  <section id="calc">
+    <h2>Price it on your own numbers</h2>
+    <p>The same arithmetic as <code>tools/roi.py --sweep</code> in the repo, running in
+    your browser with no tracking and no requests. If this page and the script ever
+    disagree, our own test fails — so we would rather you check the numbers than trust
+    the copy.</p>
+    <form id="roiForm">
+      <div class="grid">
+        <label>Agent loops
+          <input type="number" id="agents" value="10" min="1" step="1"></label>
+        <label>Turns per loop per working day
+          <input type="number" id="turns" value="100" min="1" step="1"></label>
+        <label>Input tokens carried per turn
+          <input type="number" id="inTok" value="40000" min="0" step="1000"></label>
+        <label>Share of input served from cache (%)
+          <input type="number" id="cacheHitPct" value="70" min="0" max="100" step="5"></label>
+        <label>Model class
+          <select id="klass">
+            <option value="cheap" selected>cheap (DeepSeek-class)</option>
+            <option value="mid">mid (Sonnet-class)</option>
+            <option value="premium">premium (Opus-class)</option>
+            <option value="custom">custom prices below</option>
+          </select></label>
+        <label>Operator time ($/h, 0 = do not price wall-clock)
+          <input type="number" id="hourly" value="0" min="0" step="5"></label>
+      </div>
+      <label class="check"><input type="checkbox" id="warm">
+        the loop keeps a process warm (it does not pay process boot every turn)</label>
+      <details>
+        <summary>Advanced — every value here is ours and is an assumption you should replace</summary>
+        <div class="grid">
+          <label>Output tokens per turn <input type="number" id="outTok" value="400" min="0" step="50"></label>
+          <label>Working days per year <input type="number" id="days" value="250" min="1" step="10"></label>
+          <label>Input $/1M tokens <input type="number" id="priceIn" value="0.27" min="0" step="0.01"></label>
+          <label>Cached input $/1M <input type="number" id="priceCache" value="0.07" min="0" step="0.01"></label>
+          <label>Output $/1M tokens <input type="number" id="priceOut" value="1.10" min="0" step="0.01"></label>
+          <label>Steady-state floor per turn (s) <input type="number" id="floorS" value="3.0" min="0" step="0.1"></label>
+          <label>Process boot per turn (s, measured 0.93) <input type="number" id="bootS" value="0.93" min="0" step="0.01"></label>
+          <label>Share of turns that miss the cache (%) <input type="number" id="missRatePct" value="30" min="0" max="100" step="5"></label>
+          <label>Extra seconds on a miss <input type="number" id="missPenaltyS" value="5" min="0" step="1"></label>
+          <label>Share of turns that fail or return nothing (%) <input type="number" id="wastedPct" value="10" min="0" max="100" step="5"></label>
+          <label>Input tokens the audit removes (%) <input type="number" id="cutInputPct" value="35" min="0" max="100" step="5"></label>
+          <label>Wall the audit removes (%) <input type="number" id="cutWallPct" value="20" min="0" max="100" step="5"></label>
+          <label>Audit fee to compare against ($) <input type="number" id="tier" value="1400" min="0" step="100"></label>
+        </div>
+      </details>
+      <output id="roiOut" aria-live="polite"></output>
+    </form>
+  </section>
+
+  <section id="faq"><p>Answers we can defend with our own measurements. Where we cannot, we say so — a
+prospect who catches us overclaiming costs more than the deal.</p>
+<h2 id="our-tokens-are-cheap-so-there-is-nothing-to-save">"Our tokens are cheap, so there is nothing to save"</h2>
+<p>Usually true, and it decides the sale. Run <code>python3 roi.py --sweep</code> before the call:</p>
+<table>
+<thead>
+<tr>
+<th>fleet</th>
+<th>class</th>
+<th>token $/yr</th>
+<th>audit payback</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>10 loops x 100 turns</td>
+<td>DeepSeek-class</td>
+<td>$1,410</td>
+<td>769 working days — <strong>no</strong></td>
+</tr>
+<tr>
+<td>10 loops x 100 turns</td>
+<td>Sonnet-class</td>
+<td>$12,600</td>
+<td>90 working days</td>
+</tr>
+<tr>
+<td>10 loops x 100 turns</td>
+<td>Opus-class</td>
+<td>$63,000</td>
+<td>18 working days</td>
+</tr>
+<tr>
+<td>100 loops x 200 turns</td>
+<td>DeepSeek-class</td>
+<td>$28,200</td>
+<td>38 working days</td>
+</tr>
+</tbody>
+</table>
+<p>Rule: the audit is a <strong>token-cost</strong> play only above roughly <strong>$19k/yr</strong> of token
+spend (35% input cut, 70% cache hit, Tier 2 fee). Below that, either sell the
+wall-clock case below, or do not sell. Do not invent a token saving for a
+$1.4k/yr fleet.</p>
+<p>The wall tax survives cheap tokens: our measured floor is ~3 s per no-op turn
+regardless of price, and four of ten runs in one cell came in 2–6x slower than the
+rest at identical input tokens with no signature we can name (we checked the cache
+column; it does not explain them). 10 loops x 100 turns = 208 wall-hours/year of
+pure overhead, and the operator still pays for that in attention, in latency, and
+in how many loops one machine can run.</p>
+<p>Price those hours and the same cheap fleet pays back: <code>roi.py --agents 10 --turns 100
+--hourly 50</code> gives 312 wall-hours/year (208 floor + 104 cache-miss) and a payback of
+<strong>98 working days</strong>. That is the honest pitch for a cheap-model fleet — time, not
+tokens. If you cannot price the hours, do not sell it.</p>
+<h2 id="we-can-measure-this-ourselves-your-protocol-is-public">"We can measure this ourselves — your protocol is public"</h2>
+<p>Yes, and that is the point: the protocol (50 no-op turns, size series, cache
+series) is in the paper, and <code>roi.py</code> is free. What you are buying is (a) the
+instrumented run on <em>your</em> loops, (b) the provider-vs-harness split, which our
+own paper says we cannot do from the outside, (c) the prioritized cut list with
+seconds and dollars per item, and (d) the regression script that keeps the cut
+from creeping back. Self-measurement usually stops at "it feels slow".</p>
+<h2 id="we-are-on-a-flat-rate-subscription-so-tokens-are-free">"We are on a flat-rate subscription, so tokens are free"</h2>
+<p>Then the token line is not the argument and we should not pretend otherwise.
+What still applies: the wall floor, cache-miss wall penalty, context pressure
+against the provider's window, and the share of turns that burn budget and
+produce nothing (failed, aborted, empty). Price the audit against operator time
+and loop capacity, not against tokens.</p>
+<h2 id="how-do-we-verify-you-actually-cut-anything">"How do we verify you actually cut anything?"</h2>
+<p>Every tier re-runs the <em>same</em> 50-turn protocol after the change and reports wall
+and token deltas side by side, on your machine, with the script in your repo. Tier
+3's implementation half is refunded if the measured steady-state wall does not
+move. You are not asked to trust a before/after we computed elsewhere.</p>
+<h2 id="isn-t-this-just-a-benchmark-paper">"Isn't this just a benchmark paper?"</h2>
+<p>The paper is the evidence, not the product. The product is a measurement on your
+loops plus a regression gate you keep. We deliberately did <em>not</em> publish a
+cross-vendor ranking: our own caveats (n=10 pongs per cell, provider routing
+differs per harness, one machine) do not support one.</p>
+<h2 id="your-own-report-says-the-llm-is-free-that-sounds-wrong">"Your own report says the LLM is free. That sounds wrong."</h2>
+<p>It was partly an artifact and we corrected it before publishing (report §5): the
+LLM span is measured from the harness's own start event, which can fire at the
+first streamed chunk, so provider time before that lands in "unaccounted". What
+we stand behind: the measured wall floor per turn, the cache-miss wall penalty,
+and the token re-spend of context. What we refuse to claim: a clean
+provider/harness split. That split is Tier 2 instrumentation work, which is
+exactly what makes it worth paying for.</p>
+<h2 id="we-already-compact-aggressively">"We already compact aggressively"</h2>
+<p>Then prove it in the measurement. In our own dataset a harness compacted 103k
+tokens down to 9.4k and then <em>grew back</em>; another ingest that was supposed to pin
+2 MB cached only 7.7k — less than the 100 KB case. Compaction policies that look
+right in config often do not stick per turn. We measure cached tokens per turn
+rather than trusting the setting.</p>
+<h2 id="why-not-just-switch-to-a-cheaper-model">"Why not just switch to a cheaper model?"</h2>
+<p>That is a quality trade, and it is yours to make. It also does not remove the
+wall floor, and it can make cache economics worse if the new provider's prefix
+caching behaves differently. We measure before recommending either.</p>
+<h2 id="we-cannot-give-a-stranger-access-to-our-agent-stack">"We cannot give a stranger access to our agent stack"</h2>
+<p>Nor should you. Tiers 1 and 2 are read-only: logs, a staging clone, the exact
+command that runs one turn. No secrets — redact first; if secrets appear we stop
+the clock and resume after you rotate. We never take keys, wallets, customer
+data, or production deploys. Write access exists only in Tier 3, only to agreed
+files, only behind your code review.</p>
+<h2 id="the-fee-is-high-for-a-report">"The fee is high for a report"</h2>
+<p>Compare it to the annual line it touches, not to a document: $1,400 against a
+$12,600/yr token bill is 11% of one year, and it buys the split and the cut list
+that keep applying after we leave. If the sweep says your fleet does not clear
+the bar, we will say so and sell you the $290 single-loop measurement or nothing
+at all.</p></section>
+  <section id="start">
+    <div class="cta">
+      <p><strong>Start with one loop.</strong> Reply <code>TAX</code> or write to
+      <a href="mailto:hola@focalis.cc">hola@focalis.cc</a> and we send the three questions we need.
+      If the numbers do not show a tax worth cutting, you keep the data and we say so.</p>
+    </div></section>
+</main>
+<footer>No analytics, no external fonts, no cookies. (Cloudflare injects an email-decode script on the hosted copy.) Text CC BY 4.0.
+Method and data: <code>bench.csv</code> + <code>analyze.py</code> + <code>tools/roi.py</code>.</footer>
+<script>/* ROI calculator — the browser twin of tools/roi.py (same arithmetic, same defaults).
+ *
+ * It exists so a prospect can price the audit on their own numbers without
+ * installing anything. Every default here is identical to the argparse defaults
+ * in tools/roi.py; tests/roi-parity.mjs checks the two agree over a grid of
+ * inputs (numbers, verdicts and the displayed strings).
+ *
+ * No tracking, no external requests, no dependencies.
+ */
+(function (root) {
+  "use strict";
+
+  var DEFAULTS = {
+    // fleet shape
+    agents: 10,
+    turns: 100,
+    days: 250,
+    // per-turn tokens
+    inTok: 40000,
+    outTok: 400,
+    cacheHit: 0.7,
+    // prices, USD per 1M tokens (defaults = DeepSeek list; replace with yours)
+    priceIn: 0.27,
+    priceCache: 0.07,
+    priceOut: 1.1,
+    // measured timing
+    floorS: 3.0,
+    bootS: 0.93,
+    warm: false,
+    missRate: 0.3,
+    missPenaltyS: 5.0,
+    wasted: 0.1,
+    // what the audit is expected to move (conservative)
+    cutInput: 0.35,
+    cutWall: 0.2,
+    // money
+    hourly: 0,
+    tier: 1400
+  };
+
+  function withDefaults(o) {
+    var out = {};
+    for (var k in DEFAULTS) out[k] = DEFAULTS[k];
+    for (var k2 in o || {}) if (o[k2] !== undefined && o[k2] !== null && o[k2] !== "") out[k2] = o[k2];
+    return out;
+  }
+
+  /* Port of compute() in tools/roi.py. Keep the two in step. */
+  function computeROI(options) {
+    var a = withDefaults(options);
+    var turnsYear = a.agents * a.turns * a.days;
+
+    var miss = 1 - a.cacheHit;
+    var inCost = (a.inTok / 1e6) * (miss * a.priceIn + a.cacheHit * a.priceCache);
+    var outCost = (a.outTok / 1e6) * a.priceOut;
+    var perTurn = inCost + outCost;
+    var yearTokens = turnsYear * perTurn;
+
+    var bootPerTurn = a.warm ? 0 : a.bootS;
+    var wallPerTurn = bootPerTurn + a.floorS + a.missRate * a.missPenaltyS;
+    var yearHours = (turnsYear * wallPerTurn) / 3600;
+    var bootHours = (turnsYear * bootPerTurn) / 3600;
+    var floorHours = (turnsYear * a.floorS) / 3600;
+    var missHours = (turnsYear * a.missRate * a.missPenaltyS) / 3600;
+    var wallAfter = yearHours * (1 - a.cutWall);
+
+    var wasteTokens = turnsYear * a.wasted * perTurn;
+
+    var inSaved = turnsYear * ((a.inTok * a.cutInput) / 1e6) * (miss * a.priceIn + a.cacheHit * a.priceCache);
+    var wallSaved = yearHours - wallAfter;
+    var timeValue = wallSaved * a.hourly;
+    var saved = inSaved + timeValue;
+    var paybackDays = saved > 0 ? (a.tier / saved) * a.days : Infinity;
+
+    return {
+      turnsYear: turnsYear,
+      perTurn: perTurn,
+      yearTokens: yearTokens,
+      wallPerTurn: wallPerTurn,
+      yearHours: yearHours,
+      bootHours: bootHours,
+      floorHours: floorHours,
+      missHours: missHours,
+      bootPerTurn: bootPerTurn,
+      wasteTokens: wasteTokens,
+      inSaved: inSaved,
+      wallSaved: wallSaved,
+      timeValue: timeValue,
+      saved: saved,
+      paybackDays: paybackDays,
+      params: a
+    };
+  }
+
+  /* Round like Python's format(): ties go to even, not up.
+   *
+   * The two languages agree on every non-tie, and a tie only happens when the
+   * value is exactly on the boundary in decimal (e.g. 2262.5 hours). Python
+   * rounds that to 2,262 and Math.round would say 2,263, so the script and the
+   * page would quote different numbers for the same input. tests/roi-parity.mjs
+   * fails if they ever drift. */
+  function roundHalfEven(x, digits) {
+    var f = Math.pow(10, digits);
+    var scaled = x * f;
+    var floor = Math.floor(scaled);
+    var frac = scaled - floor;
+    if (frac === 0.5) return (floor % 2 === 0 ? floor : floor + 1) / f;
+    return Math.round(scaled) / f;
+  }
+
+  function group(intStr) {
+    return intStr.replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+  }
+
+  /* tools/roi.py money(): no cents at $1000+, two decimals below. */
+  function money(usd) {
+    if (!isFinite(usd)) return "never";
+    if (Math.abs(usd) >= 1000) {
+      return (usd < 0 ? "-" : "") + "$" + group(String(roundHalfEven(Math.abs(usd), 0)));
+    }
+    return (usd < 0 ? "-" : "") + "$" + Math.abs(roundHalfEven(usd, 2)).toFixed(2);
+  }
+
+  function num(v, digits) {
+    if (!isFinite(v)) return "never";
+    var d = digits || 0;
+    var r = roundHalfEven(v, d);
+    var s = Math.abs(r).toFixed(d);
+    var parts = s.split(".");
+    var out = group(parts[0]) + (parts[1] ? "." + parts[1] : "");
+    return (r < 0 || Object.is(r, -0) ? "-" : "") + out;
+  }
+
+  /* Same thresholds and words as the Python sweep, so the page cannot claim a
+   * fleet pays when the script says it does not. */
+  function verdict(r, tier) {
+    if (r.paybackDays <= 60) return { key: "pays", label: "pays for itself in " + num(r.paybackDays) + " working days" };
+    if (r.paybackDays <= 250) return { key: "marginal", label: "pays back in " + num(r.paybackDays) + " working days: inside a year, not obviously a buy" };
+    if (!isFinite(r.paybackDays)) return { key: "no", label: "does not pay back at these numbers: we would say no" };
+    return { key: "no", label: "does not pay back (" + num(r.paybackDays) + " working days): we would say no" };
+  }
+
+  var api = { DEFAULTS: DEFAULTS, computeROI: computeROI, money: money, num: num, verdict: verdict };
+  root.TPS_ROI = api;
+  if (typeof module !== "undefined" && module.exports) module.exports = api;
+})(typeof globalThis !== "undefined" ? globalThis : this);
+</script>
+<script>
+(function () {
+  var R = window.TPS_ROI;
+  var form = document.getElementById("roiForm");
+  if (!R || !form) return;
+  var out = document.getElementById("roiOut");
+  var PRESETS = {
+    cheap: { priceIn: 0.27, priceCache: 0.07, priceOut: 1.1 },
+    mid: { priceIn: 3.0, priceCache: 0.3, priceOut: 15.0 },
+    premium: { priceIn: 15.0, priceCache: 1.5, priceOut: 75.0 }
+  };
+  function val(id) { var e = document.getElementById(id); return e ? Number(e.value) : NaN; }
+  function set(id, v) { var e = document.getElementById(id); if (e && e.value === "") e.value = v; }
+  function read() {
+    var o = {
+      agents: val("agents"), turns: val("turns"), days: val("days"),
+      inTok: val("inTok"), outTok: val("outTok"),
+      cacheHit: val("cacheHitPct") / 100,
+      priceIn: val("priceIn"), priceCache: val("priceCache"), priceOut: val("priceOut"),
+      floorS: val("floorS"), bootS: val("bootS"),
+      warm: document.getElementById("warm").checked,
+      missRate: val("missRatePct") / 100, missPenaltyS: val("missPenaltyS"),
+      wasted: val("wastedPct") / 100,
+      cutInput: val("cutInputPct") / 100, cutWall: val("cutWallPct") / 100,
+      hourly: val("hourly"), tier: val("tier")
+    };
+    var k = document.getElementById("klass").value;
+    if (PRESETS[k]) { o.priceIn = PRESETS[k].priceIn; o.priceCache = PRESETS[k].priceCache; o.priceOut = PRESETS[k].priceOut; }
+    return o;
+  }
+  function render() {
+    var o = read();
+    var r = R.computeROI(o);
+    var p = r.params;
+    var rows = [];
+    rows.push(["Turns per year", R.num(r.turnsYear)]);
+    rows.push(["Token bill", R.money(r.yearTokens) + "/year (" + R.money(r.perTurn) + " per turn)"]);
+    rows.push(["Wall-clock on the tax", R.num(r.yearHours) + " h/year (" + r.wallPerTurn.toFixed(2) + " s per turn, before any work)"]);
+    rows.push(["— boot", p.warm ? "warm loop: 0" : R.num(r.bootHours) + " h/year (" + p.bootS.toFixed(2) + " s x every turn)"]);
+    rows.push(["— floor", R.num(r.floorHours) + " h/year (" + p.floorS.toFixed(1) + " s x every turn)"]);
+    rows.push(["— cache miss", R.num(r.missHours) + " h/year (" + Math.round(p.missRate * 100) + "% miss, +" + p.missPenaltyS + " s each)"]);
+    rows.push(["Burned on failed/empty turns", R.money(r.wasteTokens) + "/year"]);
+    rows.push(["Token saving at " + Math.round(p.cutInput * 100) + "% input cut", R.money(r.inSaved) + "/year"]);
+    rows.push(["Wall saving at " + Math.round(p.cutWall * 100) + "% wall cut", R.num(r.wallSaved) + " h/year"]);
+    if (p.hourly > 0) rows.push(["That wall priced at " + R.money(p.hourly) + "/h", R.money(r.timeValue) + "/year"]);
+    rows.push(["Total saving", R.money(r.saved) + "/year"]);
+    rows.push(["Audit fee " + R.money(p.tier) + " — payback", isFinite(r.paybackDays) ? R.num(r.paybackDays) + " working days" : "never at these numbers"]);
+    var v = R.verdict(r, p.tier);
+    var html = '<table class="roi-table">';
+    for (var i = 0; i < rows.length; i++) html += "<tr><th>" + rows[i][0] + "</th><td>" + rows[i][1] + "</td></tr>";
+    html += '</table><p class="verdict ' + v.key + '">' + v.label + '.</p>';
+    if (p.hourly === 0) html += '<p class="note">Token saving only. A cheap-model fleet with a small token line does not pay for an audit on tokens alone — put a price on operator time above to see the other half.</p>';
+    out.innerHTML = html;
+  }
+  form.addEventListener("input", render);
+  form.addEventListener("change", render);
+  render();
+})();
+</script>
+</body></html>
