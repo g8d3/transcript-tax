@@ -6,7 +6,7 @@
 ## TL;DR (claims)
 
 1. **Steady-state floor is ~2.5–3.5 s per no-op turn on every harness tested.** Median PONG wall (runs 1–10): pi 2.94 s (100 KB ctx) / 2.42 s (2 MB ctx*), pi-rust 3.26 / 3.35 s, zero 3.06 / 3.36 s. The LLM call itself is milliseconds; the tax is harness overhead.
-2. **Transcript size does cost, but sub-linearly with a ~1 s floor.** Prior session series (n=8 pi sessions): ~1 s overhead at 30–108 KB, 1.5–1.7 s at 170–228 KB, ~5 s at 3.2 MB and 9 MB. Rough fit: `overhead ≈ 1.0 s + 0.5 ms/KB`.
+2. **Transcript size does cost, but sub-linearly with a ~1 s floor, and our stated fit was wrong.** Prior session series (n=8 pi sessions, coarse ranges): ~1 s overhead at 30–108 KB, 1.5–1.7 s at 170–228 KB, ~5 s at 3.2 MB and 9 MB. The draft's `1.0 s + 0.5 ms/KB` is a mis-stated coefficient — its own table implies ~5–6 ms/KB across 100–230 KB and saturation beyond (see §8). A fresh attempt to reproduce the ladder failed: a 452 KB ingest produced a 108 KB session, and two workspaces with the same 108–111 KB session differed by 1.4 s in median wall.
 3. **The 2 MB "ladder" in this dataset is invalid as a size experiment.** All three harnesses failed to pin the 2 MB ingest (refusal / truncation / compaction): pi-L cached only 7.7 k vs pi-S 41 k; zero-L compacted 103 k → ~9.4 k by pong 1. Read the grinder as a *steady-state + cache-behavior* study, not a size sweep.
 4. **Cache hits dominate wall time more than token counts do.** zero-L cache-miss runs (0 / 2048 cached) took 6–20 s; cache-hit runs took ~3 s at identical ~9.4 k input. Wall correlates with cache state, not with input tokens.
 5. **Money implication: compact early, budget per turn.** At observed floors, 1,000 no-op turns ≈ 1 hour of wall and the provider bill of whatever your context window carries. A stale 40 k-token context re-sent (or re-read) every turn is the line item, not the model reply.
@@ -110,7 +110,7 @@ Eight pi sessions with real transcripts (not the grinder's synthetic ingest):
 | 3.2 MB / 9 MB | ~5 s |
 
 ![size scaling](fig3_size_scaling.png)
-*Figure 4 — Prior series: overhead vs transcript size (log x-axis). Rough fit `1 s + 0.5 ms/KB`; the two MB points saturate (compaction/truncation likely engaged there too).*
+*Figure 4 — Prior series: overhead vs transcript size (log x-axis). The stated fit in the draft (`1 s + 0.5 ms/KB`) is 10x off its own table — see §8; the two MB points saturate (compaction/truncation likely engaged there too).*
 
 ### 1.6 Prior finding (verified): profiling pi-core — sessiond exonerated
 
@@ -299,5 +299,48 @@ provider/dispatch, not CPU) and stands.
 **Cut-list consequence:** the levers this dataset supports are context size (§1.5
 series) and re-send minimization (§1.7). Cache discipline is unconfirmed (§6).
 Startup scoping was our unverified guess and should not be sold as a fix.
+
+## 8. Fourth correction: the size coefficient was mis-stated 10x, and the ladder would not rebuild
+
+Claim 2 is the last surviving lever, so it got the same treatment as the others.
+
+### 8.1 The stated fit contradicts its own table
+
+| segment | implied slope |
+|---|---|
+| 108 → 228 KB | **5.8 ms/KB** |
+| 228 KB → 3.2 MB | 1.1 ms/KB |
+| 3.2 → 9 MB | 0.0 ms/KB |
+
+The draft says `overhead ≈ 1.0 s + 0.5 ms/KB`. At 228 KB that predicts 1.11 s; the table
+next to it says 1.7 s. The coefficient is off by ~10x. This is a transcription error, not
+a measurement: the table was right, the fit was wrong.
+
+### 8.2 Fresh reproduction attempt (n=5 per cell)
+
+Same machine, same model, three workspaces, ingest then five no-op PONGs with `-c`:
+
+| workspace | filler ingested | resulting session | median wall | reps |
+|---|---|---|---|---|
+| small | 24 KB | 29 KB | 1924 ms | 1986, 1924, 1933, 1924, 1893 |
+| medium | 172 KB | **111 KB** | 4195 ms | 2395, 4466, 4195, 3172, 4728 |
+| large | 452 KB | **108 KB** | 2832 ms | 2356, 25726, 2832, 3380, 2495 |
+
+The ladder would not rebuild: the 452 KB ingest produced a 108 KB session — the same
+size as the 172 KB one — so the two larger cells are the *same* transcript size and
+differ by 1.4 s in median (4.2 s vs 2.8 s). The one real comparison available (29 KB vs
+~110 KB) is inside that noise, with a 25.7 s outlier in one cell.
+
+### 8.3 What this leaves
+
+- **Do not quote the size coefficient.** The ranges in §1.5 are the evidence; the fit
+  was never sound and was mis-transcribed on top of that.
+- **Compaction is still the most plausible lever** (a transcript in the per-turn path
+  can only cost time), but this dataset does not demonstrate it, and our fresh attempt
+  to build the ladder failed for the same reason the grinder's did (§1.4): big ingests
+  do not stick.
+- **What a buyer should hear:** we measure *your* curve, per loop, with the transcript
+  sizes *your* loops actually reach. That is a measurement, and it is what the audit
+  sells — not a coefficient from n=8.
 
 *No part of this report was published. Draft only; local files.*
