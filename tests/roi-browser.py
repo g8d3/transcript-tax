@@ -152,9 +152,15 @@ with sync_playwright() as p:
     note = page.locator("#roiOut .note").count()
     check("honest note about the cheap-fleet case is shown when wall is not priced",
           note == 0 or True)  # hourly>0 now, so the note is correctly absent
-    check("no external requests were made",
-          not [u for u in page.evaluate("performance.getEntriesByType('resource').map(r => r.name)")
-               if not u.startswith("file:") and TARGET.startswith("file:")])
+    res = page.evaluate("performance.getEntriesByType('resource').map(r => r.name)")
+    # The page ships no external requests. On https the host (Cloudflare) adds an
+    # email-obfuscation script and a cookieless page-view beacon; those two are the only
+    # tolerated extras, so a new third-party injection fails this test instead of hiding.
+    cf = ("cdn-cgi/", "static.cloudflareinsights.com")
+    origin = re.match(r"https?://[^/]+", TARGET).group(0) if TARGET.startswith("http") else ""
+    extra = [u for u in res if not u.startswith("file:") and not (origin and u.startswith(origin))
+             and not any(k in u for k in cf)]
+    check("no external requests beyond the host's own injections", not extra, str(extra[:3]))
 
     # screenshot for the record (user-seat review evidence)
     shot = Path("/tmp/night/r8/audit-page.png")

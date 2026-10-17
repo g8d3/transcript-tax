@@ -79,7 +79,7 @@ footer { border-top:1px solid var(--line); color:var(--muted); font-size:.85rem;
 three of our own mechanisms (paper sections 6-8), so what we sell is the instrumented
 number on your loops and a cut list derived from <em>your</em> profile, not a preset playbook.</p>
 <ol>
-<li><strong>Measure</strong> — instrument your loops with per-turn wall, model span, unaccounted span, input tokens, cached tokens.</li>
+<li><strong>Measure</strong> — instrument your loops with per-turn wall, model span, pre-response span, unaccounted span, input tokens, cached tokens. You can run the first half of that yourself, on your own log, in the browser (nothing is uploaded): <strong><a href="https://focalis.cc/audit/preview/">https://focalis.cc/audit/preview/</a></strong>.</li>
 <li><strong>Locate the tax</strong> — boot, pre-response, stream and tools per turn, measured from outside the harness; the token re-spend of carried context; the slow-turn tail; and the share of turns that burn budget and produce nothing. We report pre-response as a bound and do not pretend to split it into dispatch vs provider: the provider's own stream events fire with the response, so nothing outside the loop separates them.</li>
 <li><strong>Cut it</strong> — the one lever we have measured as real and removable is boot: 929 ms of every turn if your loop spawns a process per turn, zero if it keeps one warm. For a 10-loop fleet that is 65 wall-hours a year, gone. Beyond that, the cuts come from your own profile (context carried per turn, the slow-turn tail). We do not sell cache discipline, startup-scan scoping or a size slope: all three failed to reproduce in our data (paper sections 6, 7 and 8).</li>
 <li><strong>Lock it in</strong> — per-turn budget formula and a regression check you keep running after we leave.</li>
@@ -97,14 +97,15 @@ number on your loops and a cut list derived from <em>your</em> profile, not a pr
 <p>The full paper — methods, the 65-run dataset, the three mechanisms we retracted, and
 our own fleet's 500 live turns — is public, with the raw CSV and the analysis script:</p>
 <ul>
-<li>Paper: <strong>https://focalis.cc/tps/</strong> — same text, no tracking, no external requests.</li>
-<li>Repo (code + <code>bench.csv</code> + figures, MIT / CC BY 4.0): <strong>https://github.com/g8d3/transcript-tax</strong></li>
+<li>Paper: <strong><a href="https://focalis.cc/tps/">https://focalis.cc/tps/</a></strong> — same text, no tracking of its own, no external requests (the hosted copy gets Cloudflare's cookieless page-view beacon).</li>
+<li>Repo (code + <code>bench.csv</code> + figures, MIT / CC BY 4.0): <strong><a href="https://github.com/g8d3/transcript-tax">https://github.com/g8d3/transcript-tax</a></strong></li>
 </ul>
 <p>If the numbers do not survive your reading, tell us and we drop the pitch.</p>
 <h2 id="who-we-are">Who we are</h2>
 <p>Nova Radar — a risk radar for Solana. We run versioned trading strategies with every decision in a hash-chained log and real trades carrying on-chain signatures. Measuring overhead is how we keep our own radar fast. Now we sell the measurement.</p>
 <h2 id="next-step">Next step</h2>
 <p>Pick a tier in <code>pricing.md</code>. The audit starts with one loop, one day, one breakdown page. If the numbers do not show a tax worth cutting, you pay the base fee and keep the data.</p>
+<p>See the shape of that breakdown page before you buy — a blank template filled with one labelled example loop, no client data in it: <strong><a href="https://focalis.cc/audit/sample/">https://focalis.cc/audit/sample/</a></strong></p>
 <p>The starting questions, and the rest of the working paper, are public. Write to
 <strong>hola@focalis.cc</strong> with the word <code>TAX</code> in the subject and the three questions we
 send are the same ones we publish.</p>
@@ -214,7 +215,8 @@ threshold, we will say so.</p>
   <section id="calc">
     <h2>Price it on your own numbers</h2>
     <p>The same arithmetic as <code>tools/roi.py --sweep</code> in the repo, running in
-    your browser with no tracking and no requests. If this page and the script ever
+    your browser — the calculator makes no request of its own (on the hosted copy
+    Cloudflare's page-view beacon is the only network call). If this page and the script ever
     disagree, our own test fails — so we would rather you check the numbers than trust
     the copy.</p>
     <form id="roiForm">
@@ -375,7 +377,8 @@ at all.</p></section>
       If the numbers do not show a tax worth cutting, you keep the data and we say so.</p>
     </div></section>
 </main>
-<footer>No analytics, no external fonts, no cookies. (Cloudflare injects an email-decode script on the hosted copy.) Text CC BY 4.0.
+<footer>No analytics of our own, no external fonts, no cookies. On the hosted copy Cloudflare adds
+an email-obfuscation script and a cookieless page-view beacon; we keep no visitor data. Text CC BY 4.0.
 Method and data: <code>bench.csv</code> + <code>analyze.py</code> + <code>tools/roi.py</code>.</footer>
 <script>/* ROI calculator — the browser twin of tools/roi.py (same arithmetic, same defaults).
  *
