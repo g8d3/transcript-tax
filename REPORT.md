@@ -246,6 +246,14 @@ values of 1/88/286/364 ms for the same prompt). It cannot be split further from 
 *bound*, not a split. Boot is ~0.93 s per invocation, not the 0.25 s `pi --version`
 suggests, and it is invisible in the turn rows because `turn_start` fires after it.
 
+**This also decomposes claim 1's floor.** The 2.4–3.4 s steady-state medians in §1.1 are
+*process wall* (`time pi -p ...`), and a one-word turn now measures as
+`929 ms boot + 1451 ms pre-response + 2 ms stream`. Boot is the only component in that
+sum that is removable by configuration rather than by the provider: a loop that keeps a
+process warm does not pay it per turn. For a 10-loop fleet at 100 turns/day that is
+65 wall-hours a year (see `roi.py --warm`). Everything else in the sum is either the
+provider's latency (1.45 s, unattackable from here) or the transcript the turn carries.
+
 Raw artifacts: `/tmp/night/pi-tax/` (this matrix, `run*.sh` + logs), `/tmp/night/tps-tax/FINDINGS.md`
 (append tax), `/tmp/night/pi-startup/FINDINGS.md` (independent reproduction by a second agent).
 
