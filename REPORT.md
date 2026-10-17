@@ -13,6 +13,12 @@
 
 \* The "2 MB" label names the ingest *attempt*; post-ingest cached context shows it did not stick (see §3).
 
+> **Correction added 2026-10-17 05:45Z (before publication): read §5.** Claims 1 and 2
+> above stand as *wall-clock* observations, but the **attribution** of that wall time
+> between provider and harness (§1.2 "the LLM is not the cost") is partly a measurement
+> artifact. §5 explains and quantifies it. Do not quote §1.2's "unaccounted dominates"
+> without §5.
+
 ![Steady-state wall by cell](fig1_steady_wall.png)
 *Figure 1 — Steady-state PONG wall per cell (runs 1–10). Red bar = median. zero-L spread is cache-miss runs, not size effect.*
 
@@ -28,7 +34,7 @@
 | pi-L (2 MB*) | 10 | **2.42 s** | 2.59 s | 0.39 | 2.20–3.44 | 21.16 s |
 | pirust-S (100 KB) | 10 | **3.26 s** | 3.24 s | 0.14 | 3.00–3.39 | 4.03 s |
 | pirust-L (2 MB*) | 10 | **3.35 s** | 3.37 s | 0.22 | 2.97–3.78 | 13.62 s |
-| zero-S (100 KB) | 10 | **3.06 s** | 3.06 s | 0.21 | 2.75–3.50 | — (pre-existing session) |
+| zero-S (100 KB) | 10 | **3.05 s** | 3.06 s | 0.21 | 2.75–3.50 | — (pre-existing session) |
 | zero-L (2 MB*) | 10 | **3.36 s** | 7.18 s | 6.00 | 2.83–20.00 | 24.94 s |
 
 Source: `/tmp/night/bench.csv`. pirust rows are wall-only (no token instrumentation).
@@ -142,5 +148,71 @@ What converts this from latency trivia to a cost line:
 - Per-run logs: `/tmp/night/run-<harness>-<S|L>-r<run>-a<attempt>.log` (65 runs + 2 retried ingests).
 - Figures: generated from `bench.csv` with matplotlib (`fig1_steady_wall.png`, `fig2_zero_cache.png`, `fig3_size_scaling.png`, `fig4_pi_unaccounted.png`).
 - Spend ledger: `/tmp/night/cost.acc` (~$0.08 total; ceiling was $30 / $15 protocol cap — not approached).
+
+## 5. Correction (added after §1–§4 were written): the LLM-span clock is not the provider roundtrip
+
+Found while turning the report's own metric into a product guardrail. It qualifies
+claim 1's attribution and §1.2 directly, so it goes in before anything is published.
+
+### 5.1 What was measured
+
+`llmDurationMs` (and each sample's `durationMs`/`ttftMs`) is computed from Pi's
+`message_start` to `message_end` hooks. That window is **not** reliably the provider
+call. Same prompt, same model, same machine, alternating runs:
+
+| run | measured span | ttft | implied rate |
+|---|---|---|---|
+| short reply ("PONG", 3 tok) | **2 ms** | 1 ms | 1500 t/s |
+| short reply ("PONG", 2 tok) | **541 ms** | 534 ms | 3.7 t/s |
+| short reply ("PONG", 3 tok) | **8 ms** | 7 ms | 375 t/s |
+
+A network roundtrip cannot be 2 ms and then 541 ms for the identical request. When the
+provider delivers the reply in a single chunk, `message_start` fires at (or after) the
+first chunk, so the window collapses to ~0 and the tokens/window division fabricates a
+rate. Reproduced independently twice in this run (one agent via the grinder cells, one
+via a fresh `pi -p` matrix).
+
+### 5.2 What it is not
+
+Measured on the same machine, same night:
+
+| step | cost |
+|---|---|
+| `node -e 'process.exit(0)'` | 20 ms |
+| `pi --version` (full CLI boot, no model) | **247 ms** |
+| `pi --export --session <file>` (parse + load a session, no model) | **246 ms** |
+| `pi -p` PONG with `-ne` (no extension discovery) | median 2109 ms |
+| `pi -p` PONG, all-off (`-ne -ns -np --no-themes -nc`) | median 1785 ms |
+| `pi -p` PONG, base | median 2622 ms |
+
+So: session parsing is free, CLI boot is ~0.25 s, extension discovery is ~0.5 s,
+skills/templates/themes/AGENTS ~0.2 s. None of it explains a 2–14 s turn, and none of
+it is what `llmDurationMs` is measuring.
+
+### 5.3 What this changes in this report
+
+- **Claim 1 (steady-state floor 2.4–3.4 s) stands.** It is wall-clock, measured outside
+the harness.
+- **§1.2 does not.** "The LLM is not the cost; 1.4–2.0 s is unaccounted" is partly the
+  clock: the request-to-first-chunk provider time lands *before* `message_start`, so it
+  is counted as "unaccounted" alongside genuine harness overhead. The dataset cannot
+  split those two. Treat §1.2 as "the harness span we can measure is milliseconds, and
+  the rest is provider + harness combined", not as "the provider is free".
+- **Any t/s figure derived from these rows for short replies is unreliable** (the 1500 t/s
+  row above is in the same class as the "313 tokens in 9 ms" phantom the monitor already
+  filters). Fixed in e095 v19: a window shorter than 50 ms is recorded unrated instead of
+  as a rate.
+- **§1.6's "0.03 s CPU + ~2.6 s idle wait pre-dispatch"** is the most consistent evidence
+  available and should be read as *provider or dispatch-gate wait*, not as CPU work.
+
+### 5.4 Follow-up that would settle it
+
+Instrument from request dispatch — Pi's `provider_stream_event` gives the provider's own
+stream events — instead of from `message_start`, then re-run the PONG cells. Until then,
+quote the floor and the cache-hit effect (both wall-clock, both reproduced), not the
+provider/harness split.
+
+Raw artifacts: `/tmp/night/pi-tax/` (this matrix, `run*.sh` + logs), `/tmp/night/tps-tax/FINDINGS.md`
+(append tax), `/tmp/night/pi-startup/FINDINGS.md` (independent reproduction by a second agent).
 
 *No part of this report was published. Draft only; local files.*
