@@ -1,0 +1,100 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Start an audit — the three questions</title>
+<meta name="description" content="What we ask every prospect, what to attach, what you get and when — the intake for the Agent Fleet Tax Audit.">
+<style>
+:root { color-scheme: light dark; --fg:#14161a; --bg:#fff; --muted:#5b6270; --line:#e3e6ec; --accent:#1c5fd4; --card:#f7f8fa; }
+@media (prefers-color-scheme: dark) { :root { --fg:#e8eaed; --bg:#101215; --muted:#9aa2b1; --line:#282c33; --accent:#79aaff; --card:#171a1f; } }
+* { box-sizing: border-box; }
+body { margin:0 auto; max-width:50rem; padding:1.6rem 1.2rem 3rem; background:var(--bg); color:var(--fg);
+  font:16px/1.65 -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; }
+h1 { font-size:1.7rem; line-height:1.25; margin:.4rem 0 .8rem; }
+h2 { margin-top:2.2rem; border-top:1px solid var(--line); padding-top:1rem; font-size:1.2rem; }
+h3 { margin-top:1.6rem; font-size:1.02rem; }
+ol, ul { padding-left:1.3rem; } li { margin:.4rem 0; }
+table { border-collapse:collapse; width:100%; margin:1rem 0; font-size:.92rem; display:block; overflow-x:auto; }
+th, td { border-bottom:1px solid var(--line); padding:.45rem .6rem; text-align:left; }
+th { color:var(--muted); font-weight:500; }
+code { font-family:ui-monospace, SFMono-Regular, Menlo, monospace; font-size:.9em;
+  background:color-mix(in srgb, currentColor 8%, transparent); padding:.1rem .25rem; border-radius:.25rem; }
+.cta { background:var(--card); border:1px solid var(--line); border-radius:.5rem; padding:1rem 1.1rem; margin:1.6rem 0; }
+.banner { background:var(--card); border:1px solid var(--line); border-radius:.5rem; padding:.8rem 1rem; font-size:.9rem; margin-bottom:1.4rem; }
+.muted { color:var(--muted); font-size:.92rem; }
+footer { margin-top:3rem; font-size:.85rem; color:var(--muted); }
+</style></head>
+<body>
+
+<div class="banner">
+  <a href="https://focalis.cc/audit/">Offer and prices</a> ·
+  <a href="https://focalis.cc/audit/preview/">Run the preview on your own log</a> ·
+  <a href="https://focalis.cc/audit/sample/">A filled example deliverable</a> ·
+  <a href="https://focalis.cc/tps/">The paper</a>
+</div>
+
+<h1>Start an audit</h1>
+<p>One loop, one day, one breakdown page. To quote this we need three answers and one
+file — the same three questions we send by email, published here so you can decide before
+you write to us.</p>
+
+<div class="cta">
+  <strong>Send it to <a href="mailto:hola@focalis.cc?subject=TAX">hola@focalis.cc</a> with
+  <code>TAX</code> in the subject</strong>, and we reply with a fixed quote and the date we
+  can run it. Prepaid 50 percent, balance on delivery of the report.
+</div>
+
+<h2>1. The three questions</h2>
+<ol>
+  <li><strong>Volume.</strong> How many loops, how many turns per loop per day, and how many
+  working days a year? (This is what turns a per-turn number into hours and dollars.)</li>
+  <li><strong>Cost per turn.</strong> Which model(s) and what you pay per million input and
+  output tokens; roughly how many input tokens a turn carries, and how much of that input
+  repeats turn after turn (cached or not).</li>
+  <li><strong>Process model.</strong> Does a turn start a process — a CLI or agent per turn —
+  or does a warm service handle it? This decides whether the <strong>929 ms of boot</strong>
+  we measure per turn is in your bill at all. It is the one lever we have measured as real
+  and removable, and it is worth 65 wall-hours a year at 10 loops × 100 turns/day.</li>
+</ol>
+
+<h2>2. What to attach</h2>
+<ul>
+  <li><strong>Preferred:</strong> the turn log your monitor already writes,
+  <code>&lt;workspace&gt;/.pi-web/tps-turns.jsonl</code>. Those rows carry a timestamp, the
+  model, token counts and segment durations — <strong>no prompt text, no tool output</strong>.
+  One file is enough to start; you can check exactly what is in it by dropping it into the
+  <a href="https://focalis.cc/audit/preview/">preview</a>, which reads it in your browser.</li>
+  <li><strong>Any other harness</strong> (Claude Code, Codex, a custom loop): a day of logs in
+  whatever shape it already writes them. Writing the adapter is part of the audit — that is
+  why the preview reads our format and the audit does not.</li>
+  <li><strong>Never:</strong> API keys, wallet keys, funds, source code or production
+  credentials. The work is read-only and we do not need write access to anything.</li>
+</ul>
+
+<h2>3. What you get, and when</h2>
+<table>
+  <thead><tr><th>tier</th><th>what it is</th><th>delivery from access</th></tr></thead>
+  <tbody>
+    <tr><td><strong>$290</strong> — Single-Loop Measure</td><td>one loop instrumented up to 3 days: wall, model span, pre-response, unaccounted, tokens; one breakdown page; a turn-budget formula with your numbers</td><td>5 business days</td></tr>
+    <tr><td><strong>$1,400</strong> — Fleet Audit</td><td>up to 5 loops, cache measured and reported (not prescribed), transcript-size curve, ranked cut list, regression script you keep</td><td>10 business days</td></tr>
+    <tr><td><strong>$3,900</strong> — Fleet Audit + Cut</td><td>up to 12 loops + implementation behind your review, before/after proof, 90-day regression window</td><td>20 business days</td></tr>
+    <tr><td><strong>$490/month</strong> — retainer</td><td>the diagnosis is the audit; this is the watch. Cancel any month</td><td>ongoing</td></tr>
+  </tbody>
+</table>
+<p class="muted">The breakdown page looks like <a href="https://focalis.cc/audit/sample/">this
+filled example</a> (labelled, no client data in it). Tiers and refund wording:
+<a href="https://focalis.cc/audit/">the offer page</a>.</p>
+
+<h2>4. We will say no if the numbers say no</h2>
+<p>The audit is a token-cost play only above roughly <strong>$19k/year of token spend</strong>
+at a 35 percent input cut. Below that we sell the wall-clock case or tell you not to buy —
+<a href="https://focalis.cc/audit/">the calculator on the offer page</a> runs the same
+arithmetic we do and prints “we would say no” when that is the answer. On Tier 3, if your
+profile shows no lever worth pulling we tell you before you pay the implementation half.</p>
+
+<footer>The three questions above are the ones we send by email; nothing here is a
+different offer. This page ships no analytics and no external requests of its own — the
+hosted copy gets Cloudflare's cookieless page-view beacon and an email-obfuscation script.
+Written 2026-10-17. Prices and delivery windows come from the offer page's own pricing
+section, not from a separate promise.</footer>
+
+</body></html>
