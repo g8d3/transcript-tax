@@ -77,6 +77,24 @@ def main() -> int:
         for tier, amount in prices:
             shown = f"${int(amount):,}"
             check(f"/company shows {tier} at {shown}", shown in company)
+        # the same four prices and the three delivery windows are hand-copied onto the
+        # homepage and the offer page: the prices are the one number a buyer compares across
+        # pages, so they are checked where a buyer actually reads them.
+        _, _, home = fetch(BASE + "/")
+        _, _, offer_page = fetch(BASE + "/audit/")
+        for tier, amount in prices:
+            # the offer page writes the prices as the pricing table does ("3,900 USD"), the
+            # homepage as "$3,900": same number, two notations, both acceptable.
+            forms = (f"${int(amount):,}", f"{int(amount):,} USD")
+            check(f"homepage shows {tier} at {forms[0]}",
+                  any(f in home for f in forms))
+            check(f"/audit/ shows {tier} at {forms[0]}",
+                  any(f in offer_page for f in forms))
+        windows = re.findall(r"Delivery: (\d+) business days from access", (PACK / "pricing.md").read_text())
+        check("pricing.md yields the 3 delivery windows", len(windows) == 3, str(windows))
+        for days in windows:
+            check(f"homepage repeats the {days}-day delivery window",
+                  f"{days} business days" in home)
 
         # 1. clean URLs resolve (308 -> .html, 200 final) and carry the required facts
         for clean, (fname, phrases) in PAGES.items():

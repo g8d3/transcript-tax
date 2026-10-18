@@ -36,11 +36,28 @@ SKIP = ("/cdn-cgi/l/email-protection", "github.com/signup", "github.com/login", 
 
 SEEDS = [
     "https://focalis.cc/",
+    "https://focalis.cc/company",
+    "https://focalis.cc/terms",
+    "https://focalis.cc/privacy",
+    "https://focalis.cc/refunds",
+    "https://focalis.cc/contact",
     "https://focalis.cc/about.html",
+    # the pages of the variant that used to be the front page (the 3D game moved to /world/
+    # when the landing took the root): a swap must not break them, and the legal pages'
+    # nav links them, so they are part of the funnel too.
+    "https://focalis.cc/world/",
+    "https://focalis.cc/products.html",
+    "https://focalis.cc/pricing.html",
     "https://focalis.cc/contact.html",
     "https://focalis.cc/audit/",
     "https://focalis.cc/audit/preview/",
     "https://focalis.cc/audit/sample/",
+    "https://focalis.cc/audit/sample/cache-report.html",
+    "https://focalis.cc/audit/sample/size-curve.html",
+    "https://focalis.cc/audit/sample/cuts.html",
+    "https://focalis.cc/audit/sample/budget.html",
+    "https://focalis.cc/audit/intake/",
+    "https://focalis.cc/audit/routes/",
     "https://focalis.cc/tps/",
     "https://focalis.cc/tps/article.html",
     "https://github.com/g8d3/transcript-tax",
@@ -85,8 +102,13 @@ cache: dict[str, tuple[int, str]] = {}
 def fetch(url: str) -> tuple[int, str]:
     if url not in cache:
         status, body = get(url)
-        if status == 0 or status >= 500:      # one retry: GitHub throttles anonymous crawls
-            time.sleep(2)
+        # Cloudflare occasionally answers a burst with 5xx/429 and GitHub throttles anonymous
+        # crawls; a verification suite that fails on someone else's rate limiter is worse than
+        # no suite at all, so back off and retry before reporting a link as broken.
+        for wait in (2, 6, 12):
+            if status == 200 or (status and 400 <= status < 500 and status != 429):
+                break
+            time.sleep(wait)
             status, body = get(url)
         cache[url] = (status, body)
     return cache[url]
