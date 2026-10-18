@@ -130,20 +130,20 @@ same artifact.
 | base model | routes that publish a price (input $/M) | spread |
 |---|---|---|
 | deepseek-v4-flash-0731 | openrouter $0.0151, venice $0.13, venice $0.35, chutes $0.44 | 29.14x |
-| qwen3.8-27b | chutes $0.039, openrouter $0.24, groq $0.8 | 20.51x |
+| qwen3-8-27b | chutes $0.039, openrouter $0.24, groq $0.8 | 20.51x |
 | kimi-k3 | openrouter $0.304, chutes $1.85, venice $3.75 | 12.34x |
 | deepseek-v4-pro | openrouter $0.2088, venice $1.65 | 7.90x |
+| mercury-2-5 | openrouter $0.04, venice $0.25 | 6.25x |
+| deepseek-v4-1-flash | openrouter $0.0648, venice $0.3 | 4.63x |
 | gpt-oss-20b | openrouter $0.018, groq $0.075 | 4.17x |
-| deepseek-v3.2 | openrouter $0.28, venice $0.33, chutes $1 | 3.57x |
+| deepseek-v3-2 | openrouter $0.28, venice $0.33, chutes $1 | 3.57x |
 | deepseek-v4-pro-0813 | openrouter $0.66, venice $1.65 | 2.50x |
-| glm-5.2 | openrouter $0.62, chutes $1.25 | 2.02x |
+| glm-5-2 | openrouter $0.62, chutes $1.25 | 2.02x |
+| claude-opus-5-5 | openrouter $4, venice $4, venice $8 | 2.00x |
 | claude-opus-5 | openrouter $5, venice $5, venice $10 | 2.00x |
-| deepseek-v4-flash | openrouter $0.091, venice $0.138 | 1.52x |
-| qwen3-235b-a22b-thinking-2507 | chutes $0.2989, openrouter $0.45, venice $0.45 | 1.51x |
-| kimi-k2.6 | chutes $0.45, openrouter $0.65 | 1.44x |
 
-**30 base models are carried by more than one of our routes with a published
-price.** Median spread 1.25x, p90 12.34x, worst 29.14x. So the honest
+**61 base models are carried by more than one of our routes with a published
+price.** Median spread 1.25x, p90 4.17x, worst 29.14x. So the honest
 version of the pitch is not "everything is 20x cheaper elsewhere": for most models the
 list price is the same everywhere and the difference shows up in latency; the price spread
 lives in a handful of routes, and finding them is the work.

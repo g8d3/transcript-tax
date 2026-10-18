@@ -631,7 +631,7 @@ same artifact.</p>
 <td>29.14x</td>
 </tr>
 <tr>
-<td>qwen3.8-27b</td>
+<td>qwen3-8-27b</td>
 <td>chutes $0.039, openrouter $0.24, groq $0.8</td>
 <td>20.51x</td>
 </tr>
@@ -646,12 +646,22 @@ same artifact.</p>
 <td>7.90x</td>
 </tr>
 <tr>
+<td>mercury-2-5</td>
+<td>openrouter $0.04, venice $0.25</td>
+<td>6.25x</td>
+</tr>
+<tr>
+<td>deepseek-v4-1-flash</td>
+<td>openrouter $0.0648, venice $0.3</td>
+<td>4.63x</td>
+</tr>
+<tr>
 <td>gpt-oss-20b</td>
 <td>openrouter $0.018, groq $0.075</td>
 <td>4.17x</td>
 </tr>
 <tr>
-<td>deepseek-v3.2</td>
+<td>deepseek-v3-2</td>
 <td>openrouter $0.28, venice $0.33, chutes $1</td>
 <td>3.57x</td>
 </tr>
@@ -661,34 +671,24 @@ same artifact.</p>
 <td>2.50x</td>
 </tr>
 <tr>
-<td>glm-5.2</td>
+<td>glm-5-2</td>
 <td>openrouter $0.62, chutes $1.25</td>
 <td>2.02x</td>
+</tr>
+<tr>
+<td>claude-opus-5-5</td>
+<td>openrouter $4, venice $4, venice $8</td>
+<td>2.00x</td>
 </tr>
 <tr>
 <td>claude-opus-5</td>
 <td>openrouter $5, venice $5, venice $10</td>
 <td>2.00x</td>
 </tr>
-<tr>
-<td>deepseek-v4-flash</td>
-<td>openrouter $0.091, venice $0.138</td>
-<td>1.52x</td>
-</tr>
-<tr>
-<td>qwen3-235b-a22b-thinking-2507</td>
-<td>chutes $0.2989, openrouter $0.45, venice $0.45</td>
-<td>1.51x</td>
-</tr>
-<tr>
-<td>kimi-k2.6</td>
-<td>chutes $0.45, openrouter $0.65</td>
-<td>1.44x</td>
-</tr>
 </tbody>
 </table>
-<p><strong>30 base models are carried by more than one of our routes with a published
-price.</strong> Median spread 1.25x, p90 12.34x, worst 29.14x. So the honest
+<p><strong>61 base models are carried by more than one of our routes with a published
+price.</strong> Median spread 1.25x, p90 4.17x, worst 29.14x. So the honest
 version of the pitch is not "everything is 20x cheaper elsewhere": for most models the
 list price is the same everywhere and the difference shows up in latency; the price spread
 lives in a handful of routes, and finding them is the work.</p>

@@ -46,10 +46,12 @@ def catalog_groups() -> list[tuple[float, str, list[tuple[str, str, float, float
 
 
 def norm_model(name: str) -> str:
+    # dot and hyphen are the same separator: one provider sells `claude-sonnet-5.5` and
+    # another `claude-sonnet-5-5`, and the matrix has to group them as one model.
     n = name.split("/")[-1].lower()
     n = re.sub(r"-(tee|turbo|fast|preview|free|contributor)$", "", n)
     n = n.replace("_", "-")
-    return re.sub(r"[^a-z0-9.]+", "-", n).strip("-")
+    return re.sub(r"[^a-z0-9]+", "-", n).strip("-")
 
 
 def cache_rows() -> list[dict]:
