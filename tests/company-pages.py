@@ -108,6 +108,16 @@ def main() -> int:
             if PRIVATE_ADDR:
                 check(f"{clean} does not leak the private address", PRIVATE_ADDR not in body)
 
+        # 1a-bis. a shared link must unfurl: these three are the links we hand out (in
+        # emails, posts and the HN reply), and a bare URL gets fewer clicks than a card.
+        for path in ("/", "/audit/", "/tps/"):
+            _, _, body = fetch(BASE + path)
+            check(f"{path} carries an og:title so a shared link unfurls",
+                  'property="og:title"' in body and 'name="twitter:card"' in body)
+        _, _, hub = fetch(BASE + "/tps/")
+        check("/tps/ does not claim to be a duplicate of article.html",
+              'rel="canonical"' not in hub)
+
         # 1b. the money page must not claim a card checkout that does not exist yet, and must
         #     name the path that does (invoice: transfer or stablecoin). Regression guard for the
         #     overstatement fixed on 2026-10-18 (Dodo compliance answered, application in progress).
