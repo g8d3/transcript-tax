@@ -419,7 +419,7 @@ counted as clamped rather than shown negative (none in this window).
 
 Everything above prices a **model**. In practice you buy a **route**: the same model id served by
 different providers or gateways, at different prices and different first-token latencies. We
-measured it on every provider we hold a key for — 8 base models, 25 route/model pairs, streaming,
+measured it on every provider we hold a key for — 14 base models, 37 route/model pairs, streaming,
 median of two calls each — reading each price from the provider's own `/models` metadata and
 leaving it blank where a provider publishes none. Raw rows ship with this repo
 (`routes/matrix.json`, `routes/cache.json`, `routes/models.json`); the table below is regenerated
@@ -436,6 +436,10 @@ from them by `routes/render_matrix.py`, and `routes/matrix.py` re-measures it.
 | qwen3.8-27b | chutes | $0.039 | $1.25 | 1748 ms | 1991 ms |
 | qwen3.8-27b | openrouter | $0.24 | $2.2 | 731 ms | 1166 ms |
 | qwen3.8-27b | groq | $0.8 | $4 | 290 ms | 294 ms |
+| glm-5.1 | openrouter | $0.966 | $3.036 | 1932 ms | 2214 ms |
+| glm-5.1 | chutes | $0.98 | $3.08 | 14819 ms | 17406 ms |
+| gpt-oss-20b | openrouter | $0.018 | $0.09 | 1994 ms | 2110 ms |
+| gpt-oss-20b | groq | $0.075 | $0.3 | 604 ms | 617 ms |
 
 What the spread looks like, measured:
 
@@ -447,6 +451,10 @@ What the spread looks like, measured:
   called those two routes identical.
 - The **cache-read rate is a route property too**: `$0.0016/M` on one route vs `$0.044/M` for the
   same model family on another, so what a cache discipline is worth depends on where you buy it.
+- And the largest latency gap we measured sits at a **price difference of 1.4%**: `glm-5.1` is
+  $0.966/M on one route and $0.98/M on another, and the second answers in **14.8 s** against
+  **1.9 s** — **7.7x** for the same model name. That is the case a price table cannot see at all,
+  and the reason the audit prices the route rather than the model.
 
 The cache probe (two identical ~4k-token prompts per route, reading the provider's own
 `cached_tokens`) found **6 of 8** probed routes reporting a hit. One of the two that did not is the

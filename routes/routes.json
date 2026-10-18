@@ -202,6 +202,90 @@
         "base_env": "AIHUBMIX_BASE_URL",
         "key_env": "AIHUBMIX_API_KEY"
       }
+    ],
+    "deepseek-v3.2": [
+      {
+        "provider": "openrouter",
+        "model": "deepseek/deepseek-v3.2",
+        "base_env": "OPENROUTER_BASE_URL",
+        "key_env": "OPENROUTER_API_KEY"
+      },
+      {
+        "provider": "chutes",
+        "model": "deepseek-ai/DeepSeek-V3.2-TEE",
+        "base_env": "CHUTES_BASE_URL",
+        "key_env": "CHUTES_API_KEY"
+      }
+    ],
+    "deepseek-v4-flash-0731": [
+      {
+        "provider": "openrouter",
+        "model": "deepseek/deepseek-v4-flash-0731",
+        "base_env": "OPENROUTER_BASE_URL",
+        "key_env": "OPENROUTER_API_KEY"
+      },
+      {
+        "provider": "chutes",
+        "model": "deepseek-ai/DeepSeek-V4-Flash-0731-TEE",
+        "base_env": "CHUTES_BASE_URL",
+        "key_env": "CHUTES_API_KEY"
+      }
+    ],
+    "glm-5.1": [
+      {
+        "provider": "openrouter",
+        "model": "z-ai/glm-5.1",
+        "base_env": "OPENROUTER_BASE_URL",
+        "key_env": "OPENROUTER_API_KEY"
+      },
+      {
+        "provider": "chutes",
+        "model": "zai-org/GLM-5.1-TEE",
+        "base_env": "CHUTES_BASE_URL",
+        "key_env": "CHUTES_API_KEY"
+      }
+    ],
+    "kimi-k2.6": [
+      {
+        "provider": "openrouter",
+        "model": "moonshotai/kimi-k2.6",
+        "base_env": "OPENROUTER_BASE_URL",
+        "key_env": "OPENROUTER_API_KEY"
+      },
+      {
+        "provider": "chutes",
+        "model": "moonshotai/Kimi-K2.6-TEE",
+        "base_env": "CHUTES_BASE_URL",
+        "key_env": "CHUTES_API_KEY"
+      }
+    ],
+    "qwen3.6-27b": [
+      {
+        "provider": "openrouter",
+        "model": "qwen/qwen3.6-27b",
+        "base_env": "OPENROUTER_BASE_URL",
+        "key_env": "OPENROUTER_API_KEY"
+      },
+      {
+        "provider": "chutes",
+        "model": "Qwen/Qwen3.6-27B-TEE",
+        "base_env": "CHUTES_BASE_URL",
+        "key_env": "CHUTES_API_KEY"
+      }
+    ],
+    "gpt-oss-20b": [
+      {
+        "provider": "openrouter",
+        "model": "openai/gpt-oss-20b",
+        "base_env": "OPENROUTER_BASE_URL",
+        "key_env": "OPENROUTER_API_KEY"
+      },
+      {
+        "provider": "groq",
+        "model": "openai/gpt-oss-20b",
+        "base_env": "GROQ_BASE_URL",
+        "key_env": "GROQ_API_KEY"
+      }
     ]
   },
   "defaults": {

@@ -9,6 +9,10 @@ median of 2 reps on one machine: **first token** and **total**, the same split t
 | anchor | route | $/M in | $/M out | $/M cache-read | first token p50 | total p50 | streamed |
 |---|---|---|---|---|---|---|---|
 | claude-haiku-5-5 | venice | – | – | – | 1041 ms | 1046 ms | yes |
+| deepseek-v3.2 | chutes | $1 | $1 | $0.1 | 1386 ms | 1528 ms | yes |
+| deepseek-v3.2 | openrouter | $0.28 | $0.42 | $0.028 | 2174 ms | 2218 ms | yes |
+| deepseek-v4-flash-0731 | chutes | $0.44 | $1.32 | $0.044 | 1868 ms | 2034 ms | yes |
+| deepseek-v4-flash-0731 | openrouter | $0.1 | $0.3 | $0.03 | 668 ms | 922 ms | yes |
 | deepseek-v4-pro | dashscope | – | – | – | 2235 ms | 2514 ms | yes |
 | deepseek-v4-pro | deepseek | – | – | – | 1312 ms | 1516 ms | yes |
 | deepseek-v4-pro | opencode-go | – | – | – | 1697 ms | 1892 ms | yes |
@@ -20,15 +24,23 @@ median of 2 reps on one machine: **first token** and **total**, the same split t
 | gemini-3-flash-preview | gemini | – | – | – | None ms | 930 ms | no |
 | gemini-3-flash-preview | openrouter | $0.5 | $3 | $0.05 | 963 ms | 1078 ms | yes |
 | gemini-3-flash-preview | venice | – | – | – | 1419 ms | 1444 ms | yes |
+| glm-5.1 | chutes | $0.98 | $3.08 | $0.098 | 14819 ms | 17406 ms | yes |
+| glm-5.1 | openrouter | $0.966 | $3.036 | $0.1794 | 1932 ms | 2214 ms | yes |
 | glm-5.2 | dashscope | – | – | – | 1506 ms | 1808 ms | yes |
 | glm-5.2 | opencode-go | – | – | – | 1118 ms | 1259 ms | yes |
 | glm-5.2 | openrouter | $0.62 | $2.42 | $0.14 | 732 ms | 900 ms | yes |
 | gpt-oss-120b | groq | $0.15 | $0.6 | $0.075 | 424 ms | 448 ms | yes |
 | gpt-oss-120b | openrouter | $0.15 | $0.6 | $0.075 | 709 ms | 896 ms | yes |
+| gpt-oss-20b | groq | $0.075 | $0.3 | $0.0375 | 604 ms | 617 ms | yes |
+| gpt-oss-20b | openrouter | $0.018 | $0.09 | $0.009 | 1994 ms | 2110 ms | yes |
+| kimi-k2.6 | chutes | $0.45 | $1.95 | $0.045 | 1488 ms | 1734 ms | yes |
+| kimi-k2.6 | openrouter | $0.65 | $3.41 | $0.15 | 776 ms | 896 ms | yes |
 | kimi-k3 | chutes | $1.85 | $9.5 | $0.185 | 2136 ms | 2672 ms | yes |
 | kimi-k3 | dashscope | – | – | – | 1601 ms | 1846 ms | yes |
 | kimi-k3 | opencode-go | – | – | – | 1310 ms | 1406 ms | yes |
 | kimi-k3 | openrouter | $0.304 | $11.936 | $0.21 | 990 ms | 1159 ms | yes |
+| qwen3.6-27b | chutes | $0.25 | $2 | $0.025 | 1036 ms | 1461 ms | yes |
+| qwen3.6-27b | openrouter | $0.25 | $2 | $0.025 | 826 ms | 1022 ms | yes |
 | qwen3.8-27b | chutes | $0.039 | $1.25 | $0.0039 | 1748 ms | 1991 ms | yes |
 | qwen3.8-27b | dashscope | – | – | – | 1750 ms | 3455 ms | yes |
 | qwen3.8-27b | groq | $0.8 | $4 | $0.4 | 290 ms | 294 ms | yes |
@@ -47,15 +59,27 @@ median of 2 reps on one machine: **first token** and **total**, the same split t
 
 ## What the table says
 
+- **deepseek-v3.2**: input price runs 3.6x between routes (openrouter $0.28/M vs chutes $1/M).
+- **deepseek-v3.2**: first token 1386 ms on chutes vs 2174 ms on openrouter (1.6x) — the cheapest priced route (openrouter) is not the fastest one.
+- **deepseek-v4-flash-0731**: input price runs 4.4x between routes (openrouter $0.1/M vs chutes $0.44/M).
+- **deepseek-v4-flash-0731**: first token 668 ms on openrouter vs 1868 ms on chutes (2.8x) — the cheapest route is also the fastest one here.
 - **deepseek-v4-pro**: first token 1158 ms on openrouter vs 2235 ms on dashscope (1.9x) — prices are not published for most of these routes.
 - **deepseek-v4.1-flash**: input price runs 8.2x between routes (openrouter $0.0536/M vs chutes $0.44/M).
 - **deepseek-v4.1-flash**: first token 732 ms on openrouter vs 1692 ms on dashscope (2.3x) — the cheapest route is also the fastest one here.
 - **gemini-3-flash-preview**: first token 963 ms on openrouter vs 1419 ms on venice (1.5x) — prices are not published for most of these routes.
+- **glm-5.1**: input price runs 1.0x between routes (openrouter $0.966/M vs chutes $0.98/M).
+- **glm-5.1**: first token 1932 ms on openrouter vs 14819 ms on chutes (7.7x) — the cheapest route is also the fastest one here.
 - **glm-5.2**: first token 732 ms on openrouter vs 1506 ms on dashscope (2.1x) — prices are not published for most of these routes.
 - **gpt-oss-120b**: every priced route charges the same list price ($0.15/M in) — the difference shows up in latency, not in the rate.
 - **gpt-oss-120b**: first token 424 ms on groq vs 709 ms on openrouter (1.7x) — the cheapest route is also the fastest one here.
+- **gpt-oss-20b**: input price runs 4.2x between routes (openrouter $0.018/M vs groq $0.075/M).
+- **gpt-oss-20b**: first token 604 ms on groq vs 1994 ms on openrouter (3.3x) — the cheapest priced route (openrouter) is not the fastest one.
+- **kimi-k2.6**: input price runs 1.4x between routes (chutes $0.45/M vs openrouter $0.65/M).
+- **kimi-k2.6**: first token 776 ms on openrouter vs 1488 ms on chutes (1.9x) — the cheapest priced route (chutes) is not the fastest one.
 - **kimi-k3**: input price runs 6.1x between routes (openrouter $0.304/M vs chutes $1.85/M).
 - **kimi-k3**: first token 990 ms on openrouter vs 2136 ms on chutes (2.2x) — the cheapest route is also the fastest one here.
+- **qwen3.6-27b**: every priced route charges the same list price ($0.25/M in) — the difference shows up in latency, not in the rate.
+- **qwen3.6-27b**: first token 826 ms on openrouter vs 1036 ms on chutes (1.3x) — the cheapest route is also the fastest one here.
 - **qwen3.8-27b**: input price runs 20.5x between routes (chutes $0.039/M vs groq $0.8/M).
 - **qwen3.8-27b**: first token 290 ms on groq vs 1750 ms on dashscope (6.0x) — the cheapest priced route (chutes) is not the fastest one.
 
