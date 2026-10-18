@@ -59,7 +59,8 @@ footer { border-top:1px solid var(--line); color:var(--muted); font-size:.85rem;
   analysis script are public: <a href="https://focalis.cc/tps/">https://focalis.cc/tps/</a> ·
   <a href="https://github.com/g8d3/transcript-tax">repo (MIT / CC BY 4.0)</a>. We also publish the three
   mechanisms we retracted from our own pitch.</div>
-  <section id="findings"><p>Your agents are slow and expensive even when they do nothing. We prove it with numbers, then we fix it.</p>
+  <section id="findings"><p><strong>What this is:</strong> a paid checkup for teams running AI agents. Some of the money your agents spend is waste — retries, the expensive route, turns that produce nothing. We measure that waste on <em>your</em> loops, then we remove it. One-line version: 1,000 answers a day with 1¢ wasted on each is $3,650 a year thrown away — we find that cent and cut it. If your numbers say the audit doesn't pay, we tell you so before you pay us.</p>
+<p>Your agents are slow and expensive even when they do nothing. We prove it with numbers, then we fix it.</p>
 <h2 id="the-finding-65-runs-3-harnesses-one-night">The finding (65 runs, 3 harnesses, one night)</h2>
 <ul>
 <li>A no-op turn — reply with exactly one word, call no tools — costs <strong>2.4 to 3.4 s median</strong> on every harness tested.</li>
@@ -116,8 +117,11 @@ instrument we measure it with. We sell the measurement, and only the measurement
 <strong>hello@focalis.cc</strong> with the word <code>TAX</code> in the subject — the three questions we send are
 exactly the ones published there.</p>
 <p>Focalis S.A.S. (Bogotá, Colombia) is the seller. Fixed fee, prepaid 50% and balance on
-delivery; card payment is collected by our merchant of record, which handles tax and
-issues the receipt. Terms, privacy and refunds are published at
+delivery. Card checkout is not live yet — the merchant-of-record application is in
+progress — so today we invoice directly: bank transfer or stablecoin, and work starts
+when the first payment clears. When card checkout goes live it will be collected by the
+merchant of record, which handles tax and issues the receipt, and we never see or store
+card details. Terms, privacy and refunds are published at
 <strong><a href="https://focalis.cc/terms">https://focalis.cc/terms</a></strong>,
 <strong><a href="https://focalis.cc/privacy">https://focalis.cc/privacy</a></strong> and
 <strong><a href="https://focalis.cc/refunds">https://focalis.cc/refunds</a></strong>.</p>
@@ -187,7 +191,7 @@ show you.</p>
 <li><strong>The route is priced, not assumed.</strong> If the same model is cheaper, or answers faster, on another
   route you already have access to, the cut list says so with the numbers — measured on our own
   keys and published at <a href="https://focalis.cc/audit/routes/">https://focalis.cc/audit/routes/</a> (one model's input price runs 20.5x
-  between routes; on another the cheap route is 5.7x slower to first token). When every route
+  between routes; on another the cheap route is 6.0x slower to first token). When every route
   charges the same list price we say that instead, and the finding is the latency.</li>
 <li>Regression check script you keep (fails CI if steady-state wall regresses)</li>
 <li>60-min readout + 30-day follow-up questions by message</li>
