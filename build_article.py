@@ -95,6 +95,12 @@ def main() -> None:
 <html lang="en"><head><meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Transcript Tax 2026 — what a trivial agent turn really costs</title>
+<meta name="description" content="What a trivial agent turn really costs: 65 measured runs across 3 harnesses, plus 500 live fleet turns, with the four claims we had to correct.">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Transcript Tax 2026 — what a trivial agent turn really costs">
+<meta property="og:description" content="65 measured runs across 3 harnesses, plus 500 live fleet turns, with the four claims we had to correct.">
+<meta property="og:url" content="https://focalis.cc/tps/article.html">
+<meta name="twitter:card" content="summary">
 <style>{CSS}</style></head>
 <body>
 {body}
