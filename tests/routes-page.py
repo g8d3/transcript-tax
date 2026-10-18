@@ -123,6 +123,22 @@ def main() -> int:
                   f"({anchor}: {cheap_ms:.0f} ms on {prov} vs {fast_ms:.0f} ms, {ratio:.1f}x)",
                   any(s in body for s in forms) or all(s in body for s in numbers))
             check(f"{path} does not quote the superseded 5.7x", "5.7x" not in body)
+
+        # the headline "up to Nx" is a maximum across every anchor, and the per-anchor check
+        # above only guards the routes page — so the front door and the offer could keep the old
+        # maximum after a re-measurement and nothing would notice. Recompute it here too.
+        spreads = []
+        for a in sorted({r["anchor"] for r in ok_rows}):
+            pins = [r["price"][0] for r in ok_rows if r["anchor"] == a and r["price"] and r["price"][0]]
+            if len(pins) >= 2 and min(pins) > 0:
+                spreads.append((max(pins) / min(pins), a, min(pins), max(pins)))
+        if spreads:
+            worst, anchor_p, lo_p, hi_p = max(spreads)
+            for path in ("/", "/audit/", "/audit/preview/", "/audit/intake/"):
+                _, body = fetch(BASE + path)
+                check(f"{path} quotes the recomputed max price spread "
+                      f"({anchor_p}, {worst:.1f}x = ${lo_p:g} vs ${hi_p:g}/M)",
+                      f"{worst:.1f}x" in body or f"{worst:.1f}\u00d7" in body)
         # the offer page also quotes the largest latency gap we measured (the case where the
         # prices are almost identical): recompute it and require it there too.
         worst_lat = None
