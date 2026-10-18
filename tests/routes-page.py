@@ -85,6 +85,34 @@ def main() -> int:
             check(f"{anchor}: page shows the recomputed latency ratio {slow/fast:.1f}x",
                   f"{slow/fast:.1f}x" in html)
 
+    # 1b. the same ratio is hand-copied onto the other money pages, and that is how a stale
+    #     "318 ms vs 1808 ms (5.7x)" survived the re-measurement that says 1748 vs 290 (6.0x).
+    #     Recompute it here and require every page that quotes it to quote THIS value, in
+    #     either form (a ratio, or the two absolute first-token numbers).
+    best = None
+    for anchor in sorted({r["anchor"] for r in ok_rows}):
+        priced = [r for r in ok_rows
+                  if r["anchor"] == anchor and r["price"] and r["ttft_p50"]]
+        if len(priced) < 2:
+            continue
+        cheap = min(priced, key=lambda r: r["price"][0])
+        fast = min(priced, key=lambda r: r["ttft_p50"])
+        if not fast["ttft_p50"]:
+            continue
+        ratio = cheap["ttft_p50"] / fast["ttft_p50"]  # how much slower the cheap route is
+        if best is None or ratio > best[0]:
+            best = (ratio, cheap["ttft_p50"], fast["ttft_p50"], anchor, cheap["provider"])
+    if best and not LOCAL:
+        ratio, cheap_ms, fast_ms, anchor, prov = best
+        forms = (f"{ratio:.1f}x", f"{ratio:.0f}x")
+        numbers = (f"{cheap_ms:.0f} ms", f"{fast_ms:.0f} ms")
+        for path in ("/", "/audit/", "/audit/preview/", "/audit/intake/"):
+            _, body = fetch(BASE + path)
+            check(f"{path} quotes the recomputed cheap-vs-fast ratio "
+                  f"({anchor}: {cheap_ms:.0f} ms on {prov} vs {fast_ms:.0f} ms, {ratio:.1f}x)",
+                  any(s in body for s in forms) or all(s in body for s in numbers))
+            check(f"{path} does not quote the superseded 5.7x", "5.7x" not in body)
+
     # 2. unavailable routes are published as unavailable, with the provider's own status
     for r in bad_rows:
         code = re.search(r"http (\d{3})", r.get("error") or "")
