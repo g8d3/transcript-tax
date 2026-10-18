@@ -13,6 +13,7 @@ served from a public asset again (it was, until 2026-10-18).
 """
 from __future__ import annotations
 
+import os
 import re
 import sys
 import urllib.request
@@ -23,7 +24,7 @@ from playwright.sync_api import sync_playwright
 HERE = Path(__file__).resolve().parent
 PACK = HERE.parent
 LOCAL = "--local" in sys.argv
-SITE = Path("/home/vuos/code/p4/sites/focalis.cc/variants/active")
+SITE = Path(os.environ.get("FOCALIS_SITE", "variants/active"))  # the live variant symlink
 BASE = "https://focalis.cc"
 
 # clean URL -> (file in the active variant, phrases that must be present)
@@ -88,6 +89,22 @@ def main() -> int:
                 check(f"{clean} has no placeholder {bad!r}", bad not in body)
             if PRIVATE_ADDR:
                 check(f"{clean} does not leak the private address", PRIVATE_ADDR not in body)
+
+        # 1b. the money page must not claim a card checkout that does not exist yet, and must
+        #     name the path that does (invoice: transfer or stablecoin). Regression guard for the
+        #     overstatement fixed on 2026-10-18 (Dodo compliance answered, application in progress).
+        _, _, offer = fetch(BASE + "/audit/")
+        check("/audit/ says card checkout is not live yet",
+              "card checkout is not live yet" in offer.lower())
+        check("/audit/ names the current payment path", "transfer or stablecoin" in offer)
+        check("/audit/ does not assert a live card checkout",
+              "card payment is collected by our merchant of record" not in offer.lower())
+        _, _, company = fetch(BASE + "/company")
+        check("/company puts the merchant of record in the future tense",
+              "will be handled by a merchant of record" in company.lower())
+        _, _, terms = fetch(BASE + "/terms")
+        check("/terms puts the merchant of record in the future tense",
+              "will be collected by a merchant of record" in terms.lower())
 
         # 2. the private address must not be served from any public asset either
         if PRIVATE_ADDR:

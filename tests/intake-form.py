@@ -30,7 +30,7 @@ from playwright.sync_api import sync_playwright
 
 BASE = "https://focalis.cc"
 SENDER = "focalis@agentmail.to"
-CONTACT_LOG = Path("/home/vuos/code/p4/sites/focalis.cc/logs/contact.jsonl")
+CONTACT_LOG = Path(os.environ.get("CONTACT_LOG", "logs/contact.jsonl"))  # the site's own log
 fails: list[str] = []
 
 

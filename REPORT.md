@@ -1,6 +1,6 @@
 # Transcript Tax 2026: what a "trivial" agent turn really costs
 
-**Date:** 2026-10-17 · **Dataset:** `/tmp/night/bench.csv` (65 runs) · **Spend:** ~$0.08
+**Date:** 2026-10-17 · **Dataset:** [`bench.csv`](bench.csv) (65 runs) · **Spend:** ~$0.08
 **Status:** working paper, not a benchmark press release. Methods and caveats inline.
 
 ## TL;DR (claims)
@@ -48,7 +48,7 @@
 | zero-S (100 KB) | 10 | **3.05 s** | 3.06 s | 0.21 | 2.75–3.50 | — (pre-existing session) |
 | zero-L (2 MB*) | 10 | **3.36 s** | 7.18 s | 6.00 | 2.83–20.00 | 24.94 s |
 
-Source: `/tmp/night/bench.csv`. pirust rows are wall-only (no token instrumentation).
+Source: [`bench.csv`](bench.csv). pirust rows are wall-only (no token instrumentation).
 These are *process wall* figures (`time pi -p ...`), so they include process boot —
 which §5.4 decomposes as ~929 ms of the ~2.4-3.4 s (and shows to be removable).
 
@@ -159,11 +159,12 @@ minimization; cache discipline is unconfirmed (§6).
 
 ## 4. Reproducibility
 
-- Dataset: `/tmp/night/bench.csv` — columns `harness,size,run,wall_s,llm_ms,total_ms,unacc_ms,in_tok,cache_tok,out_tok,notes`. pi rows derive `llm/total/unacc/input` from `.pi-web/tps-turns.jsonl` post-T0 + `history` join for cache; zero rows parse `stream-json` usage (`promptTokens/cached/completion`); pirust rows are wall-only by design.
-- Protocol (setup, exact prompts, retry rule): `/tmp/night/PROTOCOL.md`.
-- Per-run logs: `/tmp/night/run-<harness>-<S|L>-r<run>-a<attempt>.log` (65 runs + 2 retried ingests).
+- Dataset: [`bench.csv`](bench.csv) — columns `harness,size,run,wall_s,llm_ms,total_ms,unacc_ms,in_tok,cache_tok,out_tok,notes`. pi rows derive `llm/total/unacc/input` from `.pi-web/tps-turns.jsonl` post-T0 + `history` join for cache; zero rows parse `stream-json` usage (`promptTokens/cached/completion`); pirust rows are wall-only by design.
+- Protocol (setup, exact prompts, retry rule): [`PROTOCOL.md`](PROTOCOL.md).
+- Per-run logs: one file per run (`run-<harness>-<S|L>-r<run>-a<attempt>.log`; 65 runs + 2 retried ingests).
+  Not published — the CSV and the scripts that produced them are in this repository.
 - Figures: generated from `bench.csv` with matplotlib (`fig1_steady_wall.png`, `fig2_zero_cache.png`, `fig3_size_scaling.png`, `fig4_pi_unaccounted.png`).
-- Spend ledger: `/tmp/night/cost.acc` (~$0.08 total; ceiling was $30 / $15 protocol cap — not approached).
+- Spend: ~$0.08 of model spend for the whole series.
 
 ## 5. Correction (05:45Z, added after §1–§4 were written): the LLM-span clock is not the provider roundtrip
 
@@ -231,7 +232,7 @@ This section originally said to instrument from request dispatch via Pi's
 `message_start`.
 
 Measured externally instead (`pi -p --mode json` as a subprocess, every NDJSON line
-timestamped on arrival, 5 reps, `/tmp/night/provsplit/FINDINGS.md`):
+timestamped on arrival, 5 reps):
 
 | segment | median | min–max |
 |---|---|---|
@@ -257,8 +258,9 @@ process warm does not pay it per turn. For a 10-loop fleet at 100 turns/day that
 65 wall-hours a year (see `roi.py --warm`). Everything else in the sum is either the
 provider's latency (1.45 s, unattackable from here) or the transcript the turn carries.
 
-Raw artifacts: `/tmp/night/pi-tax/` (this matrix, `run*.sh` + logs), `/tmp/night/tps-tax/FINDINGS.md`
-(append tax), `/tmp/night/pi-startup/FINDINGS.md` (independent reproduction by a second agent).
+Raw artifacts: the scripts and logs behind these sections are working notes and are not
+published; `bench.csv`, `analyze.py` and `PROTOCOL.md` in this repository reproduce the
+tables above, and the append-cost result was confirmed by an independent re-measurement.
 
 ## 6. Second correction (06:02Z): claim 4 (cache state predicts wall) is not supported
 
@@ -301,7 +303,7 @@ cannot test the cache hypothesis at all — it can only fail to confirm it.
   and the correction in §5.
 - **Sales consequence:** cache discipline is not the lever this data proves. The levers
   it proves are the per-turn floor and the multi-second tail — and both are visible in
-  the live-fleet sample (`/tmp/night/fleet-scan/FINDINGS.md`: unaccounted p50 1.6 s,
+  the live-fleet sample (unaccounted p50 1.6 s,
   p90 4.6 s, worst turn 85 s, and a per-model floor that does not move with the model).
 
 ## 7. Third correction (06:09Z): the "startup scans ~200 MB of sessions" claim is not reproducible
@@ -448,7 +450,7 @@ What the spread looks like, measured:
 
 The cache probe (two identical ~4k-token prompts per route, reading the provider's own
 `cached_tokens`) found **6 of 8** probed routes reporting a hit. One of the two that did not is the
-gateway our own worker runs through, while the same model reported a 99% hit on a different route.
+gateway our own fleet runs through, while the same model reported a 99% hit on a different route.
 A miss in a two-call probe is **not** proof that caching is off, and a provider that does not
 report the field looks exactly like one that does not cache — which is why the audit measures a
 client's own loops instead of trusting a vendor table.

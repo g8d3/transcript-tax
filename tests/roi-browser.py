@@ -14,6 +14,7 @@ the deployed copy.
 from __future__ import annotations
 
 import json
+import os
 import re
 import subprocess
 import sys
@@ -163,11 +164,11 @@ with sync_playwright() as p:
     check("no external requests beyond the host's own injections", not extra, str(extra[:3]))
 
     # screenshot for the record (user-seat review evidence)
-    shot = Path("/tmp/night/r8/audit-page.png")
+    shot = Path(os.environ.get("AUDIT_SHOT", "audit-page.png"))
     shot.parent.mkdir(parents=True, exist_ok=True)
     page.screenshot(path=str(shot), full_page=False)
     browser.close()
 
-print(f"\nscreenshot: /tmp/night/r8/audit-page.png")
+print(f"\nscreenshot: {shot}")
 print("BROWSER OK" if not fails else f"BROWSER FAILED: {fails}")
 sys.exit(1 if fails else 0)

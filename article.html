@@ -25,7 +25,7 @@ footer { margin-top: 3rem; font-size: .85rem; opacity: .75; }
 </style></head>
 <body>
 <h1>Transcript Tax 2026: what a "trivial" agent turn really costs</h1>
-<p><strong>Date:</strong> 2026-10-17 · <strong>Dataset:</strong> <code>/tmp/night/bench.csv</code> (65 runs) · <strong>Spend:</strong> ~$0.08
+<p><strong>Date:</strong> 2026-10-17 · <strong>Dataset:</strong> <a href="bench.csv"><code>bench.csv</code></a> (65 runs) · <strong>Spend:</strong> ~$0.08
 <strong>Status:</strong> working paper, not a benchmark press release. Methods and caveats inline.</p>
 <h2>TL;DR (claims)</h2>
 <ol>
@@ -126,7 +126,7 @@ near-empty one, so that was unverified guesswork, not a lever we can sell.</p>
 </tr>
 </tbody>
 </table>
-<p>Source: <code>/tmp/night/bench.csv</code>. pirust rows are wall-only (no token instrumentation).
+<p>Source: <a href="bench.csv"><code>bench.csv</code></a>. pirust rows are wall-only (no token instrumentation).
 These are <em>process wall</em> figures (<code>time pi -p ...</code>), so they include process boot —
 which §5.4 decomposes as ~929 ms of the ~2.4-3.4 s (and shows to be removable).</p>
 <p>Claim 1 follows directly: excluding the cache-miss outliers, every cell's center sits in a ~1 s band (2.4–3.4 s) despite different harnesses and nominal context sizes.</p>
@@ -388,11 +388,12 @@ minimization; cache discipline is unconfirmed (§6).</li>
 </ul>
 <h2>4. Reproducibility</h2>
 <ul>
-<li>Dataset: <code>/tmp/night/bench.csv</code> — columns <code>harness,size,run,wall_s,llm_ms,total_ms,unacc_ms,in_tok,cache_tok,out_tok,notes</code>. pi rows derive <code>llm/total/unacc/input</code> from <code>.pi-web/tps-turns.jsonl</code> post-T0 + <code>history</code> join for cache; zero rows parse <code>stream-json</code> usage (<code>promptTokens/cached/completion</code>); pirust rows are wall-only by design.</li>
-<li>Protocol (setup, exact prompts, retry rule): <code>/tmp/night/PROTOCOL.md</code>.</li>
-<li>Per-run logs: <code>/tmp/night/run-&lt;harness&gt;-&lt;S|L&gt;-r&lt;run&gt;-a&lt;attempt&gt;.log</code> (65 runs + 2 retried ingests).</li>
+<li>Dataset: <a href="bench.csv"><code>bench.csv</code></a> — columns <code>harness,size,run,wall_s,llm_ms,total_ms,unacc_ms,in_tok,cache_tok,out_tok,notes</code>. pi rows derive <code>llm/total/unacc/input</code> from <code>.pi-web/tps-turns.jsonl</code> post-T0 + <code>history</code> join for cache; zero rows parse <code>stream-json</code> usage (<code>promptTokens/cached/completion</code>); pirust rows are wall-only by design.</li>
+<li>Protocol (setup, exact prompts, retry rule): <a href="PROTOCOL.md"><code>PROTOCOL.md</code></a>.</li>
+<li>Per-run logs: one file per run (<code>run-&lt;harness&gt;-&lt;S|L&gt;-r&lt;run&gt;-a&lt;attempt&gt;.log</code>; 65 runs + 2 retried ingests).
+  Not published — the CSV and the scripts that produced them are in this repository.</li>
 <li>Figures: generated from <code>bench.csv</code> with matplotlib (<code>fig1_steady_wall.png</code>, <code>fig2_zero_cache.png</code>, <code>fig3_size_scaling.png</code>, <code>fig4_pi_unaccounted.png</code>).</li>
-<li>Spend ledger: <code>/tmp/night/cost.acc</code> (~$0.08 total; ceiling was $30 / $15 protocol cap — not approached).</li>
+<li>Spend: ~$0.08 of model spend for the whole series.</li>
 </ul>
 <h2>5. Correction (05:45Z, added after §1–§4 were written): the LLM-span clock is not the provider roundtrip</h2>
 <p>Found while turning the report's own metric into a product guardrail. It qualifies
@@ -499,7 +500,7 @@ the harness.</li>
 <code>provider_stream_event</code>. That was wrong: the hook fires with the response, exactly like
 <code>message_start</code>.</p>
 <p>Measured externally instead (<code>pi -p --mode json</code> as a subprocess, every NDJSON line
-timestamped on arrival, 5 reps, <code>/tmp/night/provsplit/FINDINGS.md</code>):</p>
+timestamped on arrival, 5 reps):</p>
 <table>
 <thead>
 <tr>
@@ -550,8 +551,9 @@ sum that is removable by configuration rather than by the provider: a loop that 
 process warm does not pay it per turn. For a 10-loop fleet at 100 turns/day that is
 65 wall-hours a year (see <code>roi.py --warm</code>). Everything else in the sum is either the
 provider's latency (1.45 s, unattackable from here) or the transcript the turn carries.</p>
-<p>Raw artifacts: <code>/tmp/night/pi-tax/</code> (this matrix, <code>run*.sh</code> + logs), <code>/tmp/night/tps-tax/FINDINGS.md</code>
-(append tax), <code>/tmp/night/pi-startup/FINDINGS.md</code> (independent reproduction by a second agent).</p>
+<p>Raw artifacts: the scripts and logs behind these sections are working notes and are not
+published; <code>bench.csv</code>, <code>analyze.py</code> and <code>PROTOCOL.md</code> in this repository reproduce the
+tables above, and the append-cost result was confirmed by an independent re-measurement.</p>
 <h2>6. Second correction (06:02Z): claim 4 (cache state predicts wall) is not supported</h2>
 <p>Found by re-checking every headline number against <code>bench.csv</code> with <code>analyze.py</code>
 rather than by hand. This one removes a claim we were about to sell on.</p>
@@ -608,7 +610,7 @@ cannot test the cache hypothesis at all — it can only fail to confirm it.</p>
   and the correction in §5.</li>
 <li><strong>Sales consequence:</strong> cache discipline is not the lever this data proves. The levers
   it proves are the per-turn floor and the multi-second tail — and both are visible in
-  the live-fleet sample (<code>/tmp/night/fleet-scan/FINDINGS.md</code>: unaccounted p50 1.6 s,
+  the live-fleet sample (unaccounted p50 1.6 s,
   p90 4.6 s, worst turn 85 s, and a per-model floor that does not move with the model).</li>
 </ul>
 <h2>7. Third correction (06:09Z): the "startup scans ~200 MB of sessions" claim is not reproducible</h2>
@@ -898,7 +900,7 @@ from them by <code>routes/render_matrix.py</code>, and <code>routes/matrix.py</c
 </ul>
 <p>The cache probe (two identical ~4k-token prompts per route, reading the provider's own
 <code>cached_tokens</code>) found <strong>6 of 8</strong> probed routes reporting a hit. One of the two that did not is the
-gateway our own worker runs through, while the same model reported a 99% hit on a different route.
+gateway our own fleet runs through, while the same model reported a 99% hit on a different route.
 A miss in a two-call probe is <strong>not</strong> proof that caching is off, and a provider that does not
 report the field looks exactly like one that does not cache — which is why the audit measures a
 client's own loops instead of trusting a vendor table.</p>
