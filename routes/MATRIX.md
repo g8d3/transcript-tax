@@ -8,22 +8,29 @@ median of 2 reps on one machine: **first token** and **total**, the same split t
 
 | anchor | route | $/M in | $/M out | $/M cache-read | first token p50 | total p50 | streamed |
 |---|---|---|---|---|---|---|---|
-| claude-haiku-5-5 | venice | – | – | – | 1041 ms | 1046 ms | yes |
+| claude-haiku-5-5 | openrouter | $0.1 | $0.5 | $0.01 | 1148 ms | 1184 ms | yes |
+| claude-haiku-5-5 | venice | $0.1 | $0.5 | $0.01 | 778 ms | 784 ms | yes |
+| claude-opus-5 | openrouter | $5 | $25 | $0.5 | 2188 ms | 2201 ms | yes |
+| claude-opus-5 | venice | $5 | $25 | $0.5 | 1248 ms | 1262 ms | yes |
+| claude-sonnet-5-5 | openrouter | $2 | $10 | $0.1 | 1166 ms | 1206 ms | yes |
+| claude-sonnet-5-5 | venice | $2 | $10 | $0.1 | 1191 ms | 1206 ms | yes |
 | deepseek-v3.2 | chutes | $1 | $1 | $0.1 | 1386 ms | 1528 ms | yes |
 | deepseek-v3.2 | openrouter | $0.28 | $0.42 | $0.028 | 2174 ms | 2218 ms | yes |
-| deepseek-v4-flash-0731 | chutes | $0.44 | $1.32 | $0.044 | 1868 ms | 2034 ms | yes |
-| deepseek-v4-flash-0731 | openrouter | $0.1 | $0.3 | $0.03 | 668 ms | 922 ms | yes |
+| deepseek-v4-flash-0731 | chutes | $0.44 | $1.32 | $0.044 | 1610 ms | 1782 ms | yes |
+| deepseek-v4-flash-0731 | openrouter | $0.0151 | $0.45 | $0.0151 | 674 ms | 904 ms | yes |
 | deepseek-v4-pro | dashscope | – | – | – | 2235 ms | 2514 ms | yes |
 | deepseek-v4-pro | deepseek | – | – | – | 1312 ms | 1516 ms | yes |
 | deepseek-v4-pro | opencode-go | – | – | – | 1697 ms | 1892 ms | yes |
 | deepseek-v4-pro | openrouter | $0.2088 | $0.4176 | $0.0174 | 1158 ms | 1350 ms | yes |
-| deepseek-v4.1-flash | chutes | $0.44 | $1.32 | $0.044 | 1402 ms | 1448 ms | yes |
-| deepseek-v4.1-flash | dashscope | – | – | – | 1692 ms | 1884 ms | yes |
-| deepseek-v4.1-flash | opencode-go | – | – | – | 1500 ms | 1570 ms | yes |
-| deepseek-v4.1-flash | openrouter | $0.0536 | $0.144 | $0.0016 | 732 ms | 895 ms | yes |
-| gemini-3-flash-preview | gemini | – | – | – | – | 930 ms | no |
-| gemini-3-flash-preview | openrouter | $0.5 | $3 | $0.05 | 963 ms | 1078 ms | yes |
-| gemini-3-flash-preview | venice | – | – | – | 1419 ms | 1444 ms | yes |
+| deepseek-v4.1-flash | chutes | $0.44 | $1.32 | $0.044 | 1011 ms | 1025 ms | yes |
+| deepseek-v4.1-flash | dashscope | – | – | – | 1638 ms | 1726 ms | yes |
+| deepseek-v4.1-flash | opencode-go | – | – | – | 4660 ms | 4712 ms | yes |
+| deepseek-v4.1-flash | openrouter | $0.0648 | $0.144 | $0.0016 | 680 ms | 870 ms | yes |
+| gemini-3-8-flash | openrouter | $0.825 | $4.125 | $0.0825 | 2056 ms | 2104 ms | yes |
+| gemini-3-8-flash | venice | $0.9375 | $4.6875 | $0.0938 | 2263 ms | 2276 ms | yes |
+| gemini-3-flash-preview | gemini | – | – | – | 1347 ms | 1227 ms | yes |
+| gemini-3-flash-preview | openrouter | $0.5 | $3 | $0.05 | 838 ms | 1036 ms | yes |
+| gemini-3-flash-preview | venice | $0.7 | $3.75 | $0.07 | 1988 ms | 1994 ms | yes |
 | glm-5.1 | chutes | $0.98 | $3.08 | $0.098 | 14819 ms | 17406 ms | yes |
 | glm-5.1 | openrouter | $0.966 | $3.036 | $0.1794 | 1932 ms | 2214 ms | yes |
 | glm-5.2 | dashscope | – | – | – | 1506 ms | 1808 ms | yes |
@@ -33,6 +40,8 @@ median of 2 reps on one machine: **first token** and **total**, the same split t
 | gpt-oss-120b | openrouter | $0.15 | $0.6 | $0.075 | 709 ms | 896 ms | yes |
 | gpt-oss-20b | groq | $0.075 | $0.3 | $0.0375 | 604 ms | 617 ms | yes |
 | gpt-oss-20b | openrouter | $0.018 | $0.09 | $0.009 | 1994 ms | 2110 ms | yes |
+| grok-4-7 | openrouter | $2 | $6 | $0.5 | 2492 ms | 2504 ms | yes |
+| grok-4-7 | venice | $2.27 | $6.8 | $0.57 | 2714 ms | 15610 ms | yes |
 | kimi-k2.6 | chutes | $0.45 | $1.95 | $0.045 | 1488 ms | 1734 ms | yes |
 | kimi-k2.6 | openrouter | $0.65 | $3.41 | $0.15 | 776 ms | 896 ms | yes |
 | kimi-k3 | chutes | $1.85 | $9.5 | $0.185 | 2136 ms | 2672 ms | yes |
@@ -50,23 +59,32 @@ median of 2 reps on one machine: **first token** and **total**, the same split t
 
 | anchor | route | why |
 |---|---|---|
-| deepseek-v4.1-flash | aihubmix | http 403: {"error":{"message":"Your account balance is insufficient. Please recharge your account to continue  |
 | gpt-oss-120b | cerebras | http 402: {"message":"Payment required to access this resource. Visit your billing tab.","type":"payment_requi |
 | glm-5.2 | chutes | http 429: {"detail":"Infrastructure is at maximum capacity, try again later"} |
-| claude-haiku-5-5 | opencode-go | http 400: {"type":"error","error":{"type":"ModelProtocolUnsupported","message":"Model does not support this pr |
-| claude-haiku-5-5 | aihubmix | http 403: {"error":{"message":"Your account balance is insufficient. Please recharge your account to continue  |
+| deepseek-v4.1-flash | aihubmix | http 403: {"error":{"message":"Your account balance is insufficient. Please recharge your account to continue  |
 | gemini-3-flash-preview | aihubmix | http 403: {"error":{"message":"Your account balance is insufficient. Please recharge your account to continue  |
+| claude-haiku-5-5 | opencode-go | http 500:  |
+| claude-haiku-5-5 | aihubmix | http 403: {"error":{"message":"Your account balance is insufficient. Please recharge your account to continue  |
 
 ## What the table says
 
+- **claude-haiku-5-5**: every priced route charges the same list price ($0.1/M in) — the difference shows up in latency, not in the rate.
+- **claude-haiku-5-5**: first token 778 ms on venice vs 1148 ms on openrouter (1.5x) — the cheapest priced route (openrouter) is not the fastest one.
+- **claude-opus-5**: every priced route charges the same list price ($5/M in) — the difference shows up in latency, not in the rate.
+- **claude-opus-5**: first token 1248 ms on venice vs 2188 ms on openrouter (1.8x) — the cheapest priced route (openrouter) is not the fastest one.
+- **claude-sonnet-5-5**: every priced route charges the same list price ($2/M in) — the difference shows up in latency, not in the rate.
+- **claude-sonnet-5-5**: first token 1166 ms on openrouter vs 1191 ms on venice (1.0x) — the cheapest route is also the fastest one here.
 - **deepseek-v3.2**: input price runs 3.6x between routes (openrouter $0.28/M vs chutes $1/M).
 - **deepseek-v3.2**: first token 1386 ms on chutes vs 2174 ms on openrouter (1.6x) — the cheapest priced route (openrouter) is not the fastest one.
-- **deepseek-v4-flash-0731**: input price runs 4.4x between routes (openrouter $0.1/M vs chutes $0.44/M).
-- **deepseek-v4-flash-0731**: first token 668 ms on openrouter vs 1868 ms on chutes (2.8x) — the cheapest route is also the fastest one here.
+- **deepseek-v4-flash-0731**: input price runs 29.1x between routes (openrouter $0.0151/M vs chutes $0.44/M).
+- **deepseek-v4-flash-0731**: first token 674 ms on openrouter vs 1610 ms on chutes (2.4x) — the cheapest route is also the fastest one here.
 - **deepseek-v4-pro**: first token 1158 ms on openrouter vs 2235 ms on dashscope (1.9x) — prices are not published for most of these routes.
-- **deepseek-v4.1-flash**: input price runs 8.2x between routes (openrouter $0.0536/M vs chutes $0.44/M).
-- **deepseek-v4.1-flash**: first token 732 ms on openrouter vs 1692 ms on dashscope (2.3x) — the cheapest route is also the fastest one here.
-- **gemini-3-flash-preview**: first token 963 ms on openrouter vs 1419 ms on venice (1.5x) — prices are not published for most of these routes.
+- **deepseek-v4.1-flash**: input price runs 6.8x between routes (openrouter $0.0648/M vs chutes $0.44/M).
+- **deepseek-v4.1-flash**: first token 680 ms on openrouter vs 4660 ms on opencode-go (6.9x) — the cheapest route is also the fastest one here.
+- **gemini-3-8-flash**: input price runs 1.1x between routes (openrouter $0.825/M vs venice $0.9375/M).
+- **gemini-3-8-flash**: first token 2056 ms on openrouter vs 2263 ms on venice (1.1x) — the cheapest route is also the fastest one here.
+- **gemini-3-flash-preview**: input price runs 1.4x between routes (openrouter $0.5/M vs venice $0.7/M).
+- **gemini-3-flash-preview**: first token 838 ms on openrouter vs 1988 ms on venice (2.4x) — the cheapest route is also the fastest one here.
 - **glm-5.1**: input price runs 1.0x between routes (openrouter $0.966/M vs chutes $0.98/M).
 - **glm-5.1**: first token 1932 ms on openrouter vs 14819 ms on chutes (7.7x) — the cheapest route is also the fastest one here.
 - **glm-5.2**: first token 732 ms on openrouter vs 1506 ms on dashscope (2.1x) — prices are not published for most of these routes.
@@ -74,6 +92,8 @@ median of 2 reps on one machine: **first token** and **total**, the same split t
 - **gpt-oss-120b**: first token 424 ms on groq vs 709 ms on openrouter (1.7x) — the cheapest route is also the fastest one here.
 - **gpt-oss-20b**: input price runs 4.2x between routes (openrouter $0.018/M vs groq $0.075/M).
 - **gpt-oss-20b**: first token 604 ms on groq vs 1994 ms on openrouter (3.3x) — the cheapest priced route (openrouter) is not the fastest one.
+- **grok-4-7**: input price runs 1.1x between routes (openrouter $2/M vs venice $2.27/M).
+- **grok-4-7**: first token 2492 ms on openrouter vs 2714 ms on venice (1.1x) — the cheapest route is also the fastest one here.
 - **kimi-k2.6**: input price runs 1.4x between routes (chutes $0.45/M vs openrouter $0.65/M).
 - **kimi-k2.6**: first token 776 ms on openrouter vs 1488 ms on chutes (1.9x) — the cheapest priced route (chutes) is not the fastest one.
 - **kimi-k3**: input price runs 6.1x between routes (openrouter $0.304/M vs chutes $1.85/M).
@@ -109,21 +129,21 @@ same artifact.
 
 | base model | routes that publish a price (input $/M) | spread |
 |---|---|---|
+| deepseek-v4-flash-0731 | openrouter $0.0151, venice $0.13, venice $0.35, chutes $0.44 | 29.14x |
 | qwen3.8-27b | chutes $0.039, openrouter $0.24, groq $0.8 | 20.51x |
-| kimi-k3 | openrouter $0.304, chutes $1.85 | 6.09x |
-| deepseek-v4-flash-0731 | openrouter $0.1, chutes $0.44 | 4.40x |
+| kimi-k3 | openrouter $0.304, chutes $1.85, venice $3.75 | 12.34x |
+| deepseek-v4-pro | openrouter $0.2088, venice $1.65 | 7.90x |
 | gpt-oss-20b | openrouter $0.018, groq $0.075 | 4.17x |
-| deepseek-v3.2 | openrouter $0.28, chutes $1 | 3.57x |
+| deepseek-v3.2 | openrouter $0.28, venice $0.33, chutes $1 | 3.57x |
+| deepseek-v4-pro-0813 | openrouter $0.66, venice $1.65 | 2.50x |
 | glm-5.2 | openrouter $0.62, chutes $1.25 | 2.02x |
-| qwen3-235b-a22b-thinking-2507 | chutes $0.2989, openrouter $0.45 | 1.51x |
+| claude-opus-5 | openrouter $5, venice $5, venice $10 | 2.00x |
+| deepseek-v4-flash | openrouter $0.091, venice $0.138 | 1.52x |
+| qwen3-235b-a22b-thinking-2507 | chutes $0.2989, openrouter $0.45, venice $0.45 | 1.51x |
 | kimi-k2.6 | chutes $0.45, openrouter $0.65 | 1.44x |
-| qwen3-32b | openrouter $0.08, chutes $0.104 | 1.30x |
-| qwen3.5-397b-a17b | chutes $0.45, openrouter $0.5 | 1.11x |
-| glm-5.1 | openrouter $0.966, chutes $0.98 | 1.01x |
-| qwen3.6-27b | openrouter $0.25, chutes $0.25 | 1.00x |
 
-**14 base models are carried by more than one of our routes with a published
-price.** Median spread 1.47x, p90 6.09x, worst 20.51x. So the honest
+**30 base models are carried by more than one of our routes with a published
+price.** Median spread 1.25x, p90 12.34x, worst 29.14x. So the honest
 version of the pitch is not "everything is 20x cheaper elsewhere": for most models the
 list price is the same everywhere and the difference shows up in latency; the price spread
 lives in a handful of routes, and finding them is the work.

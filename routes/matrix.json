@@ -1,181 +1,5 @@
 [
  {
-  "anchor": "deepseek-v4.1-flash",
-  "provider": "opencode-go",
-  "model": "deepseek-v4.1-flash",
-  "price": null,
-  "state": "ok",
-  "reps": [
-   {
-    "ok": true,
-    "streamed": true,
-    "ttft_ms": 1411,
-    "total_ms": 1504,
-    "out_tokens": 16,
-    "in_tokens": 41,
-    "cached_tokens": 0,
-    "text": "The user wants a single "
-   },
-   {
-    "ok": true,
-    "streamed": true,
-    "ttft_ms": 1590,
-    "total_ms": 1636,
-    "out_tokens": 16,
-    "in_tokens": 41,
-    "cached_tokens": 0,
-    "text": "The user wants exactly o"
-   }
-  ],
-  "ttft_p50": 1500,
-  "total_p50": 1570,
-  "out_tokens": 16,
-  "streamed": true,
-  "cached_tokens": 0,
-  "text": "The user wants a single ",
-  "error": null
- },
- {
-  "anchor": "deepseek-v4.1-flash",
-  "provider": "openrouter",
-  "model": "deepseek/deepseek-v4.1-flash",
-  "price": [
-   0.0536,
-   0.144,
-   0.0016
-  ],
-  "state": "ok",
-  "reps": [
-   {
-    "ok": true,
-    "streamed": true,
-    "ttft_ms": 921,
-    "total_ms": 1121,
-    "out_tokens": 16,
-    "in_tokens": 41,
-    "cached_tokens": 0,
-    "text": "We need answer single wo"
-   },
-   {
-    "ok": true,
-    "streamed": true,
-    "ttft_ms": 542,
-    "total_ms": 669,
-    "out_tokens": 16,
-    "in_tokens": 41,
-    "cached_tokens": 0,
-    "text": "We need answer exact sin"
-   }
-  ],
-  "ttft_p50": 732,
-  "total_p50": 895,
-  "out_tokens": 16,
-  "streamed": true,
-  "cached_tokens": 0,
-  "text": "We need answer single wo",
-  "error": null
- },
- {
-  "anchor": "deepseek-v4.1-flash",
-  "provider": "dashscope",
-  "model": "deepseek-v4.1-flash",
-  "price": null,
-  "state": "ok",
-  "reps": [
-   {
-    "ok": true,
-    "streamed": true,
-    "ttft_ms": 1660,
-    "total_ms": 1887,
-    "out_tokens": null,
-    "in_tokens": null,
-    "cached_tokens": null,
-    "text": "We need answer single wo"
-   },
-   {
-    "ok": true,
-    "streamed": true,
-    "ttft_ms": 1725,
-    "total_ms": 1882,
-    "out_tokens": null,
-    "in_tokens": null,
-    "cached_tokens": null,
-    "text": "We need answer single wo"
-   }
-  ],
-  "ttft_p50": 1692,
-  "total_p50": 1884,
-  "out_tokens": null,
-  "streamed": true,
-  "cached_tokens": null,
-  "text": "We need answer single wo",
-  "error": null
- },
- {
-  "anchor": "deepseek-v4.1-flash",
-  "provider": "aihubmix",
-  "model": "deepseek-v4.1-flash",
-  "price": null,
-  "state": "failed",
-  "reps": [
-   {
-    "ok": false,
-    "error": "http 403: {\"error\":{\"message\":\"Your account balance is insufficient. Please recharge your account to continue using the API. (tid:"
-   },
-   {
-    "ok": false,
-    "error": "http 403: {\"error\":{\"message\":\"Your account balance is insufficient. Please recharge your account to continue using the API. (tid:"
-   }
-  ],
-  "ttft_p50": null,
-  "total_p50": null,
-  "out_tokens": null,
-  "streamed": null,
-  "cached_tokens": null,
-  "text": null,
-  "error": "http 403: {\"error\":{\"message\":\"Your account balance is insufficient. Please recharge your account to continue using the API. (tid:"
- },
- {
-  "anchor": "deepseek-v4.1-flash",
-  "provider": "chutes",
-  "model": "deepseek-ai/DeepSeek-V4-Flash-0731-TEE",
-  "price": [
-   0.44,
-   1.32,
-   0.044
-  ],
-  "state": "ok",
-  "reps": [
-   {
-    "ok": true,
-    "streamed": true,
-    "ttft_ms": 1476,
-    "total_ms": 1533,
-    "out_tokens": 3,
-    "in_tokens": 15,
-    "cached_tokens": null,
-    "text": "PONG"
-   },
-   {
-    "ok": true,
-    "streamed": true,
-    "ttft_ms": 1328,
-    "total_ms": 1364,
-    "out_tokens": 3,
-    "in_tokens": 15,
-    "cached_tokens": null,
-    "text": "PONG"
-   }
-  ],
-  "ttft_p50": 1402,
-  "total_p50": 1448,
-  "out_tokens": 3,
-  "streamed": true,
-  "cached_tokens": null,
-  "text": "PONG",
-  "error": null
- },
- {
   "anchor": "gpt-oss-120b",
   "provider": "groq",
   "model": "openai/gpt-oss-120b",
@@ -876,226 +700,6 @@
   "error": "http 429: {\"detail\":\"Infrastructure is at maximum capacity, try again later\"}"
  },
  {
-  "anchor": "claude-haiku-5-5",
-  "provider": "opencode-go",
-  "model": "claude-haiku-5-5",
-  "price": null,
-  "state": "failed",
-  "reps": [
-   {
-    "ok": false,
-    "error": "http 400: {\"type\":\"error\",\"error\":{\"type\":\"ModelProtocolUnsupported\",\"message\":\"Model does not support this protocol.\"}}"
-   },
-   {
-    "ok": false,
-    "error": "http 400: {\"type\":\"error\",\"error\":{\"type\":\"ModelProtocolUnsupported\",\"message\":\"Model does not support this protocol.\"}}"
-   }
-  ],
-  "ttft_p50": null,
-  "total_p50": null,
-  "out_tokens": null,
-  "streamed": null,
-  "cached_tokens": null,
-  "text": null,
-  "error": "http 400: {\"type\":\"error\",\"error\":{\"type\":\"ModelProtocolUnsupported\",\"message\":\"Model does not support this protocol.\"}}"
- },
- {
-  "anchor": "claude-haiku-5-5",
-  "provider": "venice",
-  "model": "claude-haiku-5-5",
-  "price": null,
-  "state": "ok",
-  "reps": [
-   {
-    "ok": true,
-    "streamed": true,
-    "ttft_ms": 874,
-    "total_ms": 881,
-    "out_tokens": 5,
-    "in_tokens": 2719,
-    "cached_tokens": 0,
-    "text": "PONG"
-   },
-   {
-    "ok": true,
-    "streamed": true,
-    "ttft_ms": 1208,
-    "total_ms": 1210,
-    "out_tokens": 5,
-    "in_tokens": 2719,
-    "cached_tokens": 2697,
-    "text": "PONG"
-   }
-  ],
-  "ttft_p50": 1041,
-  "total_p50": 1046,
-  "out_tokens": 5,
-  "streamed": true,
-  "cached_tokens": 0,
-  "text": "PONG",
-  "error": null
- },
- {
-  "anchor": "claude-haiku-5-5",
-  "provider": "aihubmix",
-  "model": "claude-haiku-5-5",
-  "price": null,
-  "state": "failed",
-  "reps": [
-   {
-    "ok": false,
-    "error": "http 403: {\"error\":{\"message\":\"Your account balance is insufficient. Please recharge your account to continue using the API. (tid:"
-   },
-   {
-    "ok": false,
-    "error": "http 403: {\"error\":{\"message\":\"Your account balance is insufficient. Please recharge your account to continue using the API. (tid:"
-   }
-  ],
-  "ttft_p50": null,
-  "total_p50": null,
-  "out_tokens": null,
-  "streamed": null,
-  "cached_tokens": null,
-  "text": null,
-  "error": "http 403: {\"error\":{\"message\":\"Your account balance is insufficient. Please recharge your account to continue using the API. (tid:"
- },
- {
-  "anchor": "gemini-3-flash-preview",
-  "provider": "openrouter",
-  "model": "google/gemini-3-flash-preview",
-  "price": [
-   0.5,
-   3.0,
-   0.05
-  ],
-  "state": "ok",
-  "reps": [
-   {
-    "ok": true,
-    "streamed": true,
-    "ttft_ms": 985,
-    "total_ms": 1055,
-    "out_tokens": 2,
-    "in_tokens": 11,
-    "cached_tokens": 0,
-    "text": "PONG"
-   },
-   {
-    "ok": true,
-    "streamed": true,
-    "ttft_ms": 941,
-    "total_ms": 1100,
-    "out_tokens": 2,
-    "in_tokens": 11,
-    "cached_tokens": 0,
-    "text": "PONG"
-   }
-  ],
-  "ttft_p50": 963,
-  "total_p50": 1078,
-  "out_tokens": 2,
-  "streamed": true,
-  "cached_tokens": 0,
-  "text": "PONG",
-  "error": null
- },
- {
-  "anchor": "gemini-3-flash-preview",
-  "provider": "venice",
-  "model": "gemini-3-flash-preview",
-  "price": null,
-  "state": "ok",
-  "reps": [
-   {
-    "ok": true,
-    "streamed": true,
-    "ttft_ms": 1428,
-    "total_ms": 1456,
-    "out_tokens": 12,
-    "in_tokens": 1782,
-    "cached_tokens": 1772,
-    "text": "**Generating Single Word"
-   },
-   {
-    "ok": true,
-    "streamed": true,
-    "ttft_ms": 1410,
-    "total_ms": 1433,
-    "out_tokens": 12,
-    "in_tokens": 1782,
-    "cached_tokens": 1772,
-    "text": "**Processing Request**\n\n"
-   }
-  ],
-  "ttft_p50": 1419,
-  "total_p50": 1444,
-  "out_tokens": 12,
-  "streamed": true,
-  "cached_tokens": 1772,
-  "text": "**Generating Single Word",
-  "error": null
- },
- {
-  "anchor": "gemini-3-flash-preview",
-  "provider": "gemini",
-  "model": "models/gemini-3-flash-preview",
-  "price": null,
-  "state": "ok",
-  "reps": [
-   {
-    "ok": true,
-    "streamed": false,
-    "ttft_ms": null,
-    "total_ms": 1036,
-    "out_tokens": null,
-    "in_tokens": null,
-    "cached_tokens": null,
-    "text": ""
-   },
-   {
-    "ok": true,
-    "streamed": false,
-    "ttft_ms": null,
-    "total_ms": 824,
-    "out_tokens": null,
-    "in_tokens": null,
-    "cached_tokens": null,
-    "text": ""
-   }
-  ],
-  "ttft_p50": null,
-  "total_p50": 930,
-  "out_tokens": null,
-  "streamed": false,
-  "cached_tokens": null,
-  "text": "",
-  "error": null
- },
- {
-  "anchor": "gemini-3-flash-preview",
-  "provider": "aihubmix",
-  "model": "gemini-3-flash-preview",
-  "price": null,
-  "state": "failed",
-  "reps": [
-   {
-    "ok": false,
-    "error": "http 403: {\"error\":{\"message\":\"Your account balance is insufficient. Please recharge your account to continue using the API. (tid:"
-   },
-   {
-    "ok": false,
-    "error": "http 403: {\"error\":{\"message\":\"Your account balance is insufficient. Please recharge your account to continue using the API. (tid:"
-   }
-  ],
-  "ttft_p50": null,
-  "total_p50": null,
-  "out_tokens": null,
-  "streamed": null,
-  "cached_tokens": null,
-  "text": null,
-  "error": "http 403: {\"error\":{\"message\":\"Your account balance is insufficient. Please recharge your account to continue using the API. (tid:"
- },
- {
   "anchor": "deepseek-v3.2",
   "provider": "openrouter",
   "model": "deepseek/deepseek-v3.2",
@@ -1169,86 +773,6 @@
   ],
   "ttft_p50": 1386,
   "total_p50": 1528,
-  "out_tokens": 3,
-  "streamed": true,
-  "cached_tokens": null,
-  "text": "PONG",
-  "error": null
- },
- {
-  "anchor": "deepseek-v4-flash-0731",
-  "provider": "openrouter",
-  "model": "deepseek/deepseek-v4-flash-0731",
-  "price": [
-   0.1,
-   0.3,
-   0.03
-  ],
-  "state": "ok",
-  "reps": [
-   {
-    "ok": true,
-    "streamed": true,
-    "ttft_ms": 738,
-    "total_ms": 940,
-    "out_tokens": 16,
-    "in_tokens": 94,
-    "cached_tokens": 0,
-    "text": "We need to respond with "
-   },
-   {
-    "ok": true,
-    "streamed": true,
-    "ttft_ms": 598,
-    "total_ms": 903,
-    "out_tokens": 14,
-    "in_tokens": 94,
-    "cached_tokens": 0,
-    "text": "We need to reply with si"
-   }
-  ],
-  "ttft_p50": 668,
-  "total_p50": 922,
-  "out_tokens": 16,
-  "streamed": true,
-  "cached_tokens": 0,
-  "text": "We need to respond with ",
-  "error": null
- },
- {
-  "anchor": "deepseek-v4-flash-0731",
-  "provider": "chutes",
-  "model": "deepseek-ai/DeepSeek-V4-Flash-0731-TEE",
-  "price": [
-   0.44,
-   1.32,
-   0.044
-  ],
-  "state": "ok",
-  "reps": [
-   {
-    "ok": true,
-    "streamed": true,
-    "ttft_ms": 1240,
-    "total_ms": 1268,
-    "out_tokens": 3,
-    "in_tokens": 15,
-    "cached_tokens": null,
-    "text": "PONG"
-   },
-   {
-    "ok": true,
-    "streamed": true,
-    "ttft_ms": 2496,
-    "total_ms": 2801,
-    "out_tokens": 3,
-    "in_tokens": 15,
-    "cached_tokens": null,
-    "text": "PONG"
-   }
-  ],
-  "ttft_p50": 1868,
-  "total_p50": 2034,
   "out_tokens": 3,
   "streamed": true,
   "cached_tokens": null,
@@ -1573,6 +1097,850 @@
   "streamed": true,
   "cached_tokens": null,
   "text": "The user says: \"Reply wi",
+  "error": null
+ },
+ {
+  "anchor": "deepseek-v4.1-flash",
+  "provider": "opencode-go",
+  "model": "deepseek-v4.1-flash",
+  "price": null,
+  "state": "ok",
+  "reps": [
+   {
+    "ok": true,
+    "streamed": true,
+    "ttft_ms": 2192,
+    "total_ms": 2294,
+    "out_tokens": 16,
+    "in_tokens": 41,
+    "cached_tokens": 0,
+    "text": "We need answer single wo"
+   },
+   {
+    "ok": true,
+    "streamed": true,
+    "ttft_ms": 7129,
+    "total_ms": 7130,
+    "out_tokens": 16,
+    "in_tokens": 41,
+    "cached_tokens": 0,
+    "text": "We need answer single wo"
+   }
+  ],
+  "ttft_p50": 4660,
+  "total_p50": 4712,
+  "out_tokens": 16,
+  "streamed": true,
+  "cached_tokens": 0,
+  "text": "We need answer single wo",
+  "error": null
+ },
+ {
+  "anchor": "deepseek-v4.1-flash",
+  "provider": "openrouter",
+  "model": "deepseek/deepseek-v4.1-flash",
+  "price": [
+   0.0648,
+   0.144,
+   0.0016
+  ],
+  "state": "ok",
+  "reps": [
+   {
+    "ok": true,
+    "streamed": true,
+    "ttft_ms": 1024,
+    "total_ms": 1224,
+    "out_tokens": 16,
+    "in_tokens": 41,
+    "cached_tokens": 0,
+    "text": "We need answer single wo"
+   },
+   {
+    "ok": true,
+    "streamed": true,
+    "ttft_ms": 336,
+    "total_ms": 516,
+    "out_tokens": 16,
+    "in_tokens": 41,
+    "cached_tokens": 0,
+    "text": "We need answer single wo"
+   }
+  ],
+  "ttft_p50": 680,
+  "total_p50": 870,
+  "out_tokens": 16,
+  "streamed": true,
+  "cached_tokens": 0,
+  "text": "We need answer single wo",
+  "error": null
+ },
+ {
+  "anchor": "deepseek-v4.1-flash",
+  "provider": "dashscope",
+  "model": "deepseek-v4.1-flash",
+  "price": null,
+  "state": "ok",
+  "reps": [
+   {
+    "ok": true,
+    "streamed": true,
+    "ttft_ms": 1905,
+    "total_ms": 1984,
+    "out_tokens": null,
+    "in_tokens": null,
+    "cached_tokens": null,
+    "text": "We need answer single wo"
+   },
+   {
+    "ok": true,
+    "streamed": true,
+    "ttft_ms": 1370,
+    "total_ms": 1469,
+    "out_tokens": null,
+    "in_tokens": null,
+    "cached_tokens": null,
+    "text": "We need answer single wo"
+   }
+  ],
+  "ttft_p50": 1638,
+  "total_p50": 1726,
+  "out_tokens": null,
+  "streamed": true,
+  "cached_tokens": null,
+  "text": "We need answer single wo",
+  "error": null
+ },
+ {
+  "anchor": "deepseek-v4.1-flash",
+  "provider": "aihubmix",
+  "model": "deepseek-v4.1-flash",
+  "price": null,
+  "state": "failed",
+  "reps": [
+   {
+    "ok": false,
+    "error": "http 403: {\"error\":{\"message\":\"Your account balance is insufficient. Please recharge your account to continue using the API. (tid:"
+   },
+   {
+    "ok": false,
+    "error": "http 403: {\"error\":{\"message\":\"Your account balance is insufficient. Please recharge your account to continue using the API. (tid:"
+   }
+  ],
+  "ttft_p50": null,
+  "total_p50": null,
+  "out_tokens": null,
+  "streamed": null,
+  "cached_tokens": null,
+  "text": null,
+  "error": "http 403: {\"error\":{\"message\":\"Your account balance is insufficient. Please recharge your account to continue using the API. (tid:"
+ },
+ {
+  "anchor": "deepseek-v4.1-flash",
+  "provider": "chutes",
+  "model": "deepseek-ai/DeepSeek-V4-Flash-0731-TEE",
+  "price": [
+   0.44,
+   1.32,
+   0.044
+  ],
+  "state": "ok",
+  "reps": [
+   {
+    "ok": true,
+    "streamed": true,
+    "ttft_ms": 1026,
+    "total_ms": 1054,
+    "out_tokens": 3,
+    "in_tokens": 15,
+    "cached_tokens": null,
+    "text": "PONG"
+   },
+   {
+    "ok": true,
+    "streamed": true,
+    "ttft_ms": 996,
+    "total_ms": 996,
+    "out_tokens": 3,
+    "in_tokens": 15,
+    "cached_tokens": null,
+    "text": "PONG"
+   }
+  ],
+  "ttft_p50": 1011,
+  "total_p50": 1025,
+  "out_tokens": 3,
+  "streamed": true,
+  "cached_tokens": null,
+  "text": "PONG",
+  "error": null
+ },
+ {
+  "anchor": "deepseek-v4-flash-0731",
+  "provider": "openrouter",
+  "model": "deepseek/deepseek-v4-flash-0731",
+  "price": [
+   0.0151,
+   0.45,
+   0.0151
+  ],
+  "state": "ok",
+  "reps": [
+   {
+    "ok": true,
+    "streamed": true,
+    "ttft_ms": 919,
+    "total_ms": 1099,
+    "out_tokens": 16,
+    "in_tokens": 94,
+    "cached_tokens": 0,
+    "text": "We need to reply with si"
+   },
+   {
+    "ok": true,
+    "streamed": true,
+    "ttft_ms": 430,
+    "total_ms": 709,
+    "out_tokens": 16,
+    "in_tokens": 94,
+    "cached_tokens": 0,
+    "text": "We need to respond with "
+   }
+  ],
+  "ttft_p50": 674,
+  "total_p50": 904,
+  "out_tokens": 16,
+  "streamed": true,
+  "cached_tokens": 0,
+  "text": "We need to reply with si",
+  "error": null
+ },
+ {
+  "anchor": "deepseek-v4-flash-0731",
+  "provider": "chutes",
+  "model": "deepseek-ai/DeepSeek-V4-Flash-0731-TEE",
+  "price": [
+   0.44,
+   1.32,
+   0.044
+  ],
+  "state": "ok",
+  "reps": [
+   {
+    "ok": true,
+    "streamed": true,
+    "ttft_ms": 1171,
+    "total_ms": 1208,
+    "out_tokens": 3,
+    "in_tokens": 15,
+    "cached_tokens": null,
+    "text": "PONG"
+   },
+   {
+    "ok": true,
+    "streamed": true,
+    "ttft_ms": 2050,
+    "total_ms": 2356,
+    "out_tokens": 3,
+    "in_tokens": 15,
+    "cached_tokens": null,
+    "text": "PONG"
+   }
+  ],
+  "ttft_p50": 1610,
+  "total_p50": 1782,
+  "out_tokens": 3,
+  "streamed": true,
+  "cached_tokens": null,
+  "text": "PONG",
+  "error": null
+ },
+ {
+  "anchor": "gemini-3-flash-preview",
+  "provider": "openrouter",
+  "model": "google/gemini-3-flash-preview",
+  "price": [
+   0.5,
+   3.0,
+   0.05
+  ],
+  "state": "ok",
+  "reps": [
+   {
+    "ok": true,
+    "streamed": true,
+    "ttft_ms": 1065,
+    "total_ms": 1173,
+    "out_tokens": 2,
+    "in_tokens": 11,
+    "cached_tokens": 0,
+    "text": "PONG"
+   },
+   {
+    "ok": true,
+    "streamed": true,
+    "ttft_ms": 610,
+    "total_ms": 900,
+    "out_tokens": 2,
+    "in_tokens": 11,
+    "cached_tokens": 0,
+    "text": "PONG"
+   }
+  ],
+  "ttft_p50": 838,
+  "total_p50": 1036,
+  "out_tokens": 2,
+  "streamed": true,
+  "cached_tokens": 0,
+  "text": "PONG",
+  "error": null
+ },
+ {
+  "anchor": "gemini-3-flash-preview",
+  "provider": "venice",
+  "model": "gemini-3-flash-preview",
+  "price": [
+   0.7,
+   3.75,
+   0.07
+  ],
+  "state": "ok",
+  "reps": [
+   {
+    "ok": true,
+    "streamed": true,
+    "ttft_ms": 2555,
+    "total_ms": 2567,
+    "out_tokens": 12,
+    "in_tokens": 1782,
+    "cached_tokens": 1772,
+    "text": "**Generating Single Word"
+   },
+   {
+    "ok": true,
+    "streamed": true,
+    "ttft_ms": 1422,
+    "total_ms": 1422,
+    "out_tokens": 13,
+    "in_tokens": 1782,
+    "cached_tokens": 1772,
+    "text": "**Generating Single Resp"
+   }
+  ],
+  "ttft_p50": 1988,
+  "total_p50": 1994,
+  "out_tokens": 12,
+  "streamed": true,
+  "cached_tokens": 1772,
+  "text": "**Generating Single Word",
+  "error": null
+ },
+ {
+  "anchor": "gemini-3-flash-preview",
+  "provider": "gemini",
+  "model": "models/gemini-3-flash-preview",
+  "price": null,
+  "state": "ok",
+  "reps": [
+   {
+    "ok": true,
+    "streamed": true,
+    "ttft_ms": 1347,
+    "total_ms": 1353,
+    "out_tokens": null,
+    "in_tokens": null,
+    "cached_tokens": null,
+    "text": "P"
+   },
+   {
+    "ok": true,
+    "streamed": false,
+    "ttft_ms": null,
+    "total_ms": 1101,
+    "out_tokens": null,
+    "in_tokens": null,
+    "cached_tokens": null,
+    "text": ""
+   }
+  ],
+  "ttft_p50": 1347,
+  "total_p50": 1227,
+  "out_tokens": null,
+  "streamed": true,
+  "cached_tokens": null,
+  "text": "P",
+  "error": null
+ },
+ {
+  "anchor": "gemini-3-flash-preview",
+  "provider": "aihubmix",
+  "model": "gemini-3-flash-preview",
+  "price": null,
+  "state": "failed",
+  "reps": [
+   {
+    "ok": false,
+    "error": "http 403: {\"error\":{\"message\":\"Your account balance is insufficient. Please recharge your account to continue using the API. (tid:"
+   },
+   {
+    "ok": false,
+    "error": "http 403: {\"error\":{\"message\":\"Your account balance is insufficient. Please recharge your account to continue using the API. (tid:"
+   }
+  ],
+  "ttft_p50": null,
+  "total_p50": null,
+  "out_tokens": null,
+  "streamed": null,
+  "cached_tokens": null,
+  "text": null,
+  "error": "http 403: {\"error\":{\"message\":\"Your account balance is insufficient. Please recharge your account to continue using the API. (tid:"
+ },
+ {
+  "anchor": "claude-haiku-5-5",
+  "provider": "openrouter",
+  "model": "anthropic/claude-haiku-5.5",
+  "price": [
+   0.1,
+   0.5,
+   0.01
+  ],
+  "state": "ok",
+  "reps": [
+   {
+    "ok": true,
+    "streamed": true,
+    "ttft_ms": 1188,
+    "total_ms": 1215,
+    "out_tokens": 5,
+    "in_tokens": 24,
+    "cached_tokens": 0,
+    "text": "PONG"
+   },
+   {
+    "ok": true,
+    "streamed": true,
+    "ttft_ms": 1109,
+    "total_ms": 1152,
+    "out_tokens": 5,
+    "in_tokens": 24,
+    "cached_tokens": 0,
+    "text": "PONG"
+   }
+  ],
+  "ttft_p50": 1148,
+  "total_p50": 1184,
+  "out_tokens": 5,
+  "streamed": true,
+  "cached_tokens": 0,
+  "text": "PONG",
+  "error": null
+ },
+ {
+  "anchor": "claude-haiku-5-5",
+  "provider": "opencode-go",
+  "model": "claude-haiku-5-5",
+  "price": null,
+  "state": "failed",
+  "reps": [
+   {
+    "ok": false,
+    "error": "http 500: "
+   },
+   {
+    "ok": false,
+    "error": "http 500: "
+   }
+  ],
+  "ttft_p50": null,
+  "total_p50": null,
+  "out_tokens": null,
+  "streamed": null,
+  "cached_tokens": null,
+  "text": null,
+  "error": "http 500: "
+ },
+ {
+  "anchor": "claude-haiku-5-5",
+  "provider": "venice",
+  "model": "claude-haiku-5-5",
+  "price": [
+   0.1,
+   0.5,
+   0.01
+  ],
+  "state": "ok",
+  "reps": [
+   {
+    "ok": true,
+    "streamed": true,
+    "ttft_ms": 790,
+    "total_ms": 790,
+    "out_tokens": 5,
+    "in_tokens": 2719,
+    "cached_tokens": 2697,
+    "text": "PONG"
+   },
+   {
+    "ok": true,
+    "streamed": true,
+    "ttft_ms": 766,
+    "total_ms": 778,
+    "out_tokens": 5,
+    "in_tokens": 2719,
+    "cached_tokens": 2697,
+    "text": "PONG"
+   }
+  ],
+  "ttft_p50": 778,
+  "total_p50": 784,
+  "out_tokens": 5,
+  "streamed": true,
+  "cached_tokens": 2697,
+  "text": "PONG",
+  "error": null
+ },
+ {
+  "anchor": "claude-haiku-5-5",
+  "provider": "aihubmix",
+  "model": "claude-haiku-5-5",
+  "price": null,
+  "state": "failed",
+  "reps": [
+   {
+    "ok": false,
+    "error": "http 403: {\"error\":{\"message\":\"Your account balance is insufficient. Please recharge your account to continue using the API. (tid:"
+   },
+   {
+    "ok": false,
+    "error": "http 403: {\"error\":{\"message\":\"Your account balance is insufficient. Please recharge your account to continue using the API. (tid:"
+   }
+  ],
+  "ttft_p50": null,
+  "total_p50": null,
+  "out_tokens": null,
+  "streamed": null,
+  "cached_tokens": null,
+  "text": null,
+  "error": "http 403: {\"error\":{\"message\":\"Your account balance is insufficient. Please recharge your account to continue using the API. (tid:"
+ },
+ {
+  "anchor": "claude-sonnet-5-5",
+  "provider": "openrouter",
+  "model": "anthropic/claude-sonnet-5.5",
+  "price": [
+   2.0,
+   10.0,
+   0.1
+  ],
+  "state": "ok",
+  "reps": [
+   {
+    "ok": true,
+    "streamed": true,
+    "ttft_ms": 1106,
+    "total_ms": 1135,
+    "out_tokens": 5,
+    "in_tokens": 24,
+    "cached_tokens": 0,
+    "text": "PONG"
+   },
+   {
+    "ok": true,
+    "streamed": true,
+    "ttft_ms": 1227,
+    "total_ms": 1278,
+    "out_tokens": 5,
+    "in_tokens": 24,
+    "cached_tokens": 0,
+    "text": "PONG"
+   }
+  ],
+  "ttft_p50": 1166,
+  "total_p50": 1206,
+  "out_tokens": 5,
+  "streamed": true,
+  "cached_tokens": 0,
+  "text": "PONG",
+  "error": null
+ },
+ {
+  "anchor": "claude-sonnet-5-5",
+  "provider": "venice",
+  "model": "claude-sonnet-5-5",
+  "price": [
+   2.0,
+   10.0,
+   0.1
+  ],
+  "state": "ok",
+  "reps": [
+   {
+    "ok": true,
+    "streamed": true,
+    "ttft_ms": 1051,
+    "total_ms": 1080,
+    "out_tokens": 5,
+    "in_tokens": 2723,
+    "cached_tokens": 0,
+    "text": "PONG"
+   },
+   {
+    "ok": true,
+    "streamed": true,
+    "ttft_ms": 1331,
+    "total_ms": 1331,
+    "out_tokens": 5,
+    "in_tokens": 2723,
+    "cached_tokens": 2701,
+    "text": "PONG"
+   }
+  ],
+  "ttft_p50": 1191,
+  "total_p50": 1206,
+  "out_tokens": 5,
+  "streamed": true,
+  "cached_tokens": 0,
+  "text": "PONG",
+  "error": null
+ },
+ {
+  "anchor": "claude-opus-5",
+  "provider": "openrouter",
+  "model": "anthropic/claude-opus-5",
+  "price": [
+   5.0,
+   25.0,
+   0.5
+  ],
+  "state": "ok",
+  "reps": [
+   {
+    "ok": true,
+    "streamed": true,
+    "ttft_ms": 2406,
+    "total_ms": 2419,
+    "out_tokens": 16,
+    "in_tokens": 22,
+    "cached_tokens": 0,
+    "text": "They just want a simple "
+   },
+   {
+    "ok": true,
+    "streamed": true,
+    "ttft_ms": 1971,
+    "total_ms": 1983,
+    "out_tokens": 16,
+    "in_tokens": 22,
+    "cached_tokens": 0,
+    "text": "They just want the simpl"
+   }
+  ],
+  "ttft_p50": 2188,
+  "total_p50": 2201,
+  "out_tokens": 16,
+  "streamed": true,
+  "cached_tokens": 0,
+  "text": "They just want a simple ",
+  "error": null
+ },
+ {
+  "anchor": "claude-opus-5",
+  "provider": "venice",
+  "model": "claude-opus-5",
+  "price": [
+   5.0,
+   25.0,
+   0.5
+  ],
+  "state": "ok",
+  "reps": [
+   {
+    "ok": true,
+    "streamed": true,
+    "ttft_ms": 1613,
+    "total_ms": 1629,
+    "out_tokens": 5,
+    "in_tokens": 2705,
+    "cached_tokens": 0,
+    "text": "PONG"
+   },
+   {
+    "ok": true,
+    "streamed": true,
+    "ttft_ms": 884,
+    "total_ms": 894,
+    "out_tokens": 5,
+    "in_tokens": 2705,
+    "cached_tokens": 2685,
+    "text": "PONG"
+   }
+  ],
+  "ttft_p50": 1248,
+  "total_p50": 1262,
+  "out_tokens": 5,
+  "streamed": true,
+  "cached_tokens": 0,
+  "text": "PONG",
+  "error": null
+ },
+ {
+  "anchor": "gemini-3-8-flash",
+  "provider": "openrouter",
+  "model": "google/gemini-3.8-flash",
+  "price": [
+   0.825,
+   4.125,
+   0.0825
+  ],
+  "state": "ok",
+  "reps": [
+   {
+    "ok": true,
+    "streamed": true,
+    "ttft_ms": 1547,
+    "total_ms": 1595,
+    "out_tokens": 12,
+    "in_tokens": 11,
+    "cached_tokens": 0,
+    "text": "**Refining Analysis:**\n\n"
+   },
+   {
+    "ok": true,
+    "streamed": true,
+    "ttft_ms": 2564,
+    "total_ms": 2614,
+    "out_tokens": 13,
+    "in_tokens": 11,
+    "cached_tokens": 0,
+    "text": "**Refining Ideas Now**\n\n"
+   }
+  ],
+  "ttft_p50": 2056,
+  "total_p50": 2104,
+  "out_tokens": 12,
+  "streamed": true,
+  "cached_tokens": 0,
+  "text": "**Refining Analysis:**\n\n",
+  "error": null
+ },
+ {
+  "anchor": "gemini-3-8-flash",
+  "provider": "venice",
+  "model": "gemini-3-8-flash",
+  "price": [
+   0.9375,
+   4.6875,
+   0.0938
+  ],
+  "state": "ok",
+  "reps": [
+   {
+    "ok": true,
+    "streamed": true,
+    "ttft_ms": 2380,
+    "total_ms": 2380,
+    "out_tokens": 29,
+    "in_tokens": 1790,
+    "cached_tokens": null,
+    "text": "**Processing User Input*"
+   },
+   {
+    "ok": true,
+    "streamed": true,
+    "ttft_ms": 2146,
+    "total_ms": 2171,
+    "out_tokens": 28,
+    "in_tokens": 1790,
+    "cached_tokens": null,
+    "text": "**Processing User Reques"
+   }
+  ],
+  "ttft_p50": 2263,
+  "total_p50": 2276,
+  "out_tokens": 29,
+  "streamed": true,
+  "cached_tokens": null,
+  "text": "**Processing User Input*",
+  "error": null
+ },
+ {
+  "anchor": "grok-4-7",
+  "provider": "openrouter",
+  "model": "x-ai/grok-4.7",
+  "price": [
+   2.0,
+   6.0,
+   0.5
+  ],
+  "state": "ok",
+  "reps": [
+   {
+    "ok": true,
+    "streamed": true,
+    "ttft_ms": 2721,
+    "total_ms": 2722,
+    "out_tokens": 37,
+    "in_tokens": 1253,
+    "cached_tokens": 1152,
+    "text": "PONG"
+   },
+   {
+    "ok": true,
+    "streamed": true,
+    "ttft_ms": 2264,
+    "total_ms": 2287,
+    "out_tokens": 41,
+    "in_tokens": 1253,
+    "cached_tokens": 1152,
+    "text": "PONG"
+   }
+  ],
+  "ttft_p50": 2492,
+  "total_p50": 2504,
+  "out_tokens": 37,
+  "streamed": true,
+  "cached_tokens": 1152,
+  "text": "PONG",
+  "error": null
+ },
+ {
+  "anchor": "grok-4-7",
+  "provider": "venice",
+  "model": "grok-4-7",
+  "price": [
+   2.27,
+   6.8,
+   0.57
+  ],
+  "state": "ok",
+  "reps": [
+   {
+    "ok": true,
+    "streamed": true,
+    "ttft_ms": 3799,
+    "total_ms": 25333,
+    "out_tokens": 1638,
+    "in_tokens": 2885,
+    "cached_tokens": 1152,
+    "text": "The user wants a single-"
+   },
+   {
+    "ok": true,
+    "streamed": true,
+    "ttft_ms": 1630,
+    "total_ms": 5887,
+    "out_tokens": 359,
+    "in_tokens": 2885,
+    "cached_tokens": 2816,
+    "text": "The user wants a single-"
+   }
+  ],
+  "ttft_p50": 2714,
+  "total_p50": 15610,
+  "out_tokens": 1638,
+  "streamed": true,
+  "cached_tokens": 1152,
+  "text": "The user wants a single-",
   "error": null
  }
 ]

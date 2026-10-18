@@ -185,6 +185,12 @@
     ],
     "claude-haiku-5-5": [
       {
+        "provider": "openrouter",
+        "model": "anthropic/claude-haiku-5.5",
+        "base_env": "OPENROUTER_BASE_URL",
+        "key_env": "OPENROUTER_API_KEY"
+      },
+      {
         "provider": "opencode-go",
         "model": "claude-haiku-5-5",
         "base_env": "OPENCODE_GO_BASE_URL",
@@ -285,6 +291,62 @@
         "model": "openai/gpt-oss-20b",
         "base_env": "GROQ_BASE_URL",
         "key_env": "GROQ_API_KEY"
+      }
+    ],
+    "claude-sonnet-5-5": [
+      {
+        "provider": "openrouter",
+        "model": "anthropic/claude-sonnet-5.5",
+        "base_env": "OPENROUTER_BASE_URL",
+        "key_env": "OPENROUTER_API_KEY"
+      },
+      {
+        "provider": "venice",
+        "model": "claude-sonnet-5-5",
+        "base_env": "VENICE_BASE_URL",
+        "key_env": "VENICE_API_KEY"
+      }
+    ],
+    "claude-opus-5": [
+      {
+        "provider": "openrouter",
+        "model": "anthropic/claude-opus-5",
+        "base_env": "OPENROUTER_BASE_URL",
+        "key_env": "OPENROUTER_API_KEY"
+      },
+      {
+        "provider": "venice",
+        "model": "claude-opus-5",
+        "base_env": "VENICE_BASE_URL",
+        "key_env": "VENICE_API_KEY"
+      }
+    ],
+    "gemini-3-8-flash": [
+      {
+        "provider": "openrouter",
+        "model": "google/gemini-3.8-flash",
+        "base_env": "OPENROUTER_BASE_URL",
+        "key_env": "OPENROUTER_API_KEY"
+      },
+      {
+        "provider": "venice",
+        "model": "gemini-3-8-flash",
+        "base_env": "VENICE_BASE_URL",
+        "key_env": "VENICE_API_KEY"
+      }
+    ],
+    "grok-4-7": [
+      {
+        "provider": "openrouter",
+        "model": "x-ai/grok-4.7",
+        "base_env": "OPENROUTER_BASE_URL",
+        "key_env": "OPENROUTER_API_KEY"
+      },
+      {
+        "provider": "venice",
+        "model": "grok-4-7",
+        "base_env": "VENICE_BASE_URL",
+        "key_env": "VENICE_API_KEY"
       }
     ]
   },

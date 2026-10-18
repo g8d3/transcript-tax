@@ -73,8 +73,14 @@ out = ["# Provider matrix — the same model, several routes",
        "|---|---|---|---|---|---|---|---|"]
 for r in sorted(ok, key=lambda r: (r["anchor"], r["provider"])):
     pin, pout, pcache = (r["price"] or (None, None, None))
+    # a route that answered in one chunk has no measurable first token: the cell must read "–",
+    # not "None ms" (it did, on the published page, for gemini-3-flash-preview / gemini).
+    def ms(v: object) -> str:
+        return "–" if v is None else f"{v} ms"
+
     out.append(f"| {r['anchor']} | {r['provider']} | {money(pin)} | {money(pout)} | {money(pcache)} | "
-               f"{r['ttft_p50']} ms | {r['total_p50']} ms | {'yes' if r.get('streamed') else 'no'} |")
+               f"{ms(r['ttft_p50'])} | {ms(r['total_p50'])} | "
+               f"{'yes' if r.get('streamed') else 'no'} |")
 if bad:
     out += ["", "## Routes that exist but could not answer", "",
             "| anchor | route | why |", "|---|---|---|"]
