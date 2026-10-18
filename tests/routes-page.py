@@ -123,6 +123,21 @@ def main() -> int:
                   f"({anchor}: {cheap_ms:.0f} ms on {prov} vs {fast_ms:.0f} ms, {ratio:.1f}x)",
                   any(s in body for s in forms) or all(s in body for s in numbers))
             check(f"{path} does not quote the superseded 5.7x", "5.7x" not in body)
+        # the offer page also quotes the largest latency gap we measured (the case where the
+        # prices are almost identical): recompute it and require it there too.
+        worst_lat = None
+        for anchor in sorted({r["anchor"] for r in ok_rows}):
+            timed = [r["ttft_p50"] for r in ok_rows if r["anchor"] == anchor and r["ttft_p50"]]
+            if len(timed) < 2:
+                continue
+            r_lat = max(timed) / min(timed)
+            if worst_lat is None or r_lat > worst_lat[0]:
+                worst_lat = (r_lat, anchor)
+        if worst_lat:
+            r_lat, anchor_lat = worst_lat
+            _, body = fetch(BASE + "/audit/")
+            check(f"/audit/ quotes the largest recomputed latency gap "
+                  f"({anchor_lat}, {r_lat:.1f}x)", f"{r_lat:.1f}x" in body)
 
     # 2. unavailable routes are published as unavailable, with the provider's own status
     for r in bad_rows:
