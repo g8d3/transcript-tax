@@ -17,24 +17,37 @@ import json
 import os
 import re
 import sys
+import urllib.request
 from pathlib import Path
 
 HERE = Path(__file__).resolve().parent
+LIVE = "https://focalis.cc/tps"
 
 
-def _root() -> Path:
-    """Where REPORT.md lives: the repo this test sits in, else the live clone of it (the page
-    actually served), else the working copy the night workers use."""
-    for cand in (os.environ.get("REPO_ROOT"), HERE.parent, "/home/vuos/srv/tps",
-                 "/tmp/night/report-pub"):
+def _root() -> Path | None:
+    """The paper's repository, if this test is inside it or REPO_ROOT names it.
+
+    No machine path is baked in: elsewhere the files are read from the live copy of the
+    repository, so a fresh clone of the published repo can run this test as-is.
+    """
+    for cand in (os.environ.get("REPO_ROOT"), HERE.parent):
         if cand and (Path(cand) / "REPORT.md").exists():
             return Path(cand)
-    return Path(os.environ.get("REPO_ROOT", HERE.parent))
+    return None
+
+
+def read(rel: str, env_override: str | None = None) -> str:
+    """A file from the local clone when there is one, else from the live repository."""
+    if env_override and os.environ.get(env_override):
+        return Path(os.environ[env_override]).read_text(encoding="utf-8")
+    if ROOT and (ROOT / rel).exists():
+        return (ROOT / rel).read_text(encoding="utf-8")
+    req = urllib.request.Request(f"{LIVE}/{rel}", headers={"User-Agent": "focalis-paper-check"})
+    with urllib.request.urlopen(req, timeout=30) as r:
+        return r.read().decode("utf-8", "replace")
 
 
 ROOT = _root()
-REPORT_MD = Path(os.environ.get("REPORT_MD", ROOT / "REPORT.md"))
-MATRIX_MD = Path(os.environ.get("MATRIX_MD", ROOT / "routes" / "MATRIX.md"))
 fails: list[str] = []
 
 
@@ -95,16 +108,15 @@ def paper_rows(md: str) -> list[list[str]]:
 
 
 def main() -> int:
-    if not REPORT_MD.exists():
-        check(f"paper found at {REPORT_MD}", False, "set REPORT_MD")
+    try:
+        report = read("REPORT.md", "REPORT_MD")
+        matrix_md = read("routes/MATRIX.md", "MATRIX_MD")
+    except Exception as e:  # noqa: BLE001 — unreachable artifacts must fail, not pass
+        check("the paper and its route matrix are reachable", False, f"{e}")
         return 1
-    if not MATRIX_MD.exists():
-        check(f"matrix found at {MATRIX_MD}", False, "set MATRIX_MD")
-        return 1
-    report = REPORT_MD.read_text(encoding="utf-8")
     check("the paper has a §10 route section", "## 10." in report)
 
-    matrix = {(c[0], c[1]): c[2] for c in measured_rows(MATRIX_MD.read_text(encoding="utf-8"))}
+    matrix = {(c[0], c[1]): c[2] for c in measured_rows(matrix_md)}
     paper = {(c[0], c[1]): c[2] for c in paper_rows(report)}
     check("the generated matrix has rows", len(matrix) >= 5, f"{len(matrix)} rows")
     check("the paper quotes route rows", len(paper) >= 5, f"{len(paper)} rows")
@@ -128,9 +140,13 @@ def main() -> int:
 
     # the same section also states a probed-route count for the cache probe, which is a second
     # generated artifact: recompute it from cache.json or the sentence drifts when it is re-probed.
-    cache_path = MATRIX_MD.parent / "cache.json"
-    if cache_path.exists():
-        cache = json.loads(cache_path.read_text(encoding="utf-8"))
+    try:
+        cache = json.loads(read("routes/cache.json"))
+        have_cache = True
+    except Exception as e:  # noqa: BLE001
+        check("cache.json found for the §10 cache sentence", False, str(e))
+        cache, have_cache, hits = [], False, 0
+    if have_cache:
         readable = []
         for r in cache:
             first, second = r.get("first") or {}, r.get("second") or {}
@@ -147,27 +163,26 @@ def main() -> int:
         check(f"§10 cache sentence: hit count matches cache.json ({hits} hits, "
               f"{len(readable) - hits} misses)", f"{hits} reported a hit" in report,
               f"cache.json says {hits} hits, {len(readable) - hits} misses")
-    else:
-        check("cache.json found for the §10 cache sentence", False, str(cache_path))
 
     # SECCIÓN 10's own summary is republished as `article.html`, the single artifact people
     # share. If the report is edited and the page is not regenerated, the most-shared copy is
     # silently stale — which is how the previous 37% sentence survived. Check the HTML carries
     # the same figures the report does.
-    article = ROOT / "article.html"
-    if article.exists():
-        html = article.read_text(encoding="utf-8")
+    try:
+        html = read("article.html")
+    except Exception as e:  # noqa: BLE001
+        check("article.html found for the staleness check", False, str(e))
+        html = None
+    if html is not None:
         if m:
             same_counts = (f"{m.group(1)} base models" in html
                            and f"{m.group(2)} route/model pairs" in html)
             check("article.html carries the same §10 counts as the report", same_counts,
                   "" if same_counts else "regenerate with build_article.py")
-        if cache_path.exists():
-            check("article.html carries the same cache-probe count as the report",
-                  f"{hits} reported a hit" in html,
-                  f"report says '{hits} reported a hit' and article.html does not")
-    else:
-        check("article.html found for the staleness check", False, str(article))
+        if have_cache:
+            same_hit = f"{hits} reported a hit" in html
+            check("article.html carries the same cache-probe count as the report", same_hit,
+                  "" if same_hit else f"report says '{hits} reported a hit'")
 
     print(f"\n{len(fails)} failing check(s)")
     return 1 if fails else 0

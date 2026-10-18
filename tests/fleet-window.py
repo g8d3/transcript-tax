@@ -25,7 +25,9 @@ import urllib.request
 from pathlib import Path
 
 LIVE = "https://focalis.cc"
-CANDIDATES = ("/home/vuos/srv/tps", "/tmp/night/report-pub")
+WINDOW_NAME = "fleet-turns-2026-10-17.jsonl"
+WINDOW_URL = f"{LIVE}/tps/fleet/{WINDOW_NAME}"
+HERE = Path(__file__).resolve().parent
 fails: list[str] = []
 
 
@@ -35,16 +37,19 @@ def check(name: str, ok: bool, extra: str = "") -> None:
         fails.append(name)
 
 
-def find_window() -> Path | None:
+def find_window() -> tuple[str, Path | None]:
+    """The published window: the repo we are inside, else the live copy of it.
+
+    No machine path is baked in — the pack runs these tests from anywhere, and the paper's
+    repository must not advertise this machine's layout.
+    """
     if len(sys.argv) > 1:
-        return Path(sys.argv[1])
-    for repo in (os.environ.get("REPO_ROOT"), *CANDIDATES):
-        if not repo:
-            continue
-        found = sorted(Path(repo, "fleet").glob("fleet-turns-*.jsonl"))
-        if found:
-            return found[-1]
-    return None
+        return str(sys.argv[1]), Path(sys.argv[1])
+    for root in (os.environ.get("REPO_ROOT"), HERE.parent):
+        if root and Path(root, "fleet", WINDOW_NAME).exists():
+            p = Path(root, "fleet", WINDOW_NAME)
+            return str(p), p
+    return WINDOW_URL, None
 
 
 def pct(values: list[float], p: float) -> float:
@@ -58,13 +63,21 @@ def get(url: str) -> str:
         return r.read().decode("utf-8", "replace")
 
 
-window = find_window()
-if not window or not window.exists():
-    check("a published fleet window exists to check against", False, str(window))
+def fetch_text(url: str) -> str:
+    req = urllib.request.Request(url, headers={"User-Agent": "focalis-fleet-check"})
+    with urllib.request.urlopen(req, timeout=30) as r:
+        return r.read().decode("utf-8", "replace")
+
+
+where, local = find_window()
+try:
+    raw = local.read_text() if local else fetch_text(where)
+except Exception as e:  # noqa: BLE001 — a missing window must fail loudly, not pass
+    check("a published fleet window exists to check against", False, f"{where}: {e}")
     print(f"\n{len(fails)} failing check(s)")
     sys.exit(1)
 
-rows = [json.loads(line) for line in window.read_text().splitlines() if line.strip()]
+rows = [json.loads(line) for line in raw.splitlines() if line.strip()]
 wall = [r["turnMsTotal"] for r in rows]
 wasted = [r for r in rows if r["outcome"] != "completed" or r["output"] == 0]
 n = len(rows)
@@ -73,7 +86,7 @@ mean_s = statistics.mean(wall) / 1000
 waste_rate = round(len(wasted) / n * 100, 1)
 errors = sum(1 for r in rows if r["outcome"] == "error")
 aborted = sum(1 for r in rows if r["outcome"] == "aborted")
-print(f"published window: {window} — {n} turns, median {p50_s:.1f} s, mean {mean_s:.1f} s, "
+print(f"published window: {where} — {n} turns, median {p50_s:.1f} s, mean {mean_s:.1f} s, "
       f"{len(wasted)} wasted ({waste_rate}%), {errors} errors + {aborted} aborted")
 
 check("the window is the 500-turn one the pages describe", n == 500, f"n={n}")

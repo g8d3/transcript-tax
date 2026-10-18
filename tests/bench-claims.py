@@ -21,7 +21,7 @@ import urllib.request
 from pathlib import Path
 
 LIVE = "https://focalis.cc"
-CANDIDATES = ("/home/vuos/srv/tps", "/tmp/night/report-pub", "/tmp/night")
+HERE = Path(__file__).resolve().parent
 fails: list[str] = []
 
 
@@ -31,28 +31,40 @@ def check(name: str, ok: bool, extra: str = "") -> None:
         fails.append(name)
 
 
-def find_csv() -> Path | None:
+def find_csv() -> tuple[str, Path | None]:
+    """bench.csv from the repo we are inside, else from the live copy of it.
+
+    No machine path is baked in: the paper's repository must not advertise this machine's
+    layout, and the test has to run on a fresh clone.
+    """
     if len(sys.argv) > 1:
-        return Path(sys.argv[1])
-    for root in (os.environ.get("REPO_ROOT"), *CANDIDATES):
+        return str(sys.argv[1]), Path(sys.argv[1])
+    for root in (os.environ.get("REPO_ROOT"), HERE.parent):
         if root and Path(root, "bench.csv").exists():
-            return Path(root, "bench.csv")
-    return None
+            return str(Path(root, "bench.csv")), Path(root, "bench.csv")
+    return f"{LIVE}/tps/bench.csv", None
 
 
-def get(url: str) -> str:
+def fetch_text(url: str) -> str:
     req = urllib.request.Request(url, headers={"User-Agent": "focalis-bench-check"})
-    with urllib.request.urlopen(req, timeout=25) as r:
+    with urllib.request.urlopen(req, timeout=30) as r:
         return r.read().decode("utf-8", "replace")
 
 
-src = find_csv()
-if not src:
-    check("bench.csv exists to check against", False)
+def get(url: str) -> str:
+    return fetch_text(url)
+
+
+where, local = find_csv()
+try:
+    text_csv = local.read_text() if local else fetch_text(where)
+except Exception as e:  # noqa: BLE001 — a missing series must fail loudly, not pass
+    check("bench.csv exists to check against", False, f"{where}: {e}")
     print(f"\n{len(fails)} failing check(s)")
     sys.exit(1)
 
-rows = [r for r in csv.DictReader(src.open())]
+import io
+rows = [r for r in csv.DictReader(io.StringIO(text_csv))]
 steady = [r for r in rows
           if not r.get("notes", "").startswith("ingest") and r.get("wall_s", "").strip()
           and r.get("run", "").isdigit() and 1 <= int(r["run"]) <= 10]
@@ -61,7 +73,7 @@ for r in steady:
     cells.setdefault((r["harness"], r["size"]), []).append(float(r["wall_s"]))
 medians = {k: statistics.median(v) for k, v in cells.items()}
 lo, hi = min(medians.values()), max(medians.values())
-print(f"{src}: {len(rows)} rows, {len(cells)} cells, per-cell medians "
+print(f"{where}: {len(rows)} rows, {len(cells)} cells, per-cell medians "
       f"{lo:.2f}–{hi:.2f} s across {len({h for h, _ in cells})} harnesses")
 
 check("the published series has the 65 runs the pages describe", len(rows) == 65, f"{len(rows)} rows")
@@ -82,9 +94,14 @@ for path in ("/", "/audit/"):
         check("the home quotes the recomputed overall median (3.14 s)",
               f"{overall:.2f} s" in body or f"{overall:.2f}" in body)
 
-report = Path(os.environ.get("REPO_ROOT") or CANDIDATES[0], "REPORT.md")
-if report.exists():
-    text = report.read_text()
+report_local = next((Path(r, "REPORT.md") for r in (os.environ.get("REPO_ROOT"), HERE.parent)
+                     if r and Path(r, "REPORT.md").exists()), None)
+try:
+    text = report_local.read_text() if report_local else fetch_text(f"{LIVE}/tps/REPORT.md")
+except Exception as e:  # noqa: BLE001
+    check("the paper is reachable to check against", False, str(e))
+    text = ""
+if text:
     check("the paper's claim 1 quotes the same range", any(f in text for f in forms),
           f"looked for {forms}")
     # and its six per-cell medians, which is where a wrong figure hides: claim 1 said zero-S

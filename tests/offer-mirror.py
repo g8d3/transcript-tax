@@ -31,7 +31,11 @@ from pathlib import Path
 
 LIVE = "https://focalis.cc"
 PAGES = "https://g8d3.github.io/transcript-tax"
-CANDIDATE_REPOS = ("/home/vuos/srv/tps", "/tmp/night/report-pub")
+HERE = Path(__file__).resolve().parent
+# the clone to check is the one we are inside, or one named by the environment — never a
+# machine path baked into the published repository
+CANDIDATE_REPOS = tuple(p for p in (os.environ.get("TRANSCRIPT_TAX_REPO"), os.environ.get("REPO_ROOT"),
+                                    str(HERE.parent)) if p)
 
 # (name, url-or-path, required-substring, canonical-href, forbidden copy markers)
 MIRRORS: list[tuple[str, str, str, str, list[str]]] = [
