@@ -69,11 +69,18 @@ check("it covers the three harnesses the pages describe",
       len({h for h, _ in cells}) == 3, str(sorted({h for h, _ in cells})))
 
 forms = (f"{lo:.1f}\u2013{hi:.1f}", f"{lo:.1f}-{hi:.1f}", f"{lo:.1f} to {hi:.1f}")
+overall = statistics.median([v for cell in cells.values() for v in cell])
+check("the overall no-op median is the published 3.14 s", f"{overall:.2f}" == "3.14", f"{overall:.2f}")
 for path in ("/", "/audit/"):
     body = get(LIVE + path)
     check(f"{path} quotes the recomputed no-op range ({forms[0]} s)",
           any(f in body for f in forms), f"looked for {forms}")
     check(f"{path} quotes the run count ({len(rows)} runs)", f"{len(rows)} runs" in body)
+    check(f"{path} quotes the 1,000-turn no-op overhead in minutes ({overall * 1000 / 60:.0f} min)",
+          f"{overall * 1000 / 60:.0f} min" in body, f"median {overall:.2f} s x 1000")
+    if path == "/":
+        check("the home quotes the recomputed overall median (3.14 s)",
+              f"{overall:.2f} s" in body or f"{overall:.2f}" in body)
 
 report = Path(os.environ.get("REPO_ROOT") or CANDIDATES[0], "REPORT.md")
 if report.exists():
