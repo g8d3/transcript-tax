@@ -4,6 +4,7 @@
 
 | what | where |
 |---|---|
+| front page (landing; the 3D game it replaced is still at /world/) | https://focalis.cc/ |
 | paper (hosted) | https://focalis.cc/tps/ (+ https://g8d3.github.io/transcript-tax/) |
 | repo (code + CSV + figures, MIT / CC BY 4.0) | https://github.com/g8d3/transcript-tax |
 | offer page (prices, objections, contact) | https://focalis.cc/audit/ |
@@ -18,7 +19,8 @@ copy unless it is (a) recomputed by a script in this repository, (b) explicitly 
 as a prior result with its n, or (c) explicitly labelled as an assumption.
 
 **How to read the `where` column:** `landing N` = section N of the offer page at
-<https://focalis.cc/audit/>; `report §N` = section N of `REPORT.md`; `intake` = the intake
+<https://focalis.cc/audit/>; `homepage` = the front page at <https://focalis.cc/> (a landing
+since 2026-10-18 03:5xZ, previously a 3D game); `report §N` = section N of `REPORT.md`; `intake` = the intake
 page at <https://focalis.cc/audit/intake/>; file:line references are to the monitor's
 source at <https://github.com/g8d3/pi-web-tps-monitor>.
 
@@ -39,9 +41,9 @@ series, not in this dataset · **ASSUMPTION** = a parameter, not a measurement �
 | cache state predicts wall / "miss rate 5 in 10" | landing 1, thread 4, objections | **not supported**: cache_tok 9216 → walls 16.55, 2.94, 3.18; 9344 → 20.00, 6.38, 2.83; only 1 of 4 slow runs reported 0 cached | **FIXED** (report §6; copy now reports the negative result) |
 | 1,000 no-op turns ≈ 50 min | landing 1, thread 5 | median floor 3.14 s × 1000 = 52.3 min | **OK** |
 | 10 loops × 100 turns/day = ~8 wall-hours/day | landing 1 | wrong by ~9x: 1000 × 3.14 s = 52 min | **FIXED** (now ~52 min no-op, ~2.4 h real work) |
-| 500 live turns: 8.7 s wall, 34% model / 29% tools / 37% unaccounted | landing 1, thread 5 | fleet-scan, 500 rows, own monitor logs | **OK** |
-| unaccounted floor p50 1.5–2.5 s per model, does not track the model | landing 1 | per-model p50 1470/2129/2524 ms vs llm p50 1 ms–9.1 s | **OK** |
-| p90 3.4–5.9 s, worst turns 85 s (128 s on a broken provider) | landing 1 | fleet-scan by-model table | **OK** |
+| 500 live turns: 8.7 s wall, 34% model / 29% tools / 37% unaccounted | landing 1, homepage, thread 5 | fleet-scan, 500 rows, own monitor logs. **"37% unaccounted" is a pre-v23 reading**: with `preResponseMs` measured (report §9, same quantity on a published window) it is 52% *provider round-trip* and the residual is p50 4 ms — the paper says a dashboard still reporting 37% today is reporting its own blind spot. The homepage card now says this; the number is kept because it is what the older method produced | **OK, with the §9 reading stated wherever it appears** |
+| unaccounted floor p50 1.5–2.5 s per model, does not track the model | landing 1 | per-model p50 1470/2129/2524 ms vs llm p50 1 ms–9.1 s (pre-v23 reading: that floor is the provider round-trip, §9) | **OK** |
+| p90 3.4–5.9 s, worst turns 85 s (128 s on a broken provider) | landing 1 | fleet-scan by-model table; the p90 here is the pre-v23 "unaccounted", so it is provider wait (§9). The homepage no longer quotes it as a residual | **OK** |
 | 4.4% of turns produced nothing | landing 1, objections | 22/500 (21 error, 1 aborted) | **OK** |
 | waste has no dollar figure | landing 1 | all 21 errors ran on an unpriced model | **OK** |
 | audit pays for itself above ~$19k/yr token spend | pricing, landing 3, objections | `roi.py --sweep` at 35% input cut, 70% cache hit | **DERIVED** (from assumptions) |
@@ -92,7 +94,7 @@ them.
 | "~100 KB default compaction gate" | pricing Tier 2 | heuristic, now labelled as one in the same sentence as the §8 retraction | **FIXED** |
 | the seller is Focalis S.A.S. (Bogotá) and the audit is sold on this site | landing "Who we are", /company, /terms §2 | the landing used to say "Nova Radar — a risk radar for Solana … real trades carrying on-chain signatures", a different seller identity; /terms and /refund said focalis.cc "does not itself sell" and "does not charge". All four rewritten 2026-10-18 (`tests/company-pages.py` asserts it) | **FIXED** |
 | the 4 prices on /company are the published prices | /company | `tests/company-pages.py` parses `pricing.md` and asserts each figure appears; one source, no drift | **OK** |
-| payment is collected by a merchant of record and card data never reaches us | /company, /terms §2, /privacy §4, landing "Next step" | statement about the intended flow; **checkout is not live yet** and no provider account exists, so this is the design we are applying for, not a running system | **ASSUMPTION** (flagged on purpose) |
+| payment is collected by a merchant of record and card data never reaches us | /company, /terms §2, /privacy §4, landing "Next step", homepage | the pages now say it in the conditional ("will be handled … once it is switched on", "once checkout is enabled", "when you pay by card") and the offer page names the current path instead ("card checkout is not live yet — the merchant-of-record application is in progress — so today we invoice directly: bank transfer or stablecoin"). Dodo compliance replied 2026-10-18 01:21Z that Colombia is eligible and asked for the product information form, so the flow is still the design we are applying for, not a running system | **OK (conditional wording, verified 2026-10-18)** |
 | refund promises on /refunds match the offer | /refunds §2 vs pricing Tier 3 | "implementation half is refunded" if the 20–50% target is missed on the re-run, "no lever → the implementation half is never charged" (pricing.md), "cancel any month" (retainer) | **OK** |
 | the same model costs up to 20.5x more on one route than another | /audit/routes/ | recomputed by `tests/routes-page.py` from `routes/matrix.json`: qwen3.8-27b $0.039/M (chutes) vs $0.80/M (groq) input, from each provider's own `/models` metadata | **OK** |
 | the cheapest route is not the fastest | /audit/routes/ | same source: qwen3.8-27b first token 318 ms (groq) vs 1808 ms (dashscope), 5.7x; deepseek-v4.1-flash 588 ms (openrouter) vs 1404 ms (opencode-go), 2.4x | **OK** |
