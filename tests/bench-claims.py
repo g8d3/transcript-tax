@@ -75,7 +75,7 @@ for path in ("/", "/audit/"):
           any(f in body for f in forms), f"looked for {forms}")
     check(f"{path} quotes the run count ({len(rows)} runs)", f"{len(rows)} runs" in body)
 
-report = Path(CANDIDATES[0], "REPORT.md")
+report = Path(os.environ.get("REPO_ROOT") or CANDIDATES[0], "REPORT.md")
 if report.exists():
     text = report.read_text()
     check("the paper's claim 1 quotes the same range", any(f in text for f in forms),
