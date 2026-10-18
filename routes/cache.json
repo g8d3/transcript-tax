@@ -217,5 +217,299 @@
   "hit": true,
   "cached_share": 0.981,
   "wall_delta_ms": -121
+ },
+ {
+  "anchor": "deepseek-v3.2",
+  "provider": "openrouter",
+  "model": "deepseek/deepseek-v3.2",
+  "first": {
+   "ok": true,
+   "ttft_ms": 2008,
+   "total_ms": 2037,
+   "in_tokens": 4102,
+   "cached_tokens": 0,
+   "out_tokens": 3
+  },
+  "second": {
+   "ok": true,
+   "ttft_ms": 2285,
+   "total_ms": 2341,
+   "in_tokens": 4102,
+   "cached_tokens": 0,
+   "out_tokens": 3
+  },
+  "state": "ok",
+  "hit": false,
+  "cached_share": 0.0,
+  "wall_delta_ms": 304
+ },
+ {
+  "anchor": "deepseek-v3.2",
+  "provider": "chutes",
+  "model": "deepseek-ai/DeepSeek-V3.2-TEE",
+  "first": {
+   "ok": true,
+   "ttft_ms": 2698,
+   "total_ms": 2914,
+   "in_tokens": 4096,
+   "cached_tokens": null,
+   "out_tokens": 3
+  },
+  "second": {
+   "ok": true,
+   "ttft_ms": 2400,
+   "total_ms": 2601,
+   "in_tokens": 4096,
+   "cached_tokens": null,
+   "out_tokens": 3
+  },
+  "state": "ok",
+  "hit": false,
+  "cached_share": 0.0,
+  "wall_delta_ms": -313
+ },
+ {
+  "anchor": "deepseek-v4-flash-0731",
+  "provider": "openrouter",
+  "model": "deepseek/deepseek-v4-flash-0731",
+  "first": {
+   "ok": true,
+   "ttft_ms": null,
+   "total_ms": 2398,
+   "in_tokens": 4175,
+   "cached_tokens": 0,
+   "out_tokens": 16
+  },
+  "second": {
+   "ok": true,
+   "ttft_ms": null,
+   "total_ms": 1254,
+   "in_tokens": 4175,
+   "cached_tokens": 0,
+   "out_tokens": 16
+  },
+  "state": "ok",
+  "hit": false,
+  "cached_share": 0.0,
+  "wall_delta_ms": -1144
+ },
+ {
+  "anchor": "deepseek-v4-flash-0731",
+  "provider": "chutes",
+  "model": "deepseek-ai/DeepSeek-V4-Flash-0731-TEE",
+  "first": {
+   "ok": true,
+   "ttft_ms": 1645,
+   "total_ms": 1645,
+   "in_tokens": 4096,
+   "cached_tokens": null,
+   "out_tokens": 3
+  },
+  "second": {
+   "ok": true,
+   "ttft_ms": 1677,
+   "total_ms": 1677,
+   "in_tokens": 4096,
+   "cached_tokens": 3840,
+   "out_tokens": 3
+  },
+  "state": "ok",
+  "hit": true,
+  "cached_share": 0.938,
+  "wall_delta_ms": 32
+ },
+ {
+  "anchor": "glm-5.1",
+  "provider": "openrouter",
+  "model": "z-ai/glm-5.1",
+  "first": {
+   "ok": true,
+   "ttft_ms": null,
+   "total_ms": 2082,
+   "in_tokens": 4104,
+   "cached_tokens": 0,
+   "out_tokens": 16
+  },
+  "second": {
+   "ok": true,
+   "ttft_ms": null,
+   "total_ms": 5860,
+   "in_tokens": 4097,
+   "cached_tokens": 0,
+   "out_tokens": 16
+  },
+  "state": "ok",
+  "hit": false,
+  "cached_share": 0.0,
+  "wall_delta_ms": 3778
+ },
+ {
+  "anchor": "glm-5.1",
+  "provider": "chutes",
+  "model": "zai-org/GLM-5.1-TEE",
+  "first": {
+   "ok": true,
+   "ttft_ms": 10445,
+   "total_ms": 12885,
+   "in_tokens": 4097,
+   "cached_tokens": null,
+   "out_tokens": 16
+  },
+  "second": {
+   "ok": true,
+   "ttft_ms": 2016,
+   "total_ms": 2408,
+   "in_tokens": 4097,
+   "cached_tokens": 4096,
+   "out_tokens": 16
+  },
+  "state": "ok",
+  "hit": true,
+  "cached_share": 1.0,
+  "wall_delta_ms": -10477
+ },
+ {
+  "anchor": "kimi-k2.6",
+  "provider": "openrouter",
+  "model": "moonshotai/kimi-k2.6",
+  "first": {
+   "ok": true,
+   "ttft_ms": null,
+   "total_ms": 739,
+   "in_tokens": 4100,
+   "cached_tokens": 0,
+   "out_tokens": 16
+  },
+  "second": {
+   "ok": true,
+   "ttft_ms": null,
+   "total_ms": 457,
+   "in_tokens": 4100,
+   "cached_tokens": 4064,
+   "out_tokens": 16
+  },
+  "state": "ok",
+  "hit": true,
+  "cached_share": 0.991,
+  "wall_delta_ms": -282
+ },
+ {
+  "anchor": "kimi-k2.6",
+  "provider": "chutes",
+  "model": "moonshotai/Kimi-K2.6-TEE",
+  "first": {
+   "ok": true,
+   "ttft_ms": 1108,
+   "total_ms": 1576,
+   "in_tokens": 4100,
+   "cached_tokens": 0,
+   "out_tokens": 16
+  },
+  "second": {
+   "ok": true,
+   "ttft_ms": 749,
+   "total_ms": 977,
+   "in_tokens": 4100,
+   "cached_tokens": 4096,
+   "out_tokens": 16
+  },
+  "state": "ok",
+  "hit": true,
+  "cached_share": 0.999,
+  "wall_delta_ms": -599
+ },
+ {
+  "anchor": "qwen3.6-27b",
+  "provider": "openrouter",
+  "model": "qwen/qwen3.6-27b",
+  "first": {
+   "ok": true,
+   "ttft_ms": null,
+   "total_ms": 951,
+   "in_tokens": 4102,
+   "cached_tokens": 0,
+   "out_tokens": 16
+  },
+  "second": {
+   "ok": true,
+   "ttft_ms": null,
+   "total_ms": 686,
+   "in_tokens": 4102,
+   "cached_tokens": 3136,
+   "out_tokens": 16
+  },
+  "state": "ok",
+  "hit": true,
+  "cached_share": 0.765,
+  "wall_delta_ms": -265
+ },
+ {
+  "anchor": "qwen3.6-27b",
+  "provider": "chutes",
+  "model": "Qwen/Qwen3.6-27B-TEE",
+  "first": {
+   "ok": true,
+   "ttft_ms": 1429,
+   "total_ms": 1836,
+   "in_tokens": 4102,
+   "cached_tokens": null,
+   "out_tokens": 16
+  },
+  "second": {
+   "ok": true,
+   "ttft_ms": 1247,
+   "total_ms": 1635,
+   "in_tokens": 4102,
+   "cached_tokens": 4096,
+   "out_tokens": 16
+  },
+  "state": "ok",
+  "hit": true,
+  "cached_share": 0.999,
+  "wall_delta_ms": -201
+ },
+ {
+  "anchor": "gpt-oss-20b",
+  "provider": "openrouter",
+  "model": "openai/gpt-oss-20b",
+  "first": {
+   "ok": true,
+   "ttft_ms": null,
+   "total_ms": 1505,
+   "in_tokens": 4159,
+   "cached_tokens": 0,
+   "out_tokens": 16
+  },
+  "second": {
+   "ok": true,
+   "ttft_ms": null,
+   "total_ms": 1121,
+   "in_tokens": 4159,
+   "cached_tokens": 0,
+   "out_tokens": 16
+  },
+  "state": "ok",
+  "hit": false,
+  "cached_share": 0.0,
+  "wall_delta_ms": -384
+ },
+ {
+  "anchor": "gpt-oss-20b",
+  "provider": "groq",
+  "model": "openai/gpt-oss-20b",
+  "first": {
+   "ok": true,
+   "ttft_ms": null,
+   "total_ms": 587,
+   "in_tokens": 4163,
+   "cached_tokens": null,
+   "out_tokens": 16
+  },
+  "second": {
+   "ok": false,
+   "error": "http 429: {\"error\":{\"message\":\"Rate limit reached for model `openai/gpt-oss-20b` in organization `org_01jjmddd22fqyrgespq11mzent` "
+  },
+  "state": "failed",
+  "error": "http 429: {\"error\":{\"message\":\"Rate limit reached for model `openai/gpt-oss-20b` in organization `org_01jjmddd22fqyrgespq11mzent` "
  }
 ]

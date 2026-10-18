@@ -682,11 +682,107 @@ money, so it is stated rather than resolved.</p>
 <td>98.1%</td>
 <td>1039 → 918 ms</td>
 </tr>
+<tr>
+<td>deepseek-v3.2</td>
+<td>openrouter</td>
+<td>4102</td>
+<td>0</td>
+<td>0.0%</td>
+<td>2037 → 2341 ms</td>
+</tr>
+<tr>
+<td>deepseek-v3.2</td>
+<td>chutes</td>
+<td>4096</td>
+<td>None</td>
+<td>0.0%</td>
+<td>2914 → 2601 ms</td>
+</tr>
+<tr>
+<td>deepseek-v4-flash-0731</td>
+<td>openrouter</td>
+<td>4175</td>
+<td>0</td>
+<td>0.0%</td>
+<td>2398 → 1254 ms</td>
+</tr>
+<tr>
+<td>deepseek-v4-flash-0731</td>
+<td>chutes</td>
+<td>4096</td>
+<td>3840</td>
+<td>93.8%</td>
+<td>1645 → 1677 ms</td>
+</tr>
+<tr>
+<td>glm-5.1</td>
+<td>openrouter</td>
+<td>4097</td>
+<td>0</td>
+<td>0.0%</td>
+<td>2082 → 5860 ms</td>
+</tr>
+<tr>
+<td>glm-5.1</td>
+<td>chutes</td>
+<td>4097</td>
+<td>4096</td>
+<td>100.0%</td>
+<td>12885 → 2408 ms</td>
+</tr>
+<tr>
+<td>kimi-k2.6</td>
+<td>openrouter</td>
+<td>4100</td>
+<td>4064</td>
+<td>99.1%</td>
+<td>739 → 457 ms</td>
+</tr>
+<tr>
+<td>kimi-k2.6</td>
+<td>chutes</td>
+<td>4100</td>
+<td>4096</td>
+<td>99.9%</td>
+<td>1576 → 977 ms</td>
+</tr>
+<tr>
+<td>qwen3.6-27b</td>
+<td>openrouter</td>
+<td>4102</td>
+<td>3136</td>
+<td>76.5%</td>
+<td>951 → 686 ms</td>
+</tr>
+<tr>
+<td>qwen3.6-27b</td>
+<td>chutes</td>
+<td>4102</td>
+<td>4096</td>
+<td>99.9%</td>
+<td>1836 → 1635 ms</td>
+</tr>
+<tr>
+<td>gpt-oss-20b</td>
+<td>openrouter</td>
+<td>4159</td>
+<td>0</td>
+<td>0.0%</td>
+<td>1505 → 1121 ms</td>
+</tr>
+<tr>
+<td>gpt-oss-20b</td>
+<td>groq</td>
+<td>–</td>
+<td>–</td>
+<td>–</td>
+<td>http 429: {"error":{"message":"Rate limit reached for model</td>
+</tr>
 </tbody>
 </table>
-<p><strong>6 of 8 probed routes reported a cache hit</strong> on the
-second call. The ones that did not: <code>opencode-go</code> on deepseek-v4.1-flash, <code>openrouter</code> on gemini-3-flash-preview — for 2 of them the same base model reported a hit on a different route, so caching is a property of the route as much as of the model. A route that does not report the field looks exactly like one that does not cache, which is why the audit measures the client's own loops instead of trusting a vendor table.
- (1 route(s) could not answer: <code>groq</code>.)</p>
+<p><strong>12 of 19 probed routes reported a cache hit</strong> on the
+second call. The ones that did not: <code>opencode-go</code> on deepseek-v4.1-flash, <code>openrouter</code> on gemini-3-flash-preview, <code>openrouter</code> on deepseek-v3.2, <code>chutes</code> on deepseek-v3.2, <code>openrouter</code> on deepseek-v4-flash-0731, <code>openrouter</code> on glm-5.1, <code>openrouter</code> on gpt-oss-20b — for 4 of them the same base model reported a hit on a different route, so caching is a property of the route as much as of the model. A route that does not report the field looks exactly like one that does not cache, which is why the audit measures the client's own loops instead of trusting a vendor table.
+ (2 route(s) could not answer: <code>groq</code>, <code>groq</code>.)</p>
 <p><strong>Limits.</strong> n=2 per route on one machine, one prompt (a one-word reply), so this is a
 route-dispersion probe, not a benchmark; <code>-TEE</code> variants are the same base model served under a
 different deployment, which may include a different quantization — we label them by their own id

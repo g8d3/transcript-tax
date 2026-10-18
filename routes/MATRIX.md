@@ -149,10 +149,22 @@ money, so it is stated rather than resolved.
 | gemini-3-flash-preview | venice | 6104 | 1772 | 29.0% | 1612 → 1672 ms |
 | gemini-3-flash-preview | openrouter | 4333 | 0 | 0.0% | 1846 → 1295 ms |
 | kimi-k3 | openrouter | 4177 | 4096 | 98.1% | 1039 → 918 ms |
+| deepseek-v3.2 | openrouter | 4102 | 0 | 0.0% | 2037 → 2341 ms |
+| deepseek-v3.2 | chutes | 4096 | None | 0.0% | 2914 → 2601 ms |
+| deepseek-v4-flash-0731 | openrouter | 4175 | 0 | 0.0% | 2398 → 1254 ms |
+| deepseek-v4-flash-0731 | chutes | 4096 | 3840 | 93.8% | 1645 → 1677 ms |
+| glm-5.1 | openrouter | 4097 | 0 | 0.0% | 2082 → 5860 ms |
+| glm-5.1 | chutes | 4097 | 4096 | 100.0% | 12885 → 2408 ms |
+| kimi-k2.6 | openrouter | 4100 | 4064 | 99.1% | 739 → 457 ms |
+| kimi-k2.6 | chutes | 4100 | 4096 | 99.9% | 1576 → 977 ms |
+| qwen3.6-27b | openrouter | 4102 | 3136 | 76.5% | 951 → 686 ms |
+| qwen3.6-27b | chutes | 4102 | 4096 | 99.9% | 1836 → 1635 ms |
+| gpt-oss-20b | openrouter | 4159 | 0 | 0.0% | 1505 → 1121 ms |
+| gpt-oss-20b | groq | – | – | – | http 429: {"error":{"message":"Rate limit reached for model  |
 
-**6 of 8 probed routes reported a cache hit** on the
-second call. The ones that did not: `opencode-go` on deepseek-v4.1-flash, `openrouter` on gemini-3-flash-preview — for 2 of them the same base model reported a hit on a different route, so caching is a property of the route as much as of the model. A route that does not report the field looks exactly like one that does not cache, which is why the audit measures the client's own loops instead of trusting a vendor table.
- (1 route(s) could not answer: `groq`.)
+**12 of 19 probed routes reported a cache hit** on the
+second call. The ones that did not: `opencode-go` on deepseek-v4.1-flash, `openrouter` on gemini-3-flash-preview, `openrouter` on deepseek-v3.2, `chutes` on deepseek-v3.2, `openrouter` on deepseek-v4-flash-0731, `openrouter` on glm-5.1, `openrouter` on gpt-oss-20b — for 4 of them the same base model reported a hit on a different route, so caching is a property of the route as much as of the model. A route that does not report the field looks exactly like one that does not cache, which is why the audit measures the client's own loops instead of trusting a vendor table.
+ (2 route(s) could not answer: `groq`, `groq`.)
 
 
 **Limits.** n=2 per route on one machine, one prompt (a one-word reply), so this is a
