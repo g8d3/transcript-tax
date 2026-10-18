@@ -167,6 +167,18 @@ def main() -> int:
               bool(stated) and words.get(stated.group(1).lower()) == tiles,
               f"says {stated.group(1) if stated else '?'}, shows {tiles}")
 
+        # 1e. the regression gate is a script we ship, so the pages that describe its thresholds
+        #     have to use the script's own numbers. The home said "+20% wall or 5% waste" while the
+        #     offer said the retainer alerts at "20%" for three metrics — two mechanisms, one number.
+        sys.path.insert(0, str(PACK))
+        import regression_gate as gate  # noqa: E402  (the shipped script, one source)
+        wall_pct = f"+{round((gate.WALL_FACTOR - 1) * 100)}%"
+        waste_pct = f"{gate.WASTED_RATE_LIMIT:g}%"
+        check(f"the home states the gate's real thresholds ({wall_pct} wall, {waste_pct} waste)",
+              f"{wall_pct} wall or {waste_pct} waste" in home)
+        check(f"the offer states the gate's real thresholds too ({wall_pct} wall, {waste_pct})",
+              f"{wall_pct} wall or {waste_pct}" in offer)
+
         # 2. the private address must not be served from any public asset either
         if PRIVATE_ADDR:
             for asset in ("/assets/js/site-config.js", "/audit/", "/audit/preview/", "/tps/"):
