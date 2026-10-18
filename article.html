@@ -1047,9 +1047,10 @@ from them by <code>routes/render_matrix.py</code>, and <code>routes/matrix.py</c
   takes <strong>1.54x</strong> and <strong>1.53x</strong> longer on one of them.</li>
 </ul>
 <p>The cache probe (two identical ~4k-token prompts per route, reading the provider's own
-<code>cached_tokens</code>) could read 18 of the 21 routes it tried: <strong>12 reported a hit, 6 did not</strong>, two
-gateways answered <code>429</code> and one does not report the field. One of the misses is the gateway our own
-fleet runs through, while the same model reported a 99 % hit on a different route.
+<code>cached_tokens</code>) could read 29 of the 34 routes it tried: <strong>22 reported a hit, 7 did not</strong>, three
+gateways answered <code>429</code> and two do not report the field. The misses are not a property of the
+model: one is the gateway our own fleet runs through while the same model reports a 99 % hit on a
+different route, and <code>gpt-4o</code> reports <strong>99.9 % on one route and 0 % on another</strong>.
 A miss in a two-call probe is <strong>not</strong> proof that caching is off, and a provider that does not
 report the field looks exactly like one that does not cache — which is why the audit measures a
 client's own loops instead of trusting a vendor table.</p>

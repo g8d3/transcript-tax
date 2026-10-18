@@ -181,17 +181,24 @@ hits = [r for r in cache if r.get("state") == "ok" and r.get("hit")]
 misses = [r for r in cache if r.get("state") == "ok" and not r.get("hit")]
 failed = [r for r in cache if r.get("state") != "ok"]
 if cache:
-    out += ["",
-            f"**{len(hits)} of {len(hits) + len(misses)} probed routes reported a cache hit** on the",
-            "second call." + (" The ones that did not: " +
-                              ", ".join(f"`{r['provider']}` on {r['anchor']}" for r in misses) +
-                              f" — for {sum(1 for r in misses if any(h['anchor'] == r['anchor'] and h['provider'] != r['provider'] for h in hits))}"
-                              " of them the same base model reported a hit on a different route, so"
-                              " caching is a property of the route as much as of the model. A route that"
-                              " does not report the field looks exactly like one that does not cache,"
-                              " which is why the audit measures the client's own loops instead of trusting"
-                              " a vendor table." if misses else
-                              " Every route we could probe cached something."),
+    hit_line = (f"**{len(hits)} of {len(hits) + len(misses)} probed routes reported a cache hit** "
+                "on the second call"
+                + (f" ({len(failed)} probed route(s) could not answer at all and are not counted)"
+                   if failed else ""))
+    if misses:
+        same_model = sum(1 for r in misses
+                         if any(h["anchor"] == r["anchor"] and h["provider"] != r["provider"]
+                                for h in hits))
+        hit_line += (". The ones that did not: "
+                     + ", ".join(f"`{r['provider']}` on {r['anchor']}" for r in misses)
+                     + f" — for {same_model} of them the same base model reported a hit on a"
+                       " different route, so caching is a property of the route as much as of the"
+                       " model. A route that does not report the field looks exactly like one that"
+                       " does not cache, which is why the audit measures the client's own loops"
+                       " instead of trusting a vendor table.")
+    else:
+        hit_line += " Every route we could probe cached something."
+    out += ["", hit_line,
             (f" ({len(failed)} route(s) could not answer: " +
              ", ".join(f"`{r['provider']}`" for r in failed) + ".)" if failed else ""),
             ""]

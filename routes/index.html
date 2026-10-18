@@ -966,11 +966,114 @@ money, so it is stated rather than resolved.</p>
 <td>–</td>
 <td>http 429: {"error":{"message":"Rate limit reached for model</td>
 </tr>
+<tr>
+<td>glm-5.2</td>
+<td>openrouter</td>
+<td>4104</td>
+<td>4032</td>
+<td>98.2%</td>
+<td>1258 → 737 ms</td>
+</tr>
+<tr>
+<td>glm-5.2</td>
+<td>chutes</td>
+<td>4104</td>
+<td>4096</td>
+<td>99.8%</td>
+<td>2736 → 8940 ms</td>
+</tr>
+<tr>
+<td>qwen3.8-27b</td>
+<td>groq</td>
+<td>–</td>
+<td>–</td>
+<td>–</td>
+<td>http 429: {"error":{"message":"Rate limit reached for model</td>
+</tr>
+<tr>
+<td>qwen3.8-27b</td>
+<td>openrouter</td>
+<td>4144</td>
+<td>0</td>
+<td>0.0%</td>
+<td>4648 → 4030 ms</td>
+</tr>
+<tr>
+<td>qwen3.8-27b</td>
+<td>chutes</td>
+<td>4144</td>
+<td>3200</td>
+<td>77.2%</td>
+<td>2596 → 1957 ms</td>
+</tr>
+<tr>
+<td>gpt-5.4</td>
+<td>openrouter</td>
+<td>4098</td>
+<td>3840</td>
+<td>93.7%</td>
+<td>1593 → 1288 ms</td>
+</tr>
+<tr>
+<td>gpt-5.4</td>
+<td>venice</td>
+<td>5770</td>
+<td>4864</td>
+<td>84.3%</td>
+<td>1788 → 1140 ms</td>
+</tr>
+<tr>
+<td>gpt-5.6-luna</td>
+<td>openrouter</td>
+<td>4098</td>
+<td>4095</td>
+<td>99.9%</td>
+<td>1214 → 1195 ms</td>
+</tr>
+<tr>
+<td>gpt-5.6-luna</td>
+<td>venice</td>
+<td>5774</td>
+<td>5771</td>
+<td>99.9%</td>
+<td>1482 → 1435 ms</td>
+</tr>
+<tr>
+<td>gpt-5.5</td>
+<td>openrouter</td>
+<td>4098</td>
+<td>3840</td>
+<td>93.7%</td>
+<td>1527 → 1533 ms</td>
+</tr>
+<tr>
+<td>gpt-5.5</td>
+<td>venice</td>
+<td>5770</td>
+<td>4864</td>
+<td>84.3%</td>
+<td>2125 → 1621 ms</td>
+</tr>
+<tr>
+<td>gpt-4o</td>
+<td>openrouter</td>
+<td>4099</td>
+<td>4096</td>
+<td>99.9%</td>
+<td>2097 → 830 ms</td>
+</tr>
+<tr>
+<td>gpt-4o</td>
+<td>venice</td>
+<td>5767</td>
+<td>None</td>
+<td>0.0%</td>
+<td>972 → 1085 ms</td>
+</tr>
 </tbody>
 </table>
-<p><strong>12 of 19 probed routes reported a cache hit</strong> on the
-second call. The ones that did not: <code>opencode-go</code> on deepseek-v4.1-flash, <code>openrouter</code> on gemini-3-flash-preview, <code>openrouter</code> on deepseek-v3.2, <code>chutes</code> on deepseek-v3.2, <code>openrouter</code> on deepseek-v4-flash-0731, <code>openrouter</code> on glm-5.1, <code>openrouter</code> on gpt-oss-20b — for 4 of them the same base model reported a hit on a different route, so caching is a property of the route as much as of the model. A route that does not report the field looks exactly like one that does not cache, which is why the audit measures the client's own loops instead of trusting a vendor table.
- (2 route(s) could not answer: <code>groq</code>, <code>groq</code>.)</p>
+<p><strong>22 of 31 probed routes reported a cache hit</strong> on the second call (3 probed route(s) could not answer at all and are not counted). The ones that did not: <code>opencode-go</code> on deepseek-v4.1-flash, <code>openrouter</code> on gemini-3-flash-preview, <code>openrouter</code> on deepseek-v3.2, <code>chutes</code> on deepseek-v3.2, <code>openrouter</code> on deepseek-v4-flash-0731, <code>openrouter</code> on glm-5.1, <code>openrouter</code> on gpt-oss-20b, <code>openrouter</code> on qwen3.8-27b, <code>venice</code> on gpt-4o — for 6 of them the same base model reported a hit on a different route, so caching is a property of the route as much as of the model. A route that does not report the field looks exactly like one that does not cache, which is why the audit measures the client's own loops instead of trusting a vendor table.
+ (3 route(s) could not answer: <code>groq</code>, <code>groq</code>, <code>groq</code>.)</p>
 <p><strong>Limits.</strong> n=2 per route on one machine, one prompt (a one-word reply), so this is a
 route-dispersion probe, not a benchmark; <code>-TEE</code> variants are the same base model served under a
 different deployment, which may include a different quantization — we label them by their own id

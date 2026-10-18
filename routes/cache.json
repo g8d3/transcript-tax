@@ -511,5 +511,324 @@
   },
   "state": "failed",
   "error": "http 429: {\"error\":{\"message\":\"Rate limit reached for model `openai/gpt-oss-20b` in organization `org_01jjmddd22fqyrgespq11mzent` "
+ },
+ {
+  "anchor": "glm-5.2",
+  "provider": "openrouter",
+  "model": "z-ai/glm-5.2",
+  "first": {
+   "ok": true,
+   "ttft_ms": null,
+   "total_ms": 1258,
+   "in_tokens": 4104,
+   "cached_tokens": 0,
+   "out_tokens": 16
+  },
+  "second": {
+   "ok": true,
+   "ttft_ms": null,
+   "total_ms": 737,
+   "in_tokens": 4104,
+   "cached_tokens": 4032,
+   "out_tokens": 16
+  },
+  "state": "ok",
+  "hit": true,
+  "cached_share": 0.982,
+  "wall_delta_ms": -521
+ },
+ {
+  "anchor": "glm-5.2",
+  "provider": "chutes",
+  "model": "zai-org/GLM-5.2-TEE",
+  "first": {
+   "ok": true,
+   "ttft_ms": 2539,
+   "total_ms": 2736,
+   "in_tokens": 4104,
+   "cached_tokens": null,
+   "out_tokens": 16
+  },
+  "second": {
+   "ok": true,
+   "ttft_ms": 8708,
+   "total_ms": 8940,
+   "in_tokens": 4104,
+   "cached_tokens": 4096,
+   "out_tokens": 16
+  },
+  "state": "ok",
+  "hit": true,
+  "cached_share": 0.998,
+  "wall_delta_ms": 6204
+ },
+ {
+  "anchor": "qwen3.8-27b",
+  "provider": "groq",
+  "model": "qwen/qwen3.8-27b",
+  "first": {
+   "ok": true,
+   "ttft_ms": 1126,
+   "total_ms": 1132,
+   "in_tokens": 4104,
+   "cached_tokens": null,
+   "out_tokens": 3
+  },
+  "second": {
+   "ok": false,
+   "error": "http 429: {\"error\":{\"message\":\"Rate limit reached for model `qwen/qwen3.8-27b` in organization `org_01jjmddd22fqyrgespq11mzent` se"
+  },
+  "state": "failed",
+  "error": "http 429: {\"error\":{\"message\":\"Rate limit reached for model `qwen/qwen3.8-27b` in organization `org_01jjmddd22fqyrgespq11mzent` se"
+ },
+ {
+  "anchor": "qwen3.8-27b",
+  "provider": "openrouter",
+  "model": "qwen/qwen3.8-27b",
+  "first": {
+   "ok": true,
+   "ttft_ms": null,
+   "total_ms": 4648,
+   "in_tokens": 4144,
+   "cached_tokens": 0,
+   "out_tokens": 16
+  },
+  "second": {
+   "ok": true,
+   "ttft_ms": null,
+   "total_ms": 4030,
+   "in_tokens": 4144,
+   "cached_tokens": 0,
+   "out_tokens": 16
+  },
+  "state": "ok",
+  "hit": false,
+  "cached_share": 0.0,
+  "wall_delta_ms": -618
+ },
+ {
+  "anchor": "qwen3.8-27b",
+  "provider": "chutes",
+  "model": "Qwen/Qwen3.8-27B-TEE",
+  "first": {
+   "ok": true,
+   "ttft_ms": null,
+   "total_ms": 2596,
+   "in_tokens": 4144,
+   "cached_tokens": 0,
+   "out_tokens": 16
+  },
+  "second": {
+   "ok": true,
+   "ttft_ms": null,
+   "total_ms": 1957,
+   "in_tokens": 4144,
+   "cached_tokens": 3200,
+   "out_tokens": 16
+  },
+  "state": "ok",
+  "hit": true,
+  "cached_share": 0.772,
+  "wall_delta_ms": -639
+ },
+ {
+  "anchor": "gpt-5.4",
+  "provider": "openrouter",
+  "model": "openai/gpt-5.4",
+  "first": {
+   "ok": true,
+   "ttft_ms": 1437,
+   "total_ms": 1593,
+   "in_tokens": 4098,
+   "cached_tokens": 0,
+   "out_tokens": 6
+  },
+  "second": {
+   "ok": true,
+   "ttft_ms": 1142,
+   "total_ms": 1288,
+   "in_tokens": 4098,
+   "cached_tokens": 3840,
+   "out_tokens": 6
+  },
+  "state": "ok",
+  "hit": true,
+  "cached_share": 0.937,
+  "wall_delta_ms": -305
+ },
+ {
+  "anchor": "gpt-5.4",
+  "provider": "venice",
+  "model": "openai-gpt-54",
+  "first": {
+   "ok": true,
+   "ttft_ms": 1788,
+   "total_ms": 1788,
+   "in_tokens": 5770,
+   "cached_tokens": null,
+   "out_tokens": 16
+  },
+  "second": {
+   "ok": true,
+   "ttft_ms": 1140,
+   "total_ms": 1140,
+   "in_tokens": 5770,
+   "cached_tokens": 4864,
+   "out_tokens": 16
+  },
+  "state": "ok",
+  "hit": true,
+  "cached_share": 0.843,
+  "wall_delta_ms": -648
+ },
+ {
+  "anchor": "gpt-5.6-luna",
+  "provider": "openrouter",
+  "model": "openai/gpt-5.6-luna",
+  "first": {
+   "ok": true,
+   "ttft_ms": 1042,
+   "total_ms": 1214,
+   "in_tokens": 4098,
+   "cached_tokens": 0,
+   "out_tokens": 6
+  },
+  "second": {
+   "ok": true,
+   "ttft_ms": 1054,
+   "total_ms": 1195,
+   "in_tokens": 4098,
+   "cached_tokens": 4095,
+   "out_tokens": 6
+  },
+  "state": "ok",
+  "hit": true,
+  "cached_share": 0.999,
+  "wall_delta_ms": -19
+ },
+ {
+  "anchor": "gpt-5.6-luna",
+  "provider": "venice",
+  "model": "openai-gpt-56-luna",
+  "first": {
+   "ok": true,
+   "ttft_ms": 1428,
+   "total_ms": 1482,
+   "in_tokens": 5774,
+   "cached_tokens": 1675,
+   "out_tokens": 16
+  },
+  "second": {
+   "ok": true,
+   "ttft_ms": 1330,
+   "total_ms": 1435,
+   "in_tokens": 5774,
+   "cached_tokens": 5771,
+   "out_tokens": 16
+  },
+  "state": "ok",
+  "hit": true,
+  "cached_share": 0.999,
+  "wall_delta_ms": -47
+ },
+ {
+  "anchor": "gpt-5.5",
+  "provider": "openrouter",
+  "model": "openai/gpt-5.5",
+  "first": {
+   "ok": true,
+   "ttft_ms": null,
+   "total_ms": 1527,
+   "in_tokens": 4098,
+   "cached_tokens": 0,
+   "out_tokens": 16
+  },
+  "second": {
+   "ok": true,
+   "ttft_ms": null,
+   "total_ms": 1533,
+   "in_tokens": 4098,
+   "cached_tokens": 3840,
+   "out_tokens": 16
+  },
+  "state": "ok",
+  "hit": true,
+  "cached_share": 0.937,
+  "wall_delta_ms": 6
+ },
+ {
+  "anchor": "gpt-5.5",
+  "provider": "venice",
+  "model": "openai-gpt-55",
+  "first": {
+   "ok": true,
+   "ttft_ms": 1263,
+   "total_ms": 2125,
+   "in_tokens": 5770,
+   "cached_tokens": null,
+   "out_tokens": 16
+  },
+  "second": {
+   "ok": true,
+   "ttft_ms": 1621,
+   "total_ms": 1621,
+   "in_tokens": 5770,
+   "cached_tokens": 4864,
+   "out_tokens": 16
+  },
+  "state": "ok",
+  "hit": true,
+  "cached_share": 0.843,
+  "wall_delta_ms": -504
+ },
+ {
+  "anchor": "gpt-4o",
+  "provider": "openrouter",
+  "model": "openai/gpt-4o",
+  "first": {
+   "ok": true,
+   "ttft_ms": 2011,
+   "total_ms": 2097,
+   "in_tokens": 4099,
+   "cached_tokens": 0,
+   "out_tokens": 2
+  },
+  "second": {
+   "ok": true,
+   "ttft_ms": 747,
+   "total_ms": 830,
+   "in_tokens": 4099,
+   "cached_tokens": 4096,
+   "out_tokens": 2
+  },
+  "state": "ok",
+  "hit": true,
+  "cached_share": 0.999,
+  "wall_delta_ms": -1267
+ },
+ {
+  "anchor": "gpt-4o",
+  "provider": "venice",
+  "model": "openai-gpt-4o-2024-11-20",
+  "first": {
+   "ok": true,
+   "ttft_ms": 875,
+   "total_ms": 972,
+   "in_tokens": 5767,
+   "cached_tokens": 1536,
+   "out_tokens": 3
+  },
+  "second": {
+   "ok": true,
+   "ttft_ms": 976,
+   "total_ms": 1085,
+   "in_tokens": 5767,
+   "cached_tokens": null,
+   "out_tokens": 3
+  },
+  "state": "ok",
+  "hit": false,
+  "cached_share": 0.0,
+  "wall_delta_ms": 113
  }
 ]

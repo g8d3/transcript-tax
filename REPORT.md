@@ -491,9 +491,10 @@ What the spread looks like, measured:
   takes **1.54x** and **1.53x** longer on one of them.
 
 The cache probe (two identical ~4k-token prompts per route, reading the provider's own
-`cached_tokens`) could read 18 of the 21 routes it tried: **12 reported a hit, 6 did not**, two
-gateways answered `429` and one does not report the field. One of the misses is the gateway our own
-fleet runs through, while the same model reported a 99 % hit on a different route.
+`cached_tokens`) could read 29 of the 34 routes it tried: **22 reported a hit, 7 did not**, three
+gateways answered `429` and two do not report the field. The misses are not a property of the
+model: one is the gateway our own fleet runs through while the same model reports a 99 % hit on a
+different route, and `gpt-4o` reports **99.9 % on one route and 0 % on another**.
 A miss in a two-call probe is **not** proof that caching is off, and a provider that does not
 report the field looks exactly like one that does not cache — which is why the audit measures a
 client's own loops instead of trusting a vendor table.

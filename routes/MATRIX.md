@@ -196,10 +196,22 @@ money, so it is stated rather than resolved.
 | qwen3.6-27b | chutes | 4102 | 4096 | 99.9% | 1836 → 1635 ms |
 | gpt-oss-20b | openrouter | 4159 | 0 | 0.0% | 1505 → 1121 ms |
 | gpt-oss-20b | groq | – | – | – | http 429: {"error":{"message":"Rate limit reached for model  |
+| glm-5.2 | openrouter | 4104 | 4032 | 98.2% | 1258 → 737 ms |
+| glm-5.2 | chutes | 4104 | 4096 | 99.8% | 2736 → 8940 ms |
+| qwen3.8-27b | groq | – | – | – | http 429: {"error":{"message":"Rate limit reached for model  |
+| qwen3.8-27b | openrouter | 4144 | 0 | 0.0% | 4648 → 4030 ms |
+| qwen3.8-27b | chutes | 4144 | 3200 | 77.2% | 2596 → 1957 ms |
+| gpt-5.4 | openrouter | 4098 | 3840 | 93.7% | 1593 → 1288 ms |
+| gpt-5.4 | venice | 5770 | 4864 | 84.3% | 1788 → 1140 ms |
+| gpt-5.6-luna | openrouter | 4098 | 4095 | 99.9% | 1214 → 1195 ms |
+| gpt-5.6-luna | venice | 5774 | 5771 | 99.9% | 1482 → 1435 ms |
+| gpt-5.5 | openrouter | 4098 | 3840 | 93.7% | 1527 → 1533 ms |
+| gpt-5.5 | venice | 5770 | 4864 | 84.3% | 2125 → 1621 ms |
+| gpt-4o | openrouter | 4099 | 4096 | 99.9% | 2097 → 830 ms |
+| gpt-4o | venice | 5767 | None | 0.0% | 972 → 1085 ms |
 
-**12 of 19 probed routes reported a cache hit** on the
-second call. The ones that did not: `opencode-go` on deepseek-v4.1-flash, `openrouter` on gemini-3-flash-preview, `openrouter` on deepseek-v3.2, `chutes` on deepseek-v3.2, `openrouter` on deepseek-v4-flash-0731, `openrouter` on glm-5.1, `openrouter` on gpt-oss-20b — for 4 of them the same base model reported a hit on a different route, so caching is a property of the route as much as of the model. A route that does not report the field looks exactly like one that does not cache, which is why the audit measures the client's own loops instead of trusting a vendor table.
- (2 route(s) could not answer: `groq`, `groq`.)
+**22 of 31 probed routes reported a cache hit** on the second call (3 probed route(s) could not answer at all and are not counted). The ones that did not: `opencode-go` on deepseek-v4.1-flash, `openrouter` on gemini-3-flash-preview, `openrouter` on deepseek-v3.2, `chutes` on deepseek-v3.2, `openrouter` on deepseek-v4-flash-0731, `openrouter` on glm-5.1, `openrouter` on gpt-oss-20b, `openrouter` on qwen3.8-27b, `venice` on gpt-4o — for 6 of them the same base model reported a hit on a different route, so caching is a property of the route as much as of the model. A route that does not report the field looks exactly like one that does not cache, which is why the audit measures the client's own loops instead of trusting a vendor table.
+ (3 route(s) could not answer: `groq`, `groq`, `groq`.)
 
 
 **Limits.** n=2 per route on one machine, one prompt (a one-word reply), so this is a
