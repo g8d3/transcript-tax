@@ -42,6 +42,8 @@ with sync_playwright() as p:
     check("SAMPLE banner visible", "not a client result" in text.lower())
     leftover = re.findall(r"[«»]", text)
     check("no guillemet placeholder survived", not leftover, f"{len(leftover)} found")
+    check("no doubled clause in the prose (the outlier sentence was duplicated once)",
+          "recovered. one contiguous" not in text)
     check("labelled figures >= 15", page.locator("span.tag").count() >= 15,
           f"{page.locator('span.tag').count()} tags")
     for tag in ("[measured]", "[example]", "[assumption]"):
