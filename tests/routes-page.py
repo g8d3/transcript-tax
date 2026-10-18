@@ -139,6 +139,16 @@ def main() -> int:
             check(f"/audit/ quotes the largest recomputed latency gap "
                   f"({anchor_lat}, {r_lat:.1f}x)", f"{r_lat:.1f}x" in body)
 
+        # and the offer has to say that the closed models are inside the coverage too, with the
+        # number recomputed here: a Claude fleet has to be able to read itself into the offer.
+        opus = [r["ttft_p50"] for r in ok_rows if r["anchor"] == "claude-opus-5" and r["ttft_p50"]]
+        if len(opus) >= 2:
+            r_opus = max(opus) / min(opus)
+            _, body = fetch(BASE + "/audit/")
+            check(f"/audit/ quotes the recomputed closed-model gap "
+                  f"(claude-opus-5, {r_opus:.2f}x)", f"{r_opus:.2f}x" in body)
+            check("/audit/ names the closed model it can price", "claude-opus-5" in body)
+
     # 2. unavailable routes are published as unavailable, with the provider's own status
     for r in bad_rows:
         code = re.search(r"http (\d{3})", r.get("error") or "")
