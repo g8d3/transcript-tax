@@ -151,8 +151,18 @@ def main() -> int:
         check(f"{url} keeps the cold lever honest ({hours_cold:.0f})", f"{hours_cold:.0f}" in body)
     check("the intake asks the process-model question with the recomputed boot",
           warm_ms in fetch("https://focalis.cc/audit/intake/"))
-    check("the free preview states the boot it cannot see with the recomputed value",
-          warm_ms in fetch("https://focalis.cc/audit/preview/"))
+    check("the free preview states the boot it cannot see, as the measured pair",
+          f"{warm_ms} ms" in fetch("https://focalis.cc/audit/preview/")
+          and f"{cold_ms} ms" in fetch("https://focalis.cc/audit/preview/"))
+    # The first version of this check was `warm_ms in body` — "372" also occurs inside the
+    # embedded demo rows (an output-token count of 372), so it passed while BOTH preview caveats
+    # still sold the retracted 929 ms boot on the page. Anchor on the sentence the page renders.
+    _prev = fetch("https://focalis.cc/audit/preview/")
+    check("the free preview's boot caveat carries the warm figure and the hours it implies",
+          f"{warm_ms} ms per turn" in _prev and f"{hours_warm:.0f} wall-hours a year" in _prev,
+          f"warm {warm_ms} / {hours_warm:.0f} h")
+    check("the free preview no longer sells the retracted 929 ms boot as the lever",
+          "929 ms per turn" not in _prev and f"({hours_cold:.0f} " in _prev)
 
     # 3. the calculator's default must be the measurement, not a memory
     roi = read("tools/roi.py")
