@@ -46,6 +46,17 @@ if _priv.exists():
     m = re.search(r"[\w.+-]+@[\w-]+\.[\w.]+", _priv.read_text())
     PRIVATE_ADDR = m.group(0) if m else None
 
+# The host injects two scripts of its own (Cloudflare's page-view beacon and its email decoder).
+# They are not our page's code, and headless Chrome sometimes fails to load the beacon with a CORS
+# error — a suite that fails for someone else's reason is worse than no suite (the same lesson as
+# the request whitelist below). So host-injected console noise is filtered, not counted.
+HOST_INJECTED = ("cloudflareinsights", "cdn-cgi", "beacon.min.js")
+
+
+def host_noise(text: str, url: str = "") -> bool:
+    return any(k in text or k in url for k in HOST_INJECTED)
+
+
 fails: list[str] = []
 
 
@@ -144,7 +155,9 @@ def main() -> int:
         browser = pw.chromium.launch()
         page = browser.new_page(viewport={"width": 390, "height": 844})
         errors: list[str] = []
-        page.on("console", lambda m: errors.append(m.text) if m.type == "error" else None)
+        page.on("console", lambda m: errors.append(m.text)
+                if m.type == "error"
+                and not host_noise(m.text, (m.location or {}).get("url", "")) else None)
         for clean, (fname, phrases) in PAGES.items():
             url = (SITE / fname).as_uri() if LOCAL else BASE + clean
             resp = page.goto(url, wait_until="load")
@@ -180,7 +193,8 @@ def main() -> int:
         if LOCAL:
             # on file:// the absolute /admin/bar.js has no origin to resolve against
             errors = [e for e in errors if "ERR_FILE_NOT_FOUND" not in e]
-        check("no console errors", not errors, "; ".join(errors[:3]))
+        real_errors = [e for e in errors if not host_noise(e)]  # location-filtered on capture
+        check("no console errors of our own", not real_errors, "; ".join(real_errors[:3]))
 
     print(f"\n{'ALL PASS' if not fails else 'FAILURES: ' + ', '.join(fails)}")
     return 1 if fails else 0
