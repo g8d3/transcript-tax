@@ -80,7 +80,7 @@ def main() -> None:
     p.add_argument("--price-out", type=float, default=1.10)
     # --- measured timing ---
     p.add_argument("--floor-s", type=float, default=3.0, help="measured steady-state wall per turn (s)")
-    p.add_argument("--boot-s", type=float, default=0.93, help="process boot paid per turn when the loop spawns per turn (measured 929 ms)")
+    p.add_argument("--boot-s", type=float, default=0.372, help="process boot paid per turn when the loop spawns per turn (measured: 372 ms with the startup catalog cache warm, 940 ms cold — paper 5.4, raw runs in procsplit/)")
     p.add_argument("--warm", action="store_true", help="the loop keeps a process warm: boot is not paid per turn")
     p.add_argument("--miss-rate", type=float, default=0.3, help="share of turns that miss the prefix cache")
     p.add_argument("--miss-penalty-s", type=float, default=5.0, help="extra wall seconds when the cache misses")
@@ -190,8 +190,10 @@ def roi(a: argparse.Namespace) -> dict:
     print("four of ten runs were 2-6x slower with no cache signature we can name).")
     print("Pass --hourly to price the wall hours, which is the only honest pitch for a")
     print("cheap-model fleet: its token line is too small to carry the fee.")
-    print("Boot is the one lever we measured as real and removable: 929 ms per turn if your")
-    print("loop spawns a process per turn, 0 if it keeps one warm (--warm). Everything else we")
+    print("Boot is the one lever we measured as real and removable: 372 ms per turn if your")
+    print("loop spawns a process per turn (940 ms on a cold cache), 0 if it keeps one warm")
+    print("(--warm). The 371 vs 940 pair is measured, not assumed: paper 5.4, procsplit/ has")
+    print("both raw runs. Everything else we")
     print("used to list (cache discipline, startup-scan scoping, a size slope) failed to")
     print("reproduce and is not sold. Provider-vs-harness is a bound, not a split: paper 5.4.")
 

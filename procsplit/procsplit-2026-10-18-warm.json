@@ -1,0 +1,156 @@
+{
+ "what": "per-turn decomposition measured from outside the harness",
+ "measured_at_utc": "2026-10-18T11:15:54Z",
+ "label": "warm extension cache",
+ "cold": false,
+ "command": "pi -p --provider opencode-go --model deepseek-v4.1-flash --mode json -c Reply with exactly the word PONG. Call no tools.",
+ "cwd": "<workdir provided via --workdir, kept between reps so the session is warm>",
+ "prompt": "Reply with exactly the word PONG. Call no tools.",
+ "env_override": {},
+ "versions": {
+  "pi": "0.85.1",
+  "node": "v24.16.0",
+  "python": "3.12.3",
+  "platform": "Linux-6.8.0-147-generic-x86_64-with-glibc2.39"
+ },
+ "reps": [
+  {
+   "rep": 1,
+   "marks_ms": {
+    "first_line": 366.1,
+    "agent_start": 367.5,
+    "turn_start": 367.6,
+    "assistant_start": 1878.4,
+    "first_text": 1879.2,
+    "assistant_end": 1882.2,
+    "total": 1921.7
+   },
+   "segments_ms": {
+    "boot_ms": 366.1,
+    "agent_start_to_turn_start_ms": 0.1,
+    "pre_ms": 1510.8,
+    "assistant_to_first_text_ms": 0.8,
+    "stream_ms": 3.0,
+    "total_ms": 1921.7
+   }
+  },
+  {
+   "rep": 2,
+   "marks_ms": {
+    "first_line": 372.4,
+    "agent_start": 373.8,
+    "turn_start": 374.0,
+    "assistant_start": 1927.7,
+    "first_text": 1928.9,
+    "assistant_end": 1932.1,
+    "total": 1974.0
+   },
+   "segments_ms": {
+    "boot_ms": 372.4,
+    "agent_start_to_turn_start_ms": 0.2,
+    "pre_ms": 1553.7,
+    "assistant_to_first_text_ms": 1.2,
+    "stream_ms": 3.2,
+    "total_ms": 1974.0
+   }
+  },
+  {
+   "rep": 3,
+   "marks_ms": {
+    "first_line": 376.6,
+    "agent_start": 378.0,
+    "turn_start": 378.1,
+    "assistant_start": 2126.0,
+    "first_text": 2242.5,
+    "assistant_end": 2249.5,
+    "total": 2262.1
+   },
+   "segments_ms": {
+    "boot_ms": 376.6,
+    "agent_start_to_turn_start_ms": 0.1,
+    "pre_ms": 1747.9,
+    "assistant_to_first_text_ms": 116.5,
+    "stream_ms": 7.0,
+    "total_ms": 2262.1
+   }
+  },
+  {
+   "rep": 4,
+   "marks_ms": {
+    "first_line": 371.5,
+    "agent_start": 372.9,
+    "turn_start": 373.0,
+    "assistant_start": 1597.8,
+    "first_text": 1893.0,
+    "assistant_end": 1896.6,
+    "total": 1908.5
+   },
+   "segments_ms": {
+    "boot_ms": 371.5,
+    "agent_start_to_turn_start_ms": 0.1,
+    "pre_ms": 1224.8,
+    "assistant_to_first_text_ms": 295.2,
+    "stream_ms": 3.6,
+    "total_ms": 1908.5
+   }
+  },
+  {
+   "rep": 5,
+   "marks_ms": {
+    "first_line": 364.2,
+    "agent_start": 365.6,
+    "turn_start": 365.7,
+    "assistant_start": 1974.3,
+    "first_text": 1975.5,
+    "assistant_end": 1978.6,
+    "total": 2018.2
+   },
+   "segments_ms": {
+    "boot_ms": 364.2,
+    "agent_start_to_turn_start_ms": 0.1,
+    "pre_ms": 1608.6,
+    "assistant_to_first_text_ms": 1.2,
+    "stream_ms": 3.1,
+    "total_ms": 2018.2
+   }
+  }
+ ],
+ "medians_ms": {
+  "boot_ms": {
+   "median": 371.5,
+   "min": 364.2,
+   "max": 376.6,
+   "n": 5
+  },
+  "agent_start_to_turn_start_ms": {
+   "median": 0.1,
+   "min": 0.1,
+   "max": 0.2,
+   "n": 5
+  },
+  "pre_ms": {
+   "median": 1553.7,
+   "min": 1224.8,
+   "max": 1747.9,
+   "n": 5
+  },
+  "assistant_to_first_text_ms": {
+   "median": 1.2,
+   "min": 0.8,
+   "max": 295.2,
+   "n": 5
+  },
+  "stream_ms": {
+   "median": 3.2,
+   "min": 3.0,
+   "max": 7.0,
+   "n": 5
+  },
+  "total_ms": {
+   "median": 1974.0,
+   "min": 1908.5,
+   "max": 2262.1,
+   "n": 5
+  }
+ }
+}

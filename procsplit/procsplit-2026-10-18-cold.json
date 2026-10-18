@@ -1,0 +1,118 @@
+{
+ "what": "per-turn decomposition measured from outside the harness",
+ "measured_at_utc": "2026-10-18T11:16:11Z",
+ "label": "cold cache (catalog fetches forced)",
+ "cold": true,
+ "command": "pi -p --provider opencode-go --model deepseek-v4.1-flash --mode json -c Reply with exactly the word PONG. Call no tools.",
+ "cwd": "<workdir provided via --workdir, kept between reps so the session is warm>",
+ "prompt": "Reply with exactly the word PONG. Call no tools.",
+ "env_override": {
+  "PI_OPENCODE_SYNC_TTL_MS": "0"
+ },
+ "versions": {
+  "pi": "0.85.1",
+  "node": "v24.16.0",
+  "python": "3.12.3",
+  "platform": "Linux-6.8.0-147-generic-x86_64-with-glibc2.39"
+ },
+ "reps": [
+  {
+   "rep": 1,
+   "marks_ms": {
+    "first_line": 1001.4,
+    "agent_start": 1002.8,
+    "turn_start": 1003.0,
+    "assistant_start": 2186.9,
+    "first_text": 2305.2,
+    "assistant_end": 2312.6,
+    "total": 2327.2
+   },
+   "segments_ms": {
+    "boot_ms": 1001.4,
+    "agent_start_to_turn_start_ms": 0.2,
+    "pre_ms": 1183.9,
+    "assistant_to_first_text_ms": 118.3,
+    "stream_ms": 7.4,
+    "total_ms": 2327.2
+   }
+  },
+  {
+   "rep": 2,
+   "marks_ms": {
+    "first_line": 837.1,
+    "agent_start": 838.5,
+    "turn_start": 838.6,
+    "assistant_start": 8356.1,
+    "first_text": 8420.9,
+    "assistant_end": 8424.0,
+    "total": 8436.9
+   },
+   "segments_ms": {
+    "boot_ms": 837.1,
+    "agent_start_to_turn_start_ms": 0.1,
+    "pre_ms": 7517.5,
+    "assistant_to_first_text_ms": 64.8,
+    "stream_ms": 3.1,
+    "total_ms": 8436.9
+   }
+  },
+  {
+   "rep": 3,
+   "marks_ms": {
+    "first_line": 939.7,
+    "agent_start": 941.1,
+    "turn_start": 941.2,
+    "assistant_start": 2461.3,
+    "first_text": 2515.5,
+    "assistant_end": 2585.1,
+    "total": 2598.4
+   },
+   "segments_ms": {
+    "boot_ms": 939.7,
+    "agent_start_to_turn_start_ms": 0.1,
+    "pre_ms": 1520.1,
+    "assistant_to_first_text_ms": 54.2,
+    "stream_ms": 69.6,
+    "total_ms": 2598.4
+   }
+  }
+ ],
+ "medians_ms": {
+  "boot_ms": {
+   "median": 939.7,
+   "min": 837.1,
+   "max": 1001.4,
+   "n": 3
+  },
+  "agent_start_to_turn_start_ms": {
+   "median": 0.1,
+   "min": 0.1,
+   "max": 0.2,
+   "n": 3
+  },
+  "pre_ms": {
+   "median": 1520.1,
+   "min": 1183.9,
+   "max": 7517.5,
+   "n": 3
+  },
+  "assistant_to_first_text_ms": {
+   "median": 64.8,
+   "min": 54.2,
+   "max": 118.3,
+   "n": 3
+  },
+  "stream_ms": {
+   "median": 7.4,
+   "min": 3.1,
+   "max": 69.6,
+   "n": 3
+  },
+  "total_ms": {
+   "median": 2598.4,
+   "min": 2327.2,
+   "max": 8436.9,
+   "n": 3
+  }
+ }
+}

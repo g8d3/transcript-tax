@@ -50,7 +50,8 @@
 
 Source: [`bench.csv`](bench.csv). pirust rows are wall-only (no token instrumentation).
 These are *process wall* figures (`time pi -p ...`), so they include process boot —
-which §5.4 decomposes as ~929 ms of the ~2.4-3.4 s (and shows to be removable).
+which §5.4 decomposes as 372 ms of the ~2.4-3.4 s warm (940 ms cold, before we cached the two
+catalog fetches inside it) and shows to be removable.
 
 Claim 1 follows directly: excluding the cache-miss outliers, every cell's center sits in a ~1 s band (2.4–3.4 s) despite different harnesses and nominal context sizes.
 
@@ -232,35 +233,50 @@ This section originally said to instrument from request dispatch via Pi's
 `message_start`.
 
 Measured externally instead (`pi -p --mode json` as a subprocess, every NDJSON line
-timestamped on arrival, 5 reps):
+timestamped on arrival, 5 reps) — **and re-measured on 2026-10-18, which split the boot
+in two**:
 
-| segment | median | min–max |
-|---|---|---|
-| boot — process start → first event | **929 ms** | 911–984 |
-| **turn_start → assistant `message_start`** | **1451 ms** | 1193–1605 |
-| `message_start` → first text delta | 1 ms | 1–359 |
-| first text → `message_end` | 2 ms | 2–9 |
-| **total process wall** | **2453 ms** | 2121–2901 |
+| segment | 2026-10-17 | 2026-10-18, cache warm | 2026-10-18, cache cold |
+|---|---|---|---|
+| boot — process start → first event | **929 ms** | **372 ms** | **940 ms** |
+| **turn_start → assistant `message_start`** | **1451 ms** | **1554 ms** | 1520 ms |
+| `message_start` → first text delta | 1 ms | 1 ms | 65 ms |
+| first text → `message_end` | 2 ms | **3 ms** | 7 ms |
+| **total process wall** | **2453 ms** | **1974 ms** | 2598 ms |
+
+**The 929 ms boot does not reproduce as a single number, and we know why.** Eighteen hours
+after the first measurement, two HTTPS model-catalog fetches that an extension performs at
+startup were put behind a 6-hour cache (`PI_OPENCODE_SYNC_TTL_MS`). The same command, same
+machine, same prompt now measures **372 ms**; forcing those fetches back on (`--cold`)
+reproduces **940 ms**. So the published 929 ms was the *cold* case all along, and the common
+case — a loop that spawns processes all day keeps the cache fresh — is 372 ms. Both raw runs
+are published in `procsplit/` with the reproducer.
 
 The provider roundtrip happens entirely **before** `message_start`, which is why
 `llmDurationMs` reads milliseconds for a network call. The missing time is now located:
-**turn_start → message_start, 1.2–1.6 s, stable across reps** (against `llmDurationMs`
+**turn_start → message_start, 1.2–1.8 s, stable across reps** (against `llmDurationMs`
 values of 1/88/286/364 ms for the same prompt). It cannot be split further from outside
 — dispatch, gating and provider latency are inside it — so the deliverable is the
-*bound*, not a split. Boot is ~0.93 s per invocation, not the 0.25 s `pi --version`
-suggests, and it is invisible in the turn rows because `turn_start` fires after it.
+*bound*, not a split. Boot is 0.37 s per invocation with the cache warm (0.94 s cold), not
+the 0.25 s `pi --version` suggests, and it is invisible in the turn rows because
+`turn_start` fires after it.
 
 **This also decomposes claim 1's floor.** The 2.4–3.4 s steady-state medians in §1.1 are
 *process wall* (`time pi -p ...`), and a one-word turn now measures as
-`929 ms boot + 1451 ms pre-response + 2 ms stream`. Boot is the only component in that
+`372 ms boot + 1554 ms pre-response + 3 ms stream`. Boot is the only component in that
 sum that is removable by configuration rather than by the provider: a loop that keeps a
 process warm does not pay it per turn. For a 10-loop fleet at 100 turns/day that is
-65 wall-hours a year (see `roi.py --warm`). Everything else in the sum is either the
-provider's latency (1.45 s, unattackable from here) or the transcript the turn carries.
+**26 wall-hours a year warm, 65 if every turn paid the cold fetch** (see `roi.py --warm`).
+Everything else in the sum is either the provider's latency (1.5 s, unattackable from here)
+or the transcript the turn carries.
 
-Raw artifacts: the scripts and logs behind these sections are working notes and are not
-published; `bench.csv`, `analyze.py` and `PROTOCOL.md` in this repository reproduce the
-tables above, and the append-cost result was confirmed by an independent re-measurement.
+Raw artifacts: `procsplit/measure.py` plus the two raw runs it wrote (`procsplit-2026-10-18-
+warm.json`, `-cold.json`) are published in this repository, and `tests/procsplit-claims.py`
+recomputes the two 2026-10-18 columns from them and checks this section against them. The
+2026-10-17 log was a working run and was not kept — the cold run reproduces it (940 ms against
+929 ms), which is why it is the one we publish. `bench.csv`, `analyze.py` and
+`PROTOCOL.md` reproduce the tables above, and the append-cost result was confirmed by an
+independent re-measurement.
 
 ## 6. Second correction (06:02Z): claim 4 (cache state predicts wall) is not supported
 

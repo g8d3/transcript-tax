@@ -145,7 +145,8 @@ near-empty one, so that was unverified guesswork, not a lever we can sell.</p>
 </table>
 <p>Source: <a href="bench.csv"><code>bench.csv</code></a>. pirust rows are wall-only (no token instrumentation).
 These are <em>process wall</em> figures (<code>time pi -p ...</code>), so they include process boot —
-which §5.4 decomposes as ~929 ms of the ~2.4-3.4 s (and shows to be removable).</p>
+which §5.4 decomposes as 372 ms of the ~2.4-3.4 s warm (940 ms cold, before we cached the two
+catalog fetches inside it) and shows to be removable.</p>
 <p>Claim 1 follows directly: excluding the cache-miss outliers, every cell's center sits in a ~1 s band (2.4–3.4 s) despite different harnesses and nominal context sizes.</p>
 <h3>1.2 pi: the LLM is not the cost (unaccounted time dominates)</h3>
 <p>pi-TS emits <code>llm_ms / total_ms / unacc_ms</code> per turn from <code>.pi-web/tps-turns.jsonl</code>. PONG turns:</p>
@@ -517,60 +518,80 @@ the harness.</li>
 <code>provider_stream_event</code>. That was wrong: the hook fires with the response, exactly like
 <code>message_start</code>.</p>
 <p>Measured externally instead (<code>pi -p --mode json</code> as a subprocess, every NDJSON line
-timestamped on arrival, 5 reps):</p>
+timestamped on arrival, 5 reps) — <strong>and re-measured on 2026-10-18, which split the boot
+in two</strong>:</p>
 <table>
 <thead>
 <tr>
 <th>segment</th>
-<th>median</th>
-<th>min–max</th>
+<th>2026-10-17</th>
+<th>2026-10-18, cache warm</th>
+<th>2026-10-18, cache cold</th>
 </tr>
 </thead>
 <tbody>
 <tr>
 <td>boot — process start → first event</td>
 <td><strong>929 ms</strong></td>
-<td>911–984</td>
+<td><strong>372 ms</strong></td>
+<td><strong>940 ms</strong></td>
 </tr>
 <tr>
 <td><strong>turn_start → assistant <code>message_start</code></strong></td>
 <td><strong>1451 ms</strong></td>
-<td>1193–1605</td>
+<td><strong>1554 ms</strong></td>
+<td>1520 ms</td>
 </tr>
 <tr>
 <td><code>message_start</code> → first text delta</td>
 <td>1 ms</td>
-<td>1–359</td>
+<td>1 ms</td>
+<td>65 ms</td>
 </tr>
 <tr>
 <td>first text → <code>message_end</code></td>
 <td>2 ms</td>
-<td>2–9</td>
+<td><strong>3 ms</strong></td>
+<td>7 ms</td>
 </tr>
 <tr>
 <td><strong>total process wall</strong></td>
 <td><strong>2453 ms</strong></td>
-<td>2121–2901</td>
+<td><strong>1974 ms</strong></td>
+<td>2598 ms</td>
 </tr>
 </tbody>
 </table>
+<p><strong>The 929 ms boot does not reproduce as a single number, and we know why.</strong> Eighteen hours
+after the first measurement, two HTTPS model-catalog fetches that an extension performs at
+startup were put behind a 6-hour cache (<code>PI_OPENCODE_SYNC_TTL_MS</code>). The same command, same
+machine, same prompt now measures <strong>372 ms</strong>; forcing those fetches back on (<code>--cold</code>)
+reproduces <strong>940 ms</strong>. So the published 929 ms was the <em>cold</em> case all along, and the common
+case — a loop that spawns processes all day keeps the cache fresh — is 372 ms. Both raw runs
+are published in <code>procsplit/</code> with the reproducer.</p>
 <p>The provider roundtrip happens entirely <strong>before</strong> <code>message_start</code>, which is why
 <code>llmDurationMs</code> reads milliseconds for a network call. The missing time is now located:
-<strong>turn_start → message_start, 1.2–1.6 s, stable across reps</strong> (against <code>llmDurationMs</code>
+<strong>turn_start → message_start, 1.2–1.8 s, stable across reps</strong> (against <code>llmDurationMs</code>
 values of 1/88/286/364 ms for the same prompt). It cannot be split further from outside
 — dispatch, gating and provider latency are inside it — so the deliverable is the
-<em>bound</em>, not a split. Boot is ~0.93 s per invocation, not the 0.25 s <code>pi --version</code>
-suggests, and it is invisible in the turn rows because <code>turn_start</code> fires after it.</p>
+<em>bound</em>, not a split. Boot is 0.37 s per invocation with the cache warm (0.94 s cold), not
+the 0.25 s <code>pi --version</code> suggests, and it is invisible in the turn rows because
+<code>turn_start</code> fires after it.</p>
 <p><strong>This also decomposes claim 1's floor.</strong> The 2.4–3.4 s steady-state medians in §1.1 are
 <em>process wall</em> (<code>time pi -p ...</code>), and a one-word turn now measures as
-<code>929 ms boot + 1451 ms pre-response + 2 ms stream</code>. Boot is the only component in that
+<code>372 ms boot + 1554 ms pre-response + 3 ms stream</code>. Boot is the only component in that
 sum that is removable by configuration rather than by the provider: a loop that keeps a
 process warm does not pay it per turn. For a 10-loop fleet at 100 turns/day that is
-65 wall-hours a year (see <code>roi.py --warm</code>). Everything else in the sum is either the
-provider's latency (1.45 s, unattackable from here) or the transcript the turn carries.</p>
-<p>Raw artifacts: the scripts and logs behind these sections are working notes and are not
-published; <code>bench.csv</code>, <code>analyze.py</code> and <code>PROTOCOL.md</code> in this repository reproduce the
-tables above, and the append-cost result was confirmed by an independent re-measurement.</p>
+<strong>26 wall-hours a year warm, 65 if every turn paid the cold fetch</strong> (see <code>roi.py --warm</code>).
+Everything else in the sum is either the provider's latency (1.5 s, unattackable from here)
+or the transcript the turn carries.</p>
+<p>Raw artifacts: <code>procsplit/measure.py</code> plus the two raw runs it wrote (<code>procsplit-2026-10-18-
+warm.json</code>, <code>-cold.json</code>) are published in this repository, and <code>tests/procsplit-claims.py</code>
+recomputes the two 2026-10-18 columns from them and checks this section against them. The
+2026-10-17 log was a working run and was not kept — the cold run reproduces it (940 ms against
+929 ms), which is why it is the one we publish. <code>bench.csv</code>, <code>analyze.py</code> and
+<code>PROTOCOL.md</code> reproduce the tables above, and the append-cost result was confirmed by an
+independent re-measurement.</p>
 <h2>6. Second correction (06:02Z): claim 4 (cache state predicts wall) is not supported</h2>
 <p>Found by re-checking every headline number against <code>bench.csv</code> with <code>analyze.py</code>
 rather than by hand. This one removes a claim we were about to sell on.</p>
