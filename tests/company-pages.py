@@ -110,7 +110,7 @@ def main() -> int:
 
         # 1a-bis. a shared link must unfurl: these three are the links we hand out (in
         # emails, posts and the HN reply), and a bare URL gets fewer clicks than a card.
-        for path in ("/", "/audit/", "/tps/"):
+        for path in ("/", "/audit/", "/audit/preview/", "/audit/intake/", "/tps/"):
             _, _, body = fetch(BASE + path)
             check(f"{path} carries an og:title so a shared link unfurls",
                   'property="og:title"' in body and 'name="twitter:card"' in body)
