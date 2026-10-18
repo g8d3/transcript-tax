@@ -9,7 +9,7 @@
 2. **Transcript size does cost, but sub-linearly with a ~1 s floor, and our stated fit was wrong.** Prior session series (n=8 pi sessions, coarse ranges): ~1 s overhead at 30–108 KB, 1.5–1.7 s at 170–228 KB, ~5 s at 3.2 MB and 9 MB. The draft's `1.0 s + 0.5 ms/KB` is a mis-stated coefficient — its own table implies ~5–6 ms/KB across 100–230 KB and saturation beyond (see §8). A fresh attempt to reproduce the ladder failed: a 452 KB ingest produced a 108 KB session, and two workspaces with the same 108–111 KB session differed by 1.4 s in median wall.
 3. **The 2 MB "ladder" in this dataset is invalid as a size experiment.** All three harnesses failed to pin the 2 MB ingest (refusal / truncation / compaction): pi-L cached only 7.7 k vs pi-S 41 k; zero-L compacted 103 k → ~9.4 k by pong 1. Read the grinder as a *steady-state + cache-behavior* study, not a size sweep.
 4. **Cache hits dominate wall time more than token counts do.** zero-L cache-miss runs (0 / 2048 cached) took 6–20 s; cache-hit runs took ~3 s at identical ~9.4 k input. Wall correlates with cache state, not with input tokens.
-5. **Same model, different route: input price up to 20.5x apart, and the cheapest route is not always the fastest (6.0x slower to first token).** Measured across 14 base models and 37 route/model pairs; on one model a **1.4% price difference came with a 7.7x latency difference** (14.8 s vs 1.9 s to first token), which is the case a price table cannot see (§10).
+5. **Same model, different route: input price up to 20.5x apart, and the cheapest route is not always the fastest (6.0x slower to first token).** Measured across 18 base models and 46 route/model pairs; on one model a **1.4% price difference came with a 7.7x latency difference** (14.8 s vs 1.9 s to first token), which is the case a price table cannot see (§10).
 6. **Money implication: compact early, budget per turn.** At observed floors, 1,000 no-op turns ≈ 1 hour of wall and the provider bill of whatever your context window carries. A stale 40 k-token context re-sent (or re-read) every turn is the line item, not the model reply.
 
 \* The "2 MB" label names the ingest *attempt*; post-ingest cached context shows it did not stick (see §3).
@@ -419,7 +419,7 @@ counted as clamped rather than shown negative (none in this window).
 
 Everything above prices a **model**. In practice you buy a **route**: the same model id served by
 different providers or gateways, at different prices and different first-token latencies. We
-measured it on every provider we hold a key for — 14 base models, 37 route/model pairs, streaming,
+measured it on every provider we hold a key for — 18 base models, 46 route/model pairs, streaming,
 median of two calls each — reading each price from the provider's own `/models` metadata and
 leaving it blank where a provider publishes none. Raw rows ship with this repo
 (`routes/matrix.json`, `routes/cache.json`, `routes/models.json`); the table below is regenerated
@@ -427,7 +427,7 @@ from them by `routes/render_matrix.py`, and `routes/matrix.py` re-measures it.
 
 | base model | route | $/M in | $/M out | first token p50 | total p50 |
 |---|---|---|---|---|---|
-| deepseek-v4.1-flash | openrouter | $0.0536 | $0.144 | 732 ms | 895 ms |
+| deepseek-v4.1-flash | openrouter | $0.0648 | $0.144 | 680 ms | 870 ms |
 | deepseek-v4.1-flash | chutes | $0.44 | $1.32 | 1402 ms | 1448 ms |
 | gpt-oss-120b | groq | $0.15 | $0.6 | 424 ms | 448 ms |
 | gpt-oss-120b | openrouter | $0.15 | $0.6 | 709 ms | 896 ms |
@@ -440,6 +440,10 @@ from them by `routes/render_matrix.py`, and `routes/matrix.py` re-measures it.
 | glm-5.1 | chutes | $0.98 | $3.08 | 14819 ms | 17406 ms |
 | gpt-oss-20b | openrouter | $0.018 | $0.09 | 1994 ms | 2110 ms |
 | gpt-oss-20b | groq | $0.075 | $0.3 | 604 ms | 617 ms |
+| claude-opus-5 | openrouter | $5 | $25 | 2188 ms | 2201 ms |
+| claude-opus-5 | venice | $5 | $25 | 1248 ms | 1262 ms |
+| gemini-3-8-flash | openrouter | $0.825 | $4.125 | 2056 ms | 2104 ms |
+| gemini-3-8-flash | venice | $0.9375 | $4.6875 | 2263 ms | 2276 ms |
 
 What the spread looks like, measured:
 
@@ -455,10 +459,17 @@ What the spread looks like, measured:
   $0.966/M on one route and $0.98/M on another, and the second answers in **14.8 s** against
   **1.9 s** — **7.7x** for the same model name. That is the case a price table cannot see at all,
   and the reason the audit prices the route rather than the model.
+- **The closed models behave the same way.** Until a second route published a price we could not
+  compare them at all; where it does, the pattern survives the model being proprietary. `claude-opus-5`
+  is `$5/$25` per million on **both** priced routes and answers in **1.25 s** on one against
+  **2.19 s** on the other (**1.75x**) — a price table calls those two routes identical. And the gap
+  runs the other way for a Google model: `gemini-3.8-flash` is **13.6 %** cheaper on one route than
+  the other, so the same model name is not one purchase even at a closed vendor.
 
 The cache probe (two identical ~4k-token prompts per route, reading the provider's own
-`cached_tokens`) found **6 of 8** probed routes reporting a hit. One of the two that did not is the
-gateway our own fleet runs through, while the same model reported a 99% hit on a different route.
+`cached_tokens`) could read 18 of the 21 routes it tried: **12 reported a hit, 6 did not**, two
+gateways answered `429` and one does not report the field. One of the misses is the gateway our own
+fleet runs through, while the same model reported a 99 % hit on a different route.
 A miss in a two-call probe is **not** proof that caching is off, and a provider that does not
 report the field looks exactly like one that does not cache — which is why the audit measures a
 client's own loops instead of trusting a vendor table.
