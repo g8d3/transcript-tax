@@ -102,7 +102,7 @@ coefficient. All three failed to reproduce in our data — see the retractions a
 - The offer page, prices and the arguments against buying are here:
 <https://focalis.cc/audit/>. Run `roi.py --sweep` there first; if the numbers say no,
 we will too.
-- Contact: **hola@focalis.cc**.
+- Contact: **hello@focalis.cc**.
 
 ## License
 
