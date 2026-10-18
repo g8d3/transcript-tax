@@ -12,7 +12,9 @@ claim checkable anyway:
 
 `export` copies a window with two deliberate changes: `sessionId` is replaced by an opaque
 label (`s1`, `s2`, …) — a session id is a handle the local daemon accepts, so it does not
-leave the machine — and nothing else is touched. Rows contain no prompt text and no tool
+leave the machine — and the private session label (`sessionName`, the text of the prompt that
+opened the session, present in the turn log since 2026-10-18) is removed. Nothing else is
+touched. Rows contain no prompt text and no tool
 output: timestamp, model, durations, token counts, outcome, tool names and durations.
 
 `analyze` prints the numbers **twice**, because the answer changed when the monitor did:
@@ -53,19 +55,56 @@ def usable(rows: list[dict]) -> list[dict]:
     return out
 
 
+# Fields that must not leave the machine, in BOTH logs.
+#  * `sessionName` is the human label of a session (in practice the text of the prompt that opened
+#    it) — the same reason the preview builder drops it. The TURN log started carrying it on
+#    2026-10-18, which is how this list stopped being message-samples-only: `export` published it
+#    once and this comment is the fix.
+PRIVATE_FIELDS = ("sessionName",)
+# kept as the older name for anything that imported it
+HISTORY_DROP = PRIVATE_FIELDS
+
+
 def export(src: Path, out: Path) -> None:
     rows = load(src)
     labels: dict[str, str] = {}
     clean = []
+    dropped = 0
     for r in rows:
         sid = r.get("sessionId") or "?"
         labels.setdefault(sid, f"s{len(labels) + 1}")
-        r = dict(r)
+        dropped += sum(1 for k in PRIVATE_FIELDS if k in r)
+        r = {k: v for k, v in r.items() if k not in PRIVATE_FIELDS}
         r["sessionId"] = labels[sid]
         clean.append(r)
     out.write_text("".join(json.dumps(r, separators=(",", ":")) + "\n" for r in clean))
     print(f"wrote {out} — {len(clean)} rows, {len(labels)} session labels, "
-          f"{out.stat().st_size / 1024:.0f} KB, sessionId replaced")
+          f"{out.stat().st_size / 1024:.0f} KB, sessionId replaced, "
+          f"{dropped} private field(s) dropped")
+
+
+def export_history(src: Path, out: Path) -> None:
+    """Publish a window of the message-sample log, so the example deliverables that read it
+    (cache report, size curve) can be reproduced from files a reader can download.
+
+    Same discipline as `export`: `sessionId` becomes an opaque label and the private session
+    label is dropped; every measured field is copied verbatim.
+    """
+    rows = load(src)
+    labels: dict[str, str] = {}
+    clean = []
+    dropped = 0
+    for r in rows:
+        sid = r.get("sessionId") or "?"
+        labels.setdefault(sid, f"s{len(labels) + 1}")
+        dropped += sum(1 for k in PRIVATE_FIELDS if k in r)
+        r = {k: v for k, v in r.items() if k not in PRIVATE_FIELDS}
+        r["sessionId"] = labels[sid]
+        clean.append(r)
+    out.write_text("".join(json.dumps(r, separators=(",", ":")) + "\n" for r in clean))
+    print(f"wrote {out} — {len(clean)} rows, {len(labels)} session labels, "
+          f"{out.stat().st_size / 1024:.0f} KB, sessionId replaced, "
+          f"{', '.join(PRIVATE_FIELDS)} dropped ({dropped} row(s))")
 
 
 def pct(values: list[float], p: float) -> float:
@@ -150,14 +189,17 @@ def analyze(path: Path) -> None:
 
 def main() -> None:
     if len(sys.argv) < 3:
-        raise SystemExit(__doc__.strip().splitlines()[0] + "\nusage: publish_fleet.py export|analyze <file> [out]")
+        raise SystemExit(__doc__.strip().splitlines()[0] +
+                         "\nusage: publish_fleet.py export|export-history|analyze <file> [out]")
     mode, path = sys.argv[1], Path(sys.argv[2])
     if mode == "export":
         export(path, Path(sys.argv[3]) if len(sys.argv) > 3 else path.with_name("fleet-window.jsonl"))
+    elif mode == "export-history":
+        export_history(path, Path(sys.argv[3]) if len(sys.argv) > 3 else path.with_name("fleet-history.jsonl"))
     elif mode == "analyze":
         analyze(path)
     else:
-        raise SystemExit(f"unknown mode {mode!r} (export or analyze)")
+        raise SystemExit(f"unknown mode {mode!r} (export, export-history or analyze)")
 
 
 if __name__ == "__main__":

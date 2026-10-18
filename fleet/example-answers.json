@@ -1,0 +1,7 @@
+{
+  "loop": "our own fleet (500 turns + 500 message samples, published as fleet/fleet-turns-2026-10-18.jsonl and fleet/fleet-history-2026-10-18.jsonl)",
+  "date": "2026-10-18",
+  "boot_ms": 372,
+  "boot_p90_ms": 377,
+  "process_model": "one process per turn"
+}
