@@ -334,6 +334,86 @@ median of 2 reps on one machine: <strong>first token</strong> and <strong>total<
 <td>yes</td>
 </tr>
 <tr>
+<td>gpt-4o</td>
+<td>openrouter</td>
+<td>$2.5</td>
+<td>$10</td>
+<td>$1.25</td>
+<td>1332 ms</td>
+<td>1433 ms</td>
+<td>yes</td>
+</tr>
+<tr>
+<td>gpt-4o</td>
+<td>venice</td>
+<td>$2.5</td>
+<td>$10</td>
+<td>$1.25</td>
+<td>872 ms</td>
+<td>1018 ms</td>
+<td>yes</td>
+</tr>
+<tr>
+<td>gpt-5.4</td>
+<td>openrouter</td>
+<td>$2.5</td>
+<td>$15</td>
+<td>$0.25</td>
+<td>1124 ms</td>
+<td>1202 ms</td>
+<td>yes</td>
+</tr>
+<tr>
+<td>gpt-5.4</td>
+<td>venice</td>
+<td>$2.5</td>
+<td>$15</td>
+<td>$0.25</td>
+<td>1726 ms</td>
+<td>1726 ms</td>
+<td>yes</td>
+</tr>
+<tr>
+<td>gpt-5.5</td>
+<td>openrouter</td>
+<td>$5</td>
+<td>$30</td>
+<td>$0.5</td>
+<td>–</td>
+<td>1658 ms</td>
+<td>yes</td>
+</tr>
+<tr>
+<td>gpt-5.5</td>
+<td>venice</td>
+<td>$5</td>
+<td>$30</td>
+<td>$0.5</td>
+<td>1348 ms</td>
+<td>1350 ms</td>
+<td>yes</td>
+</tr>
+<tr>
+<td>gpt-5.6-luna</td>
+<td>openrouter</td>
+<td>$0.2</td>
+<td>$1.2</td>
+<td>$0.02</td>
+<td>1059 ms</td>
+<td>1084 ms</td>
+<td>yes</td>
+</tr>
+<tr>
+<td>gpt-5.6-luna</td>
+<td>venice</td>
+<td>$0.2</td>
+<td>$1.2</td>
+<td>$0.02</td>
+<td>774 ms</td>
+<td>874 ms</td>
+<td>yes</td>
+</tr>
+<tr>
 <td>gpt-oss-120b</td>
 <td>groq</td>
 <td>$0.15</td>
@@ -579,6 +659,13 @@ median of 2 reps on one machine: <strong>first token</strong> and <strong>total<
 <li><strong>glm-5.1</strong>: input price runs 1.0x between routes (openrouter $0.966/M vs chutes $0.98/M).</li>
 <li><strong>glm-5.1</strong>: first token 1932 ms on openrouter vs 14819 ms on chutes (7.7x) — the cheapest route is also the fastest one here.</li>
 <li><strong>glm-5.2</strong>: first token 732 ms on openrouter vs 1506 ms on dashscope (2.1x) — prices are not published for most of these routes.</li>
+<li><strong>gpt-4o</strong>: every priced route charges the same list price ($2.5/M in) — the difference shows up in latency, not in the rate.</li>
+<li><strong>gpt-4o</strong>: first token 872 ms on venice vs 1332 ms on openrouter (1.5x) — the cheapest priced route (openrouter) is not the fastest one.</li>
+<li><strong>gpt-5.4</strong>: every priced route charges the same list price ($2.5/M in) — the difference shows up in latency, not in the rate.</li>
+<li><strong>gpt-5.4</strong>: first token 1124 ms on openrouter vs 1726 ms on venice (1.5x) — the cheapest route is also the fastest one here.</li>
+<li><strong>gpt-5.5</strong>: every priced route charges the same list price ($5/M in) — the difference shows up in latency, not in the rate.</li>
+<li><strong>gpt-5.6-luna</strong>: every priced route charges the same list price ($0.2/M in) — the difference shows up in latency, not in the rate.</li>
+<li><strong>gpt-5.6-luna</strong>: first token 774 ms on venice vs 1059 ms on openrouter (1.4x) — the cheapest priced route (openrouter) is not the fastest one.</li>
 <li><strong>gpt-oss-120b</strong>: every priced route charges the same list price ($0.15/M in) — the difference shows up in latency, not in the rate.</li>
 <li><strong>gpt-oss-120b</strong>: first token 424 ms on groq vs 709 ms on openrouter (1.7x) — the cheapest route is also the fastest one here.</li>
 <li><strong>gpt-oss-20b</strong>: input price runs 4.2x between routes (openrouter $0.018/M vs groq $0.075/M).</li>

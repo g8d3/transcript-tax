@@ -1,550 +1,606 @@
 {
-  "_note": "One anchor model, several routes. base/key are ENV VAR NAMES, never values. Prices come from each provider's own /models metadata when it exposes it; 'null' means the API does not publish a price and we say so.",
-  "anchors": {
-    "deepseek-v4.1-flash": [
-      {
-        "provider": "opencode-go",
-        "model": "deepseek-v4.1-flash",
-        "base_env": "OPENCODE_GO_BASE_URL",
-        "key_env": "OPENCODE_GO_API_KEY"
-      },
-      {
-        "provider": "openrouter",
-        "model": "deepseek/deepseek-v4.1-flash",
-        "base_env": "OPENROUTER_BASE_URL",
-        "key_env": "OPENROUTER_API_KEY"
-      },
-      {
-        "provider": "dashscope",
-        "model": "deepseek-v4.1-flash",
-        "base_env": "DASHSCOPE_BASE_URL",
-        "key_env": "DASHSCOPE_API_KEY"
-      },
-      {
-        "provider": "aihubmix",
-        "model": "deepseek-v4.1-flash",
-        "base_env": "AIHUBMIX_BASE_URL",
-        "key_env": "AIHUBMIX_API_KEY"
-      },
-      {
-        "provider": "chutes",
-        "model": "deepseek-ai/DeepSeek-V4-Flash-0731-TEE",
-        "base_env": "CHUTES_BASE_URL",
-        "key_env": "CHUTES_API_KEY"
-      }
-    ],
-    "gpt-oss-120b": [
-      {
-        "provider": "groq",
-        "model": "openai/gpt-oss-120b",
-        "base_env": "GROQ_BASE_URL",
-        "key_env": "GROQ_API_KEY"
-      },
-      {
-        "provider": "openrouter",
-        "model": "openai/gpt-oss-120b",
-        "base_env": "OPENROUTER_BASE_URL",
-        "key_env": "OPENROUTER_API_KEY"
-      },
-      {
-        "provider": "cerebras",
-        "model": "gpt-oss-120b",
-        "base_env": "CEREBRAS_BASE_URL",
-        "key_env": "CEREBRAS_API_KEY"
-      }
-    ],
-    "qwen3.8-27b": [
-      {
-        "provider": "groq",
-        "model": "qwen/qwen3.8-27b",
-        "base_env": "GROQ_BASE_URL",
-        "key_env": "GROQ_API_KEY"
-      },
-      {
-        "provider": "openrouter",
-        "model": "qwen/qwen3.8-27b",
-        "base_env": "OPENROUTER_BASE_URL",
-        "key_env": "OPENROUTER_API_KEY"
-      },
-      {
-        "provider": "chutes",
-        "model": "Qwen/Qwen3.8-27B-TEE",
-        "base_env": "CHUTES_BASE_URL",
-        "key_env": "CHUTES_API_KEY"
-      },
-      {
-        "provider": "dashscope",
-        "model": "qwen3.8-27b",
-        "base_env": "DASHSCOPE_BASE_URL",
-        "key_env": "DASHSCOPE_API_KEY"
-      }
-    ],
-    "deepseek-v4-pro": [
-      {
-        "provider": "opencode-go",
-        "model": "deepseek-v4-pro",
-        "base_env": "OPENCODE_GO_BASE_URL",
-        "key_env": "OPENCODE_GO_API_KEY"
-      },
-      {
-        "provider": "deepseek",
-        "model": "deepseek-v4-pro",
-        "base_env": "DEEPSEEK_BASE_URL",
-        "key_env": "DEEPSEEK_API_KEY"
-      },
-      {
-        "provider": "openrouter",
-        "model": "deepseek/deepseek-v4-pro",
-        "base_env": "OPENROUTER_BASE_URL",
-        "key_env": "OPENROUTER_API_KEY"
-      },
-      {
-        "provider": "dashscope",
-        "model": "deepseek-v4-pro",
-        "base_env": "DASHSCOPE_BASE_URL",
-        "key_env": "DASHSCOPE_API_KEY"
-      }
-    ],
-    "gemini-3-flash-preview": [
-      {
-        "provider": "openrouter",
-        "model": "google/gemini-3-flash-preview",
-        "base_env": "OPENROUTER_BASE_URL",
-        "key_env": "OPENROUTER_API_KEY"
-      },
-      {
-        "provider": "venice",
-        "model": "gemini-3-flash-preview",
-        "base_env": "VENICE_BASE_URL",
-        "key_env": "VENICE_API_KEY"
-      },
-      {
-        "provider": "gemini",
-        "model": "models/gemini-3-flash-preview",
-        "base_env": "GEMINI_BASE_URL",
-        "key_env": "GEMINI_API_KEY"
-      },
-      {
-        "provider": "aihubmix",
-        "model": "gemini-3-flash-preview",
-        "base_env": "AIHUBMIX_BASE_URL",
-        "key_env": "AIHUBMIX_API_KEY"
-      }
-    ],
-    "kimi-k3": [
-      {
-        "provider": "opencode-go",
-        "model": "kimi-k3",
-        "base_env": "OPENCODE_GO_BASE_URL",
-        "key_env": "OPENCODE_GO_API_KEY"
-      },
-      {
-        "provider": "openrouter",
-        "model": "moonshotai/kimi-k3",
-        "base_env": "OPENROUTER_BASE_URL",
-        "key_env": "OPENROUTER_API_KEY"
-      },
-      {
-        "provider": "dashscope",
-        "model": "kimi-k3",
-        "base_env": "DASHSCOPE_BASE_URL",
-        "key_env": "DASHSCOPE_API_KEY"
-      },
-      {
-        "provider": "chutes",
-        "model": "moonshotai/Kimi-K3-TEE",
-        "base_env": "CHUTES_BASE_URL",
-        "key_env": "CHUTES_API_KEY"
-      }
-    ],
-    "glm-5.2": [
-      {
-        "provider": "opencode-go",
-        "model": "glm-5.2",
-        "base_env": "OPENCODE_GO_BASE_URL",
-        "key_env": "OPENCODE_GO_API_KEY"
-      },
-      {
-        "provider": "openrouter",
-        "model": "z-ai/glm-5.2",
-        "base_env": "OPENROUTER_BASE_URL",
-        "key_env": "OPENROUTER_API_KEY"
-      },
-      {
-        "provider": "dashscope",
-        "model": "glm-5.2",
-        "base_env": "DASHSCOPE_BASE_URL",
-        "key_env": "DASHSCOPE_API_KEY"
-      },
-      {
-        "provider": "chutes",
-        "model": "zai-org/GLM-5.2-TEE",
-        "base_env": "CHUTES_BASE_URL",
-        "key_env": "CHUTES_API_KEY"
-      }
-    ],
-    "claude-haiku-5-5": [
-      {
-        "provider": "openrouter",
-        "model": "anthropic/claude-haiku-5.5",
-        "base_env": "OPENROUTER_BASE_URL",
-        "key_env": "OPENROUTER_API_KEY"
-      },
-      {
-        "provider": "opencode-go",
-        "model": "claude-haiku-5-5",
-        "base_env": "OPENCODE_GO_BASE_URL",
-        "key_env": "OPENCODE_GO_API_KEY"
-      },
-      {
-        "provider": "venice",
-        "model": "claude-haiku-5-5",
-        "base_env": "VENICE_BASE_URL",
-        "key_env": "VENICE_API_KEY"
-      },
-      {
-        "provider": "aihubmix",
-        "model": "claude-haiku-5-5",
-        "base_env": "AIHUBMIX_BASE_URL",
-        "key_env": "AIHUBMIX_API_KEY"
-      }
-    ],
-    "deepseek-v3.2": [
-      {
-        "provider": "openrouter",
-        "model": "deepseek/deepseek-v3.2",
-        "base_env": "OPENROUTER_BASE_URL",
-        "key_env": "OPENROUTER_API_KEY"
-      },
-      {
-        "provider": "chutes",
-        "model": "deepseek-ai/DeepSeek-V3.2-TEE",
-        "base_env": "CHUTES_BASE_URL",
-        "key_env": "CHUTES_API_KEY"
-      }
-    ],
-    "deepseek-v4-flash-0731": [
-      {
-        "provider": "openrouter",
-        "model": "deepseek/deepseek-v4-flash-0731",
-        "base_env": "OPENROUTER_BASE_URL",
-        "key_env": "OPENROUTER_API_KEY"
-      },
-      {
-        "provider": "chutes",
-        "model": "deepseek-ai/DeepSeek-V4-Flash-0731-TEE",
-        "base_env": "CHUTES_BASE_URL",
-        "key_env": "CHUTES_API_KEY"
-      }
-    ],
-    "glm-5.1": [
-      {
-        "provider": "openrouter",
-        "model": "z-ai/glm-5.1",
-        "base_env": "OPENROUTER_BASE_URL",
-        "key_env": "OPENROUTER_API_KEY"
-      },
-      {
-        "provider": "chutes",
-        "model": "zai-org/GLM-5.1-TEE",
-        "base_env": "CHUTES_BASE_URL",
-        "key_env": "CHUTES_API_KEY"
-      }
-    ],
-    "kimi-k2.6": [
-      {
-        "provider": "openrouter",
-        "model": "moonshotai/kimi-k2.6",
-        "base_env": "OPENROUTER_BASE_URL",
-        "key_env": "OPENROUTER_API_KEY"
-      },
-      {
-        "provider": "chutes",
-        "model": "moonshotai/Kimi-K2.6-TEE",
-        "base_env": "CHUTES_BASE_URL",
-        "key_env": "CHUTES_API_KEY"
-      }
-    ],
-    "qwen3.6-27b": [
-      {
-        "provider": "openrouter",
-        "model": "qwen/qwen3.6-27b",
-        "base_env": "OPENROUTER_BASE_URL",
-        "key_env": "OPENROUTER_API_KEY"
-      },
-      {
-        "provider": "chutes",
-        "model": "Qwen/Qwen3.6-27B-TEE",
-        "base_env": "CHUTES_BASE_URL",
-        "key_env": "CHUTES_API_KEY"
-      }
-    ],
-    "gpt-oss-20b": [
-      {
-        "provider": "openrouter",
-        "model": "openai/gpt-oss-20b",
-        "base_env": "OPENROUTER_BASE_URL",
-        "key_env": "OPENROUTER_API_KEY"
-      },
-      {
-        "provider": "groq",
-        "model": "openai/gpt-oss-20b",
-        "base_env": "GROQ_BASE_URL",
-        "key_env": "GROQ_API_KEY"
-      }
-    ],
-    "claude-sonnet-5-5": [
-      {
-        "provider": "openrouter",
-        "model": "anthropic/claude-sonnet-5.5",
-        "base_env": "OPENROUTER_BASE_URL",
-        "key_env": "OPENROUTER_API_KEY"
-      },
-      {
-        "provider": "venice",
-        "model": "claude-sonnet-5-5",
-        "base_env": "VENICE_BASE_URL",
-        "key_env": "VENICE_API_KEY"
-      }
-    ],
-    "claude-opus-5": [
-      {
-        "provider": "openrouter",
-        "model": "anthropic/claude-opus-5",
-        "base_env": "OPENROUTER_BASE_URL",
-        "key_env": "OPENROUTER_API_KEY"
-      },
-      {
-        "provider": "venice",
-        "model": "claude-opus-5",
-        "base_env": "VENICE_BASE_URL",
-        "key_env": "VENICE_API_KEY"
-      }
-    ],
-    "gemini-3-8-flash": [
-      {
-        "provider": "openrouter",
-        "model": "google/gemini-3.8-flash",
-        "base_env": "OPENROUTER_BASE_URL",
-        "key_env": "OPENROUTER_API_KEY"
-      },
-      {
-        "provider": "venice",
-        "model": "gemini-3-8-flash",
-        "base_env": "VENICE_BASE_URL",
-        "key_env": "VENICE_API_KEY"
-      }
-    ],
-    "grok-4-7": [
-      {
-        "provider": "openrouter",
-        "model": "x-ai/grok-4.7",
-        "base_env": "OPENROUTER_BASE_URL",
-        "key_env": "OPENROUTER_API_KEY"
-      },
-      {
-        "provider": "venice",
-        "model": "grok-4-7",
-        "base_env": "VENICE_BASE_URL",
-        "key_env": "VENICE_API_KEY"
-      }
-    ]
-  },
-  "defaults": {
-    "opencode-go": "https://opencode.ai/zen/go/v1",
-    "openrouter": "https://openrouter.ai/api/v1",
-    "dashscope": "https://dashscope-intl.aliyuncs.com/compatible-mode/v1",
-    "aihubmix": "https://aihubmix.com/v1",
-    "chutes": "https://llm.chutes.ai/v1",
-    "groq": "https://api.groq.com/openai/v1",
-    "cerebras": "https://api.cerebras.ai/v1",
-    "deepseek": "https://api.deepseek.com/v1",
-    "gemini": "https://generativelanguage.googleapis.com/v1beta/openai",
-    "venice": "https://api.venice.ai/api/v1"
-  },
-  "cache": {
-    "deepseek-v4.1-flash": [
-      {
-        "provider": "openrouter",
-        "model": "deepseek/deepseek-v4.1-flash",
-        "base_env": "OPENROUTER_BASE_URL",
-        "key_env": "OPENROUTER_API_KEY"
-      },
-      {
-        "provider": "opencode-go",
-        "model": "deepseek-v4.1-flash",
-        "base_env": "OPENCODE_GO_BASE_URL",
-        "key_env": "OPENCODE_GO_API_KEY"
-      },
-      {
-        "provider": "chutes",
-        "model": "deepseek-ai/DeepSeek-V4-Flash-0731-TEE",
-        "base_env": "CHUTES_BASE_URL",
-        "key_env": "CHUTES_API_KEY"
-      }
-    ],
-    "gpt-oss-120b": [
-      {
-        "provider": "groq",
-        "model": "openai/gpt-oss-120b",
-        "base_env": "GROQ_BASE_URL",
-        "key_env": "GROQ_API_KEY"
-      },
-      {
-        "provider": "openrouter",
-        "model": "openai/gpt-oss-120b",
-        "base_env": "OPENROUTER_BASE_URL",
-        "key_env": "OPENROUTER_API_KEY"
-      }
-    ],
-    "deepseek-v4-pro": [
-      {
-        "provider": "deepseek",
-        "model": "deepseek-v4-pro",
-        "base_env": "DEEPSEEK_BASE_URL",
-        "key_env": "DEEPSEEK_API_KEY"
-      }
-    ],
-    "gemini-3-flash-preview": [
-      {
-        "provider": "venice",
-        "model": "gemini-3-flash-preview",
-        "base_env": "VENICE_BASE_URL",
-        "key_env": "VENICE_API_KEY"
-      },
-      {
-        "provider": "openrouter",
-        "model": "google/gemini-3-flash-preview",
-        "base_env": "OPENROUTER_BASE_URL",
-        "key_env": "OPENROUTER_API_KEY"
-      }
-    ],
-    "kimi-k3": [
-      {
-        "provider": "openrouter",
-        "model": "moonshotai/kimi-k3",
-        "base_env": "OPENROUTER_BASE_URL",
-        "key_env": "OPENROUTER_API_KEY"
-      }
-    ],
-    "qwen3.8-27b": [
-      {
-        "provider": "groq",
-        "model": "qwen/qwen3.8-27b",
-        "base_env": "GROQ_BASE_URL",
-        "key_env": "GROQ_API_KEY"
-      },
-      {
-        "provider": "openrouter",
-        "model": "qwen/qwen3.8-27b",
-        "base_env": "OPENROUTER_BASE_URL",
-        "key_env": "OPENROUTER_API_KEY"
-      },
-      {
-        "provider": "chutes",
-        "model": "Qwen/Qwen3.8-27B-TEE",
-        "base_env": "CHUTES_BASE_URL",
-        "key_env": "CHUTES_API_KEY"
-      }
-    ],
-    "glm-5.2": [
-      {
-        "provider": "openrouter",
-        "model": "z-ai/glm-5.2",
-        "base_env": "OPENROUTER_BASE_URL",
-        "key_env": "OPENROUTER_API_KEY"
-      },
-      {
-        "provider": "chutes",
-        "model": "zai-org/GLM-5.2-TEE",
-        "base_env": "CHUTES_BASE_URL",
-        "key_env": "CHUTES_API_KEY"
-      }
-    ],
-    "claude-haiku-5-5": [],
-    "deepseek-v3.2": [
-      {
-        "provider": "openrouter",
-        "model": "deepseek/deepseek-v3.2",
-        "base_env": "OPENROUTER_BASE_URL",
-        "key_env": "OPENROUTER_API_KEY"
-      },
-      {
-        "provider": "chutes",
-        "model": "deepseek-ai/DeepSeek-V3.2-TEE",
-        "base_env": "CHUTES_BASE_URL",
-        "key_env": "CHUTES_API_KEY"
-      }
-    ],
-    "deepseek-v4-flash-0731": [
-      {
-        "provider": "openrouter",
-        "model": "deepseek/deepseek-v4-flash-0731",
-        "base_env": "OPENROUTER_BASE_URL",
-        "key_env": "OPENROUTER_API_KEY"
-      },
-      {
-        "provider": "chutes",
-        "model": "deepseek-ai/DeepSeek-V4-Flash-0731-TEE",
-        "base_env": "CHUTES_BASE_URL",
-        "key_env": "CHUTES_API_KEY"
-      }
-    ],
-    "glm-5.1": [
-      {
-        "provider": "openrouter",
-        "model": "z-ai/glm-5.1",
-        "base_env": "OPENROUTER_BASE_URL",
-        "key_env": "OPENROUTER_API_KEY"
-      },
-      {
-        "provider": "chutes",
-        "model": "zai-org/GLM-5.1-TEE",
-        "base_env": "CHUTES_BASE_URL",
-        "key_env": "CHUTES_API_KEY"
-      }
-    ],
-    "kimi-k2.6": [
-      {
-        "provider": "openrouter",
-        "model": "moonshotai/kimi-k2.6",
-        "base_env": "OPENROUTER_BASE_URL",
-        "key_env": "OPENROUTER_API_KEY"
-      },
-      {
-        "provider": "chutes",
-        "model": "moonshotai/Kimi-K2.6-TEE",
-        "base_env": "CHUTES_BASE_URL",
-        "key_env": "CHUTES_API_KEY"
-      }
-    ],
-    "qwen3.6-27b": [
-      {
-        "provider": "openrouter",
-        "model": "qwen/qwen3.6-27b",
-        "base_env": "OPENROUTER_BASE_URL",
-        "key_env": "OPENROUTER_API_KEY"
-      },
-      {
-        "provider": "chutes",
-        "model": "Qwen/Qwen3.6-27B-TEE",
-        "base_env": "CHUTES_BASE_URL",
-        "key_env": "CHUTES_API_KEY"
-      }
-    ],
-    "gpt-oss-20b": [
-      {
-        "provider": "openrouter",
-        "model": "openai/gpt-oss-20b",
-        "base_env": "OPENROUTER_BASE_URL",
-        "key_env": "OPENROUTER_API_KEY"
-      },
-      {
-        "provider": "groq",
-        "model": "openai/gpt-oss-20b",
-        "base_env": "GROQ_BASE_URL",
-        "key_env": "GROQ_API_KEY"
-      }
-    ]
-  }
+ "_note": "One anchor model, several routes. base/key are ENV VAR NAMES, never values. Prices come from each provider's own /models metadata when it exposes it; 'null' means the API does not publish a price and we say so.",
+ "anchors": {
+  "deepseek-v4.1-flash": [
+   {
+    "provider": "opencode-go",
+    "model": "deepseek-v4.1-flash",
+    "base_env": "OPENCODE_GO_BASE_URL",
+    "key_env": "OPENCODE_GO_API_KEY"
+   },
+   {
+    "provider": "openrouter",
+    "model": "deepseek/deepseek-v4.1-flash",
+    "base_env": "OPENROUTER_BASE_URL",
+    "key_env": "OPENROUTER_API_KEY"
+   },
+   {
+    "provider": "dashscope",
+    "model": "deepseek-v4.1-flash",
+    "base_env": "DASHSCOPE_BASE_URL",
+    "key_env": "DASHSCOPE_API_KEY"
+   },
+   {
+    "provider": "aihubmix",
+    "model": "deepseek-v4.1-flash",
+    "base_env": "AIHUBMIX_BASE_URL",
+    "key_env": "AIHUBMIX_API_KEY"
+   },
+   {
+    "provider": "chutes",
+    "model": "deepseek-ai/DeepSeek-V4-Flash-0731-TEE",
+    "base_env": "CHUTES_BASE_URL",
+    "key_env": "CHUTES_API_KEY"
+   }
+  ],
+  "gpt-oss-120b": [
+   {
+    "provider": "groq",
+    "model": "openai/gpt-oss-120b",
+    "base_env": "GROQ_BASE_URL",
+    "key_env": "GROQ_API_KEY"
+   },
+   {
+    "provider": "openrouter",
+    "model": "openai/gpt-oss-120b",
+    "base_env": "OPENROUTER_BASE_URL",
+    "key_env": "OPENROUTER_API_KEY"
+   },
+   {
+    "provider": "cerebras",
+    "model": "gpt-oss-120b",
+    "base_env": "CEREBRAS_BASE_URL",
+    "key_env": "CEREBRAS_API_KEY"
+   }
+  ],
+  "qwen3.8-27b": [
+   {
+    "provider": "groq",
+    "model": "qwen/qwen3.8-27b",
+    "base_env": "GROQ_BASE_URL",
+    "key_env": "GROQ_API_KEY"
+   },
+   {
+    "provider": "openrouter",
+    "model": "qwen/qwen3.8-27b",
+    "base_env": "OPENROUTER_BASE_URL",
+    "key_env": "OPENROUTER_API_KEY"
+   },
+   {
+    "provider": "chutes",
+    "model": "Qwen/Qwen3.8-27B-TEE",
+    "base_env": "CHUTES_BASE_URL",
+    "key_env": "CHUTES_API_KEY"
+   },
+   {
+    "provider": "dashscope",
+    "model": "qwen3.8-27b",
+    "base_env": "DASHSCOPE_BASE_URL",
+    "key_env": "DASHSCOPE_API_KEY"
+   }
+  ],
+  "deepseek-v4-pro": [
+   {
+    "provider": "opencode-go",
+    "model": "deepseek-v4-pro",
+    "base_env": "OPENCODE_GO_BASE_URL",
+    "key_env": "OPENCODE_GO_API_KEY"
+   },
+   {
+    "provider": "deepseek",
+    "model": "deepseek-v4-pro",
+    "base_env": "DEEPSEEK_BASE_URL",
+    "key_env": "DEEPSEEK_API_KEY"
+   },
+   {
+    "provider": "openrouter",
+    "model": "deepseek/deepseek-v4-pro",
+    "base_env": "OPENROUTER_BASE_URL",
+    "key_env": "OPENROUTER_API_KEY"
+   },
+   {
+    "provider": "dashscope",
+    "model": "deepseek-v4-pro",
+    "base_env": "DASHSCOPE_BASE_URL",
+    "key_env": "DASHSCOPE_API_KEY"
+   }
+  ],
+  "gemini-3-flash-preview": [
+   {
+    "provider": "openrouter",
+    "model": "google/gemini-3-flash-preview",
+    "base_env": "OPENROUTER_BASE_URL",
+    "key_env": "OPENROUTER_API_KEY"
+   },
+   {
+    "provider": "venice",
+    "model": "gemini-3-flash-preview",
+    "base_env": "VENICE_BASE_URL",
+    "key_env": "VENICE_API_KEY"
+   },
+   {
+    "provider": "gemini",
+    "model": "models/gemini-3-flash-preview",
+    "base_env": "GEMINI_BASE_URL",
+    "key_env": "GEMINI_API_KEY"
+   },
+   {
+    "provider": "aihubmix",
+    "model": "gemini-3-flash-preview",
+    "base_env": "AIHUBMIX_BASE_URL",
+    "key_env": "AIHUBMIX_API_KEY"
+   }
+  ],
+  "kimi-k3": [
+   {
+    "provider": "opencode-go",
+    "model": "kimi-k3",
+    "base_env": "OPENCODE_GO_BASE_URL",
+    "key_env": "OPENCODE_GO_API_KEY"
+   },
+   {
+    "provider": "openrouter",
+    "model": "moonshotai/kimi-k3",
+    "base_env": "OPENROUTER_BASE_URL",
+    "key_env": "OPENROUTER_API_KEY"
+   },
+   {
+    "provider": "dashscope",
+    "model": "kimi-k3",
+    "base_env": "DASHSCOPE_BASE_URL",
+    "key_env": "DASHSCOPE_API_KEY"
+   },
+   {
+    "provider": "chutes",
+    "model": "moonshotai/Kimi-K3-TEE",
+    "base_env": "CHUTES_BASE_URL",
+    "key_env": "CHUTES_API_KEY"
+   }
+  ],
+  "glm-5.2": [
+   {
+    "provider": "opencode-go",
+    "model": "glm-5.2",
+    "base_env": "OPENCODE_GO_BASE_URL",
+    "key_env": "OPENCODE_GO_API_KEY"
+   },
+   {
+    "provider": "openrouter",
+    "model": "z-ai/glm-5.2",
+    "base_env": "OPENROUTER_BASE_URL",
+    "key_env": "OPENROUTER_API_KEY"
+   },
+   {
+    "provider": "dashscope",
+    "model": "glm-5.2",
+    "base_env": "DASHSCOPE_BASE_URL",
+    "key_env": "DASHSCOPE_API_KEY"
+   },
+   {
+    "provider": "chutes",
+    "model": "zai-org/GLM-5.2-TEE",
+    "base_env": "CHUTES_BASE_URL",
+    "key_env": "CHUTES_API_KEY"
+   }
+  ],
+  "claude-haiku-5-5": [
+   {
+    "provider": "openrouter",
+    "model": "anthropic/claude-haiku-5.5",
+    "base_env": "OPENROUTER_BASE_URL",
+    "key_env": "OPENROUTER_API_KEY"
+   },
+   {
+    "provider": "opencode-go",
+    "model": "claude-haiku-5-5",
+    "base_env": "OPENCODE_GO_BASE_URL",
+    "key_env": "OPENCODE_GO_API_KEY"
+   },
+   {
+    "provider": "venice",
+    "model": "claude-haiku-5-5",
+    "base_env": "VENICE_BASE_URL",
+    "key_env": "VENICE_API_KEY"
+   },
+   {
+    "provider": "aihubmix",
+    "model": "claude-haiku-5-5",
+    "base_env": "AIHUBMIX_BASE_URL",
+    "key_env": "AIHUBMIX_API_KEY"
+   }
+  ],
+  "deepseek-v3.2": [
+   {
+    "provider": "openrouter",
+    "model": "deepseek/deepseek-v3.2",
+    "base_env": "OPENROUTER_BASE_URL",
+    "key_env": "OPENROUTER_API_KEY"
+   },
+   {
+    "provider": "chutes",
+    "model": "deepseek-ai/DeepSeek-V3.2-TEE",
+    "base_env": "CHUTES_BASE_URL",
+    "key_env": "CHUTES_API_KEY"
+   }
+  ],
+  "deepseek-v4-flash-0731": [
+   {
+    "provider": "openrouter",
+    "model": "deepseek/deepseek-v4-flash-0731",
+    "base_env": "OPENROUTER_BASE_URL",
+    "key_env": "OPENROUTER_API_KEY"
+   },
+   {
+    "provider": "chutes",
+    "model": "deepseek-ai/DeepSeek-V4-Flash-0731-TEE",
+    "base_env": "CHUTES_BASE_URL",
+    "key_env": "CHUTES_API_KEY"
+   }
+  ],
+  "glm-5.1": [
+   {
+    "provider": "openrouter",
+    "model": "z-ai/glm-5.1",
+    "base_env": "OPENROUTER_BASE_URL",
+    "key_env": "OPENROUTER_API_KEY"
+   },
+   {
+    "provider": "chutes",
+    "model": "zai-org/GLM-5.1-TEE",
+    "base_env": "CHUTES_BASE_URL",
+    "key_env": "CHUTES_API_KEY"
+   }
+  ],
+  "kimi-k2.6": [
+   {
+    "provider": "openrouter",
+    "model": "moonshotai/kimi-k2.6",
+    "base_env": "OPENROUTER_BASE_URL",
+    "key_env": "OPENROUTER_API_KEY"
+   },
+   {
+    "provider": "chutes",
+    "model": "moonshotai/Kimi-K2.6-TEE",
+    "base_env": "CHUTES_BASE_URL",
+    "key_env": "CHUTES_API_KEY"
+   }
+  ],
+  "qwen3.6-27b": [
+   {
+    "provider": "openrouter",
+    "model": "qwen/qwen3.6-27b",
+    "base_env": "OPENROUTER_BASE_URL",
+    "key_env": "OPENROUTER_API_KEY"
+   },
+   {
+    "provider": "chutes",
+    "model": "Qwen/Qwen3.6-27B-TEE",
+    "base_env": "CHUTES_BASE_URL",
+    "key_env": "CHUTES_API_KEY"
+   }
+  ],
+  "gpt-oss-20b": [
+   {
+    "provider": "openrouter",
+    "model": "openai/gpt-oss-20b",
+    "base_env": "OPENROUTER_BASE_URL",
+    "key_env": "OPENROUTER_API_KEY"
+   },
+   {
+    "provider": "groq",
+    "model": "openai/gpt-oss-20b",
+    "base_env": "GROQ_BASE_URL",
+    "key_env": "GROQ_API_KEY"
+   }
+  ],
+  "claude-sonnet-5-5": [
+   {
+    "provider": "openrouter",
+    "model": "anthropic/claude-sonnet-5.5",
+    "base_env": "OPENROUTER_BASE_URL",
+    "key_env": "OPENROUTER_API_KEY"
+   },
+   {
+    "provider": "venice",
+    "model": "claude-sonnet-5-5",
+    "base_env": "VENICE_BASE_URL",
+    "key_env": "VENICE_API_KEY"
+   }
+  ],
+  "claude-opus-5": [
+   {
+    "provider": "openrouter",
+    "model": "anthropic/claude-opus-5",
+    "base_env": "OPENROUTER_BASE_URL",
+    "key_env": "OPENROUTER_API_KEY"
+   },
+   {
+    "provider": "venice",
+    "model": "claude-opus-5",
+    "base_env": "VENICE_BASE_URL",
+    "key_env": "VENICE_API_KEY"
+   }
+  ],
+  "gpt-5.4": [
+   {
+    "provider": "openrouter",
+    "model": "openai/gpt-5.4",
+    "base_env": "OPENROUTER_BASE_URL",
+    "key_env": "OPENROUTER_API_KEY"
+   },
+   {
+    "provider": "venice",
+    "model": "openai-gpt-54",
+    "base_env": "VENICE_BASE_URL",
+    "key_env": "VENICE_API_KEY"
+   }
+  ],
+  "gpt-5.6-luna": [
+   {
+    "provider": "openrouter",
+    "model": "openai/gpt-5.6-luna",
+    "base_env": "OPENROUTER_BASE_URL",
+    "key_env": "OPENROUTER_API_KEY"
+   },
+   {
+    "provider": "venice",
+    "model": "openai-gpt-56-luna",
+    "base_env": "VENICE_BASE_URL",
+    "key_env": "VENICE_API_KEY"
+   }
+  ],
+  "gpt-5.5": [
+   {
+    "provider": "openrouter",
+    "model": "openai/gpt-5.5",
+    "base_env": "OPENROUTER_BASE_URL",
+    "key_env": "OPENROUTER_API_KEY"
+   },
+   {
+    "provider": "venice",
+    "model": "openai-gpt-55",
+    "base_env": "VENICE_BASE_URL",
+    "key_env": "VENICE_API_KEY"
+   }
+  ],
+  "gpt-4o": [
+   {
+    "provider": "openrouter",
+    "model": "openai/gpt-4o",
+    "base_env": "OPENROUTER_BASE_URL",
+    "key_env": "OPENROUTER_API_KEY"
+   },
+   {
+    "provider": "venice",
+    "model": "openai-gpt-4o-2024-11-20",
+    "base_env": "VENICE_BASE_URL",
+    "key_env": "VENICE_API_KEY"
+   }
+  ],
+  "gemini-3-8-flash": [
+   {
+    "provider": "openrouter",
+    "model": "google/gemini-3.8-flash",
+    "base_env": "OPENROUTER_BASE_URL",
+    "key_env": "OPENROUTER_API_KEY"
+   },
+   {
+    "provider": "venice",
+    "model": "gemini-3-8-flash",
+    "base_env": "VENICE_BASE_URL",
+    "key_env": "VENICE_API_KEY"
+   }
+  ],
+  "grok-4-7": [
+   {
+    "provider": "openrouter",
+    "model": "x-ai/grok-4.7",
+    "base_env": "OPENROUTER_BASE_URL",
+    "key_env": "OPENROUTER_API_KEY"
+   },
+   {
+    "provider": "venice",
+    "model": "grok-4-7",
+    "base_env": "VENICE_BASE_URL",
+    "key_env": "VENICE_API_KEY"
+   }
+  ]
+ },
+ "defaults": {
+  "opencode-go": "https://opencode.ai/zen/go/v1",
+  "openrouter": "https://openrouter.ai/api/v1",
+  "dashscope": "https://dashscope-intl.aliyuncs.com/compatible-mode/v1",
+  "aihubmix": "https://aihubmix.com/v1",
+  "chutes": "https://llm.chutes.ai/v1",
+  "groq": "https://api.groq.com/openai/v1",
+  "cerebras": "https://api.cerebras.ai/v1",
+  "deepseek": "https://api.deepseek.com/v1",
+  "gemini": "https://generativelanguage.googleapis.com/v1beta/openai",
+  "venice": "https://api.venice.ai/api/v1"
+ },
+ "cache": {
+  "deepseek-v4.1-flash": [
+   {
+    "provider": "openrouter",
+    "model": "deepseek/deepseek-v4.1-flash",
+    "base_env": "OPENROUTER_BASE_URL",
+    "key_env": "OPENROUTER_API_KEY"
+   },
+   {
+    "provider": "opencode-go",
+    "model": "deepseek-v4.1-flash",
+    "base_env": "OPENCODE_GO_BASE_URL",
+    "key_env": "OPENCODE_GO_API_KEY"
+   },
+   {
+    "provider": "chutes",
+    "model": "deepseek-ai/DeepSeek-V4-Flash-0731-TEE",
+    "base_env": "CHUTES_BASE_URL",
+    "key_env": "CHUTES_API_KEY"
+   }
+  ],
+  "gpt-oss-120b": [
+   {
+    "provider": "groq",
+    "model": "openai/gpt-oss-120b",
+    "base_env": "GROQ_BASE_URL",
+    "key_env": "GROQ_API_KEY"
+   },
+   {
+    "provider": "openrouter",
+    "model": "openai/gpt-oss-120b",
+    "base_env": "OPENROUTER_BASE_URL",
+    "key_env": "OPENROUTER_API_KEY"
+   }
+  ],
+  "deepseek-v4-pro": [
+   {
+    "provider": "deepseek",
+    "model": "deepseek-v4-pro",
+    "base_env": "DEEPSEEK_BASE_URL",
+    "key_env": "DEEPSEEK_API_KEY"
+   }
+  ],
+  "gemini-3-flash-preview": [
+   {
+    "provider": "venice",
+    "model": "gemini-3-flash-preview",
+    "base_env": "VENICE_BASE_URL",
+    "key_env": "VENICE_API_KEY"
+   },
+   {
+    "provider": "openrouter",
+    "model": "google/gemini-3-flash-preview",
+    "base_env": "OPENROUTER_BASE_URL",
+    "key_env": "OPENROUTER_API_KEY"
+   }
+  ],
+  "kimi-k3": [
+   {
+    "provider": "openrouter",
+    "model": "moonshotai/kimi-k3",
+    "base_env": "OPENROUTER_BASE_URL",
+    "key_env": "OPENROUTER_API_KEY"
+   }
+  ],
+  "qwen3.8-27b": [
+   {
+    "provider": "groq",
+    "model": "qwen/qwen3.8-27b",
+    "base_env": "GROQ_BASE_URL",
+    "key_env": "GROQ_API_KEY"
+   },
+   {
+    "provider": "openrouter",
+    "model": "qwen/qwen3.8-27b",
+    "base_env": "OPENROUTER_BASE_URL",
+    "key_env": "OPENROUTER_API_KEY"
+   },
+   {
+    "provider": "chutes",
+    "model": "Qwen/Qwen3.8-27B-TEE",
+    "base_env": "CHUTES_BASE_URL",
+    "key_env": "CHUTES_API_KEY"
+   }
+  ],
+  "glm-5.2": [
+   {
+    "provider": "openrouter",
+    "model": "z-ai/glm-5.2",
+    "base_env": "OPENROUTER_BASE_URL",
+    "key_env": "OPENROUTER_API_KEY"
+   },
+   {
+    "provider": "chutes",
+    "model": "zai-org/GLM-5.2-TEE",
+    "base_env": "CHUTES_BASE_URL",
+    "key_env": "CHUTES_API_KEY"
+   }
+  ],
+  "claude-haiku-5-5": [],
+  "deepseek-v3.2": [
+   {
+    "provider": "openrouter",
+    "model": "deepseek/deepseek-v3.2",
+    "base_env": "OPENROUTER_BASE_URL",
+    "key_env": "OPENROUTER_API_KEY"
+   },
+   {
+    "provider": "chutes",
+    "model": "deepseek-ai/DeepSeek-V3.2-TEE",
+    "base_env": "CHUTES_BASE_URL",
+    "key_env": "CHUTES_API_KEY"
+   }
+  ],
+  "deepseek-v4-flash-0731": [
+   {
+    "provider": "openrouter",
+    "model": "deepseek/deepseek-v4-flash-0731",
+    "base_env": "OPENROUTER_BASE_URL",
+    "key_env": "OPENROUTER_API_KEY"
+   },
+   {
+    "provider": "chutes",
+    "model": "deepseek-ai/DeepSeek-V4-Flash-0731-TEE",
+    "base_env": "CHUTES_BASE_URL",
+    "key_env": "CHUTES_API_KEY"
+   }
+  ],
+  "glm-5.1": [
+   {
+    "provider": "openrouter",
+    "model": "z-ai/glm-5.1",
+    "base_env": "OPENROUTER_BASE_URL",
+    "key_env": "OPENROUTER_API_KEY"
+   },
+   {
+    "provider": "chutes",
+    "model": "zai-org/GLM-5.1-TEE",
+    "base_env": "CHUTES_BASE_URL",
+    "key_env": "CHUTES_API_KEY"
+   }
+  ],
+  "kimi-k2.6": [
+   {
+    "provider": "openrouter",
+    "model": "moonshotai/kimi-k2.6",
+    "base_env": "OPENROUTER_BASE_URL",
+    "key_env": "OPENROUTER_API_KEY"
+   },
+   {
+    "provider": "chutes",
+    "model": "moonshotai/Kimi-K2.6-TEE",
+    "base_env": "CHUTES_BASE_URL",
+    "key_env": "CHUTES_API_KEY"
+   }
+  ],
+  "qwen3.6-27b": [
+   {
+    "provider": "openrouter",
+    "model": "qwen/qwen3.6-27b",
+    "base_env": "OPENROUTER_BASE_URL",
+    "key_env": "OPENROUTER_API_KEY"
+   },
+   {
+    "provider": "chutes",
+    "model": "Qwen/Qwen3.6-27B-TEE",
+    "base_env": "CHUTES_BASE_URL",
+    "key_env": "CHUTES_API_KEY"
+   }
+  ],
+  "gpt-oss-20b": [
+   {
+    "provider": "openrouter",
+    "model": "openai/gpt-oss-20b",
+    "base_env": "OPENROUTER_BASE_URL",
+    "key_env": "OPENROUTER_API_KEY"
+   },
+   {
+    "provider": "groq",
+    "model": "openai/gpt-oss-20b",
+    "base_env": "GROQ_BASE_URL",
+    "key_env": "GROQ_API_KEY"
+   }
+  ]
+ }
 }

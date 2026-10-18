@@ -164,6 +164,19 @@ def main() -> int:
             check(f"/audit/ quotes the recomputed closed-model gap "
                   f"(claude-opus-5, {r_opus:.2f}x)", f"{r_opus:.2f}x" in body)
             check("/audit/ names the closed model it can price", "claude-opus-5" in body)
+        # ... and the OpenAI case specifically: a GPT fleet has to be able to read itself into the
+        # offer too, and the same-price/different-latency case is the strongest one we have.
+        for anchor in ("gpt-5.4", "gpt-4o"):
+            times = [r["ttft_p50"] for r in ok_rows if r["anchor"] == anchor and r["ttft_p50"]]
+            prices = {r["price"][0] for r in ok_rows
+                      if r["anchor"] == anchor and r["price"] and r["price"][0]}
+            if len(times) < 2 or len(prices) != 1:
+                continue
+            r_gpt = max(times) / min(times)
+            _, body = fetch(BASE + "/audit/")
+            check(f"/audit/ quotes the recomputed OpenAI-model gap ({anchor}, {r_gpt:.2f}x)",
+                  f"{r_gpt:.2f}x" in body)
+            check(f"/audit/ names the OpenAI model it can price ({anchor})", anchor in body)
 
     # 2. unavailable routes are published as unavailable, with the provider's own status
     for r in bad_rows:
