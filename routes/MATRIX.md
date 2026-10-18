@@ -21,7 +21,7 @@ median of 2 reps on one machine: **first token** and **total**, the same split t
 | deepseek-v4.1-flash | dashscope | – | – | – | 1692 ms | 1884 ms | yes |
 | deepseek-v4.1-flash | opencode-go | – | – | – | 1500 ms | 1570 ms | yes |
 | deepseek-v4.1-flash | openrouter | $0.0536 | $0.144 | $0.0016 | 732 ms | 895 ms | yes |
-| gemini-3-flash-preview | gemini | – | – | – | None ms | 930 ms | no |
+| gemini-3-flash-preview | gemini | – | – | – | – | 930 ms | no |
 | gemini-3-flash-preview | openrouter | $0.5 | $3 | $0.05 | 963 ms | 1078 ms | yes |
 | gemini-3-flash-preview | venice | – | – | – | 1419 ms | 1444 ms | yes |
 | glm-5.1 | chutes | $0.98 | $3.08 | $0.098 | 14819 ms | 17406 ms | yes |
