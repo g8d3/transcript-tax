@@ -119,11 +119,23 @@ if TARGET.startswith("https://"):
               "The route: what the same model costs elsewhere" in bodies["cuts"])
         check("the route finding is labelled as our measurement, not the client's bill",
               "not on yours" in bodies["cuts"])
-        # the same window label must appear in every page: they are one delivery, not four
-        # documents generated at different times (they were regenerated together on 2026-10-18
-        # because the cut list had gone stale against the engine).
-        missing = [n for n, b in bodies.items() if "our own fleet (500 message samples" not in b]
-        check("all four examples name the same loop/window", not missing, str(missing))
+        # the same window files must be named by every page: they are one delivery, not four
+        # documents generated at different times (they went stale once, and the cut list was
+        # missing the route section another time). Read the window out of the pages instead of
+        # matching a literal copy: the label changed on 2026-10-18 when the examples stopped
+        # coming from the rotating live log, and a guard that must be edited alongside the copy
+        # is a guard that will one day be edited to match a defect.
+        WINDOW = re.compile(r"fleet-(?:turns|history)-[\w.\-]+\.jsonl")
+        windows = {n: sorted(set(WINDOW.findall(b))) for n, b in bodies.items()}
+        check("every example page names the published window files", all(windows.values()),
+              str({k: v for k, v in windows.items() if not v}))
+        distinct = {tuple(v) for v in windows.values()}
+        check("all four examples name the same window files", len(distinct) == 1,
+              str(sorted(distinct)))
+        only = distinct.pop() if len(distinct) == 1 else ()
+        check("that window carries both the turn log and the message-sample log",
+              len(only) == 2 and any("turns" in x for x in only)
+              and any("history" in x for x in only), str(only))
         check("no example page carries an unfilled placeholder",
               not any("\u00ab" in b for b in bodies.values()))
 
