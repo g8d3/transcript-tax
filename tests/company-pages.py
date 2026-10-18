@@ -1,0 +1,145 @@
+#!/usr/bin/env python3
+"""Company / legal pages test — the pages a payment provider reads before it lets you charge.
+
+    python3 tests/company-pages.py                 # live site
+    python3 tests/company-pages.py --local         # files in the active variant
+
+Why this exists: the offer (/audit/) sells an audit, so the site must state who sells it,
+on what terms, how it is refunded and where the money is processed. A payment provider
+(merchant of record) checks exactly those pages, and two of them contradicted the offer
+until R28 ("focalis.cc does not itself sell software or process payments"). This test also
+asserts the regression that matters most: the private forwarding address must never be
+served from a public asset again (it was, until 2026-10-18).
+"""
+from __future__ import annotations
+
+import re
+import sys
+import urllib.request
+from pathlib import Path
+
+from playwright.sync_api import sync_playwright
+
+HERE = Path(__file__).resolve().parent
+PACK = HERE.parent
+LOCAL = "--local" in sys.argv
+SITE = Path("/home/vuos/code/p4/sites/focalis.cc/variants/active")
+BASE = "https://focalis.cc"
+
+# clean URL -> (file in the active variant, phrases that must be present)
+PAGES = {
+    "/company": ("company.html", ["Agent Fleet Tax Audit", "$290", "$1,400", "$3,900",
+                                  "$490", "merchant of record", "Focalis S.A.S."]),
+    "/terms": ("terms.html", ["Agent Fleet Tax Audit", "merchant of record",
+                              "50%", "Refund Policy"]),
+    "/privacy": ("privacy.html", ["tps-turns.jsonl", "merchant of record", "turn logs"]),
+    "/refunds": ("refund.html", ["Agent Fleet Tax Audit", "implementation half is refunded",
+                                 "30 days' notice"]),
+    "/contact": ("contact.html", ["hello@focalis.cc"]),
+}
+MUST_NOT_APPEAR = ["REPLACE_ME", "CHANGEME", "Lorem ipsum", "lorem ipsum"]
+# The private forwarding address is read from the gitignored config, never printed.
+PRIVATE_ADDR = None
+_priv = SITE / "site.config.private.json"
+if _priv.exists():
+    m = re.search(r"[\w.+-]+@[\w-]+\.[\w.]+", _priv.read_text())
+    PRIVATE_ADDR = m.group(0) if m else None
+
+fails: list[str] = []
+
+
+def check(name: str, ok: bool, extra: str = "") -> None:
+    print(f"{'PASS' if ok else 'FAIL'} {name}" + (f" — {extra}" if extra else ""))
+    if not ok:
+        fails.append(name)
+
+
+def fetch(url: str) -> tuple[int, str, str]:
+    req = urllib.request.Request(url, headers={"User-Agent": "Mozilla/5.0 Chrome/130"})
+    try:
+        with urllib.request.urlopen(req, timeout=30) as r:
+            return r.status, r.geturl(), r.read().decode("utf-8", "replace")
+    except urllib.error.HTTPError as e:
+        return e.code, url, ""
+
+
+def main() -> int:
+    if not LOCAL:
+        # 0. the prices on the legal pages must be the ones in pricing.md (one source, no drift)
+        prices = []
+        pm = PACK / "pricing.md"
+        if pm.exists():
+            for m in re.finditer(r"##\s*(Tier \d|Retainer)[^\n]*?([\d,]{3,6})\s*USD(?:/month)?", pm.read_text()):
+                prices.append((m.group(1), m.group(2).replace(",", "")))
+        check("pricing.md yields the 4 published prices", len(prices) == 4, str(prices))
+        _, _, company = fetch(BASE + "/company")
+        for tier, amount in prices:
+            shown = f"${int(amount):,}"
+            check(f"/company shows {tier} at {shown}", shown in company)
+
+        # 1. clean URLs resolve (308 -> .html, 200 final) and carry the required facts
+        for clean, (fname, phrases) in PAGES.items():
+            status, final, body = fetch(BASE + clean)
+            check(f"{clean} serves 200", status == 200 and final.endswith(fname),
+                  f"{status} -> {final}")
+            for p in phrases:
+                check(f"{clean} states {p!r}", p.lower() in body.lower())
+            for bad in MUST_NOT_APPEAR:
+                check(f"{clean} has no placeholder {bad!r}", bad not in body)
+            if PRIVATE_ADDR:
+                check(f"{clean} does not leak the private address", PRIVATE_ADDR not in body)
+
+        # 2. the private address must not be served from any public asset either
+        if PRIVATE_ADDR:
+            for asset in ("/assets/js/site-config.js", "/audit/", "/audit/preview/", "/tps/"):
+                _, _, body = fetch(BASE + asset)
+                check(f"{asset} does not leak the private address", PRIVATE_ADDR not in body)
+
+    with sync_playwright() as pw:
+        browser = pw.chromium.launch()
+        page = browser.new_page(viewport={"width": 390, "height": 844})
+        errors: list[str] = []
+        page.on("console", lambda m: errors.append(m.text) if m.type == "error" else None)
+        for clean, (fname, phrases) in PAGES.items():
+            url = (SITE / fname).as_uri() if LOCAL else BASE + clean
+            resp = page.goto(url, wait_until="load")
+            check(f"browser {clean} loads", bool(resp and resp.ok), f"status={resp.status if resp else None}")
+            text = page.inner_text("body")
+            for p in phrases[:2]:
+                check(f"browser {clean} shows {p!r}", p.lower() in text.lower())
+            over = page.evaluate("() => document.documentElement.scrollWidth - window.innerWidth")
+            check(f"browser {clean} no horizontal overflow at 390px", over <= 1, f"{over}px")
+            # every internal link on the page must resolve. In --local mode the page is a
+            # file:// document, so absolute paths (/audit/) are resolved against the live host.
+            hrefs = page.eval_on_selector_all(
+                "a[href]", "els => els.map(e => e.getAttribute('href'))")
+            targets = set()
+            for h in hrefs:
+                if not h or h.startswith("mailto:") or h.startswith("#"):
+                    continue
+                if h.startswith("/"):
+                    targets.add(BASE + h)
+                elif h.startswith("http"):
+                    if h.startswith(BASE):
+                        targets.add(h)
+                else:
+                    targets.add(str((SITE / h).resolve().as_uri() if LOCAL else BASE + "/" + h))
+            for h in sorted(targets):
+                if h.startswith("file://"):
+                    ok_link = Path(urllib.request.url2pathname(h[7:])).exists()
+                    st = 200 if ok_link else 404
+                else:
+                    st, _, _ = fetch(h)
+                check(f"link {h.replace(BASE, '')} on {clean}", st == 200, f"{st}")
+        browser.close()
+        if LOCAL:
+            # on file:// the absolute /admin/bar.js has no origin to resolve against
+            errors = [e for e in errors if "ERR_FILE_NOT_FOUND" not in e]
+        check("no console errors", not errors, "; ".join(errors[:3]))
+
+    print(f"\n{'ALL PASS' if not fails else 'FAILURES: ' + ', '.join(fails)}")
+    return 1 if fails else 0
+
+
+if __name__ == "__main__":
+    sys.exit(main())

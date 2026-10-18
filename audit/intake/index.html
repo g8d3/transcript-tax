@@ -38,18 +38,82 @@ file — the same three questions we send by email, published here so you can de
 you write to us.</p>
 
 <div class="cta">
-  <strong>Send it to <a href="mailto:hola@focalis.cc?subject=TAX">hola@focalis.cc</a> with
-  <code>TAX</code> in the subject</strong>, and we reply with a fixed quote and the date we
-  can run it. Prepaid 50 percent, balance on delivery of the report.
+  <strong>Two ways in:</strong> fill the form below (it reaches us directly), or send it to
+  <a href="mailto:hello@focalis.cc?subject=TAX">hello@focalis.cc</a> with <code>TAX</code> in
+  the subject. Either way we reply with a fixed quote and the date we can run it. Prepaid 50
+  percent, balance on delivery of the report.
 </div>
+
+<form id="intake" class="cta" novalidate>
+  <h2 style="margin-top:0;border:0;padding:0;font-size:1.05rem">Send the three answers</h2>
+  <p class="muted" style="margin-top:.4rem">Text only — the log file comes after we reply (or paste
+  the first lines if you prefer). Nothing is uploaded anywhere except this form.</p>
+  <p><label for="f-name"><strong>Your name</strong></label><br>
+    <input id="f-name" name="name" type="text" required autocomplete="name"
+      style="width:100%;padding:.55rem .6rem;margin-top:.3rem;border:1px solid var(--line);border-radius:.35rem;background:var(--bg);color:var(--fg)"></p>
+  <p><label for="f-email"><strong>Email</strong></label><br>
+    <input id="f-email" name="email" type="email" required autocomplete="email"
+      style="width:100%;padding:.55rem .6rem;margin-top:.3rem;border:1px solid var(--line);border-radius:.35rem;background:var(--bg);color:var(--fg)"></p>
+  <p><label for="f-volume"><strong>1. Volume</strong> — loops, turns per loop per day, working days a year</label><br>
+    <textarea id="f-volume" name="volume" rows="2" required
+      style="width:100%;padding:.55rem .6rem;margin-top:.3rem;border:1px solid var(--line);border-radius:.35rem;background:var(--bg);color:var(--fg)"></textarea></p>
+  <p><label for="f-cost"><strong>2. Cost per turn</strong> — model(s) and route/provider, $/M input and output, input tokens per turn, how much of that repeats</label><br>
+    <textarea id="f-cost" name="cost" rows="2" required
+      style="width:100%;padding:.55rem .6rem;margin-top:.3rem;border:1px solid var(--line);border-radius:.35rem;background:var(--bg);color:var(--fg)"></textarea></p>
+  <p><label for="f-process"><strong>3. Process model</strong> — does a turn start a process, or is a warm service handling it?</label><br>
+    <textarea id="f-process" name="process" rows="2" required
+      style="width:100%;padding:.55rem .6rem;margin-top:.3rem;border:1px solid var(--line);border-radius:.35rem;background:var(--bg);color:var(--fg)"></textarea></p>
+  <p><label for="f-notes">Anything else (optional)</label><br>
+    <textarea id="f-notes" name="notes" rows="2"
+      style="width:100%;padding:.55rem .6rem;margin-top:.3rem;border:1px solid var(--line);border-radius:.35rem;background:var(--bg);color:var(--fg)"></textarea></p>
+  <!-- honeypot: a human never fills this -->
+  <p style="position:absolute;left:-9999px" aria-hidden="true"><label for="f-website">Website</label>
+    <input id="f-website" name="website" type="text" tabindex="-1" autocomplete="off"></p>
+  <button id="f-send" type="submit"
+    style="background:var(--accent);color:#fff;border:0;border-radius:.4rem;padding:.6rem 1.1rem;font:inherit;font-weight:600;cursor:pointer">Send the three answers</button>
+  <p id="f-status" class="muted" role="status" aria-live="polite" style="margin-top:.7rem"></p>
+</form>
+<script>
+(function(){
+  var form = document.getElementById('intake'), status = document.getElementById('f-status'), btn = document.getElementById('f-send');
+  form.addEventListener('submit', function(e){
+    e.preventDefault();
+    var v = function(id){ return (document.getElementById(id).value || '').trim(); };
+    if (!v('f-name') || !v('f-email') || !v('f-volume') || !v('f-cost') || !v('f-process')) {
+      status.textContent = 'Please fill your name, email and the three answers.';
+      return;
+    }
+    var message = 'INTAKE — Agent Fleet Tax Audit\n\n'
+      + '1. Volume: ' + v('f-volume') + '\n'
+      + '2. Cost per turn: ' + v('f-cost') + '\n'
+      + '3. Process model: ' + v('f-process') + '\n'
+      + (v('f-notes') ? 'Notes: ' + v('f-notes') + '\n' : '')
+      + '\n(from the intake page at focalis.cc/audit/intake/)';
+    btn.disabled = true; status.textContent = 'Sending…';
+    fetch('/api/contact', {method:'POST', headers:{'Content-Type':'application/json'},
+      body: JSON.stringify({name: v('f-name'), email: v('f-email'), message: message, website: v('f-website')})})
+      .then(function(r){ return r.json().then(function(j){ return {ok: r.ok, j: j}; }); })
+      .then(function(res){
+        if (res.ok && res.j.ok) { status.textContent = res.j.message || 'Sent.'; form.reset(); }
+        else { status.textContent = (res.j && res.j.error) || 'Something went wrong — write to hello@focalis.cc instead.'; }
+        btn.disabled = false;
+      })
+      .catch(function(){ status.textContent = 'Network error — write to hello@focalis.cc instead.'; btn.disabled = false; });
+  });
+})();
+</script>
 
 <h2>1. The three questions</h2>
 <ol>
   <li><strong>Volume.</strong> How many loops, how many turns per loop per day, and how many
   working days a year? (This is what turns a per-turn number into hours and dollars.)</li>
-  <li><strong>Cost per turn.</strong> Which model(s) and what you pay per million input and
-  output tokens; roughly how many input tokens a turn carries, and how much of that input
-  repeats turn after turn (cached or not).</li>
+  <li><strong>Cost per turn.</strong> Which model(s), <strong>which route or provider serves
+  them</strong>, and what you pay per million input and output tokens; roughly how many input
+  tokens a turn carries, and how much of that input repeats turn after turn (cached or not).
+  The route matters as much as the model: on our own keys one model's input price runs
+  <strong>20.5x</strong> between routes and another's first token is <strong>5.7x</strong>
+  slower on the cheap route — <a href="https://focalis.cc/audit/routes/">the measurements are
+  public</a>.</li>
   <li><strong>Process model.</strong> Does a turn start a process — a CLI or agent per turn —
   or does a warm service handle it? This decides whether the <strong>929 ms of boot</strong>
   we measure per turn is in your bill at all. It is the one lever we have measured as real

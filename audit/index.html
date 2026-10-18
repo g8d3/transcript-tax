@@ -68,7 +68,7 @@ footer { border-top:1px solid var(--line); color:var(--muted); font-size:.85rem;
 <li><strong>Cache state did NOT predict wall time in our sample — we checked, and we say so.</strong> We expected the same 9.4k input to be fast on a cache hit and slow on a miss. Grouping the runs by cached tokens does not separate them: 9216 cached appears in a 16.6 s run and in two ~3 s runs. Four of ten runs in that cell were 2-6x slower with no measured signature, in a contiguous streak that then recovered. We report that as unexplained, not as a cache finding.</li>
 <li><strong>Rates from short replies are easy to fake and we do not use them.</strong> A one-word reply is often delivered in a single chunk, which collapses any window you divide tokens by; we guard that in our own tool rather than quote the number.</li>
 <li>Fleet math: <strong>1,000 no-op turns burn ~50 minutes of pure overhead.</strong> 10 loops x 100 turns a day = ~52 minutes a day of it, before any useful work happens — and ~2.4 wall-hours a day on real work (measured mean 8.7 s/turn).</li>
-<li><strong>On real work it holds up, and you cannot buy your way out of it.</strong> Our own fleet's turn logs (500 live turns, one machine): <strong>8.7 s wall per turn — 34% model, 29% tools, 37% unaccounted</strong>. Per model, the unaccounted floor barely moves (p50 1.5-2.5 s) while the model slice's p50 ranges from 1 ms to 9.1 s: switching models changes the model slice, not the tax.</li>
+<li><strong>On real work it holds up, and you cannot buy your way out of it.</strong> Our own fleet's turn logs (500 live turns, one machine): <strong>8.7 s wall per turn — 34% model, 29% tools, 37% unaccounted</strong> (the log rotates, so the window behind those percentages is gone — the exporter and a current window are published in the repo: <a href="https://github.com/g8d3/transcript-tax/tree/master/fleet">fleet/</a>, and the monitor's own turn rows show what happens to that 37% once the provider roundtrip is measured: <a href="https://focalis.cc/tps/article.html">paper §9</a>). Per model, the unaccounted floor barely moves (p50 1.5-2.5 s) while the model slice's p50 ranges from 1 ms to 9.1 s: switching models changes the model slice, not the tax.</li>
 <li><strong>The tail is worse than the median.</strong> p90 unaccounted is 3.4-5.9 s and the worst turns hit 85 s (and 128 s on a provider that was returning errors). At fleet scale you meet that tail often.</li>
 <li><strong>4.4% of our turns produced nothing</strong> (failed, aborted, empty) in the same sample. We do not quote a dollar figure for that waste: every one of those errors ran on a model with no public list price, so the honest number is the rate, not a cost.</li>
 </ul>
@@ -99,16 +99,28 @@ our own fleet's 500 live turns — is public, with the raw CSV and the analysis 
 <ul>
 <li>Paper: <strong><a href="https://focalis.cc/tps/">https://focalis.cc/tps/</a></strong> — same text, no tracking of its own, no external requests (the hosted copy gets Cloudflare's cookieless page-view beacon).</li>
 <li>Repo (code + <code>bench.csv</code> + figures, MIT / CC BY 4.0): <strong><a href="https://github.com/g8d3/transcript-tax">https://github.com/g8d3/transcript-tax</a></strong></li>
+<li>Our own <strong>claims audit</strong> of this page — every number, its source, and every
+  correction we made to it (including what we retracted): <strong><a href="https://github.com/g8d3/transcript-tax/blob/master/CLAIMS.md">https://github.com/g8d3/transcript-tax/blob/master/CLAIMS.md</a></strong></li>
+<li><strong>Where the token enters changes what it costs.</strong> The same model across several providers, measured: price, first-token latency and total, with the routes that exist but cannot answer: <strong><a href="https://focalis.cc/audit/routes/">https://focalis.cc/audit/routes/</a></strong></li>
 </ul>
 <p>If the numbers do not survive your reading, tell us and we drop the pitch.</p>
 <h2 id="who-we-are">Who we are</h2>
-<p>Nova Radar — a risk radar for Solana. We run versioned trading strategies with every decision in a hash-chained log and real trades carrying on-chain signatures. Measuring overhead is how we keep our own radar fast. Now we sell the measurement.</p>
+<p>Focalis S.A.S. — a small software studio in Bogotá, Colombia (UTC-5). We run our own
+agent fleet, which is where the 500-turn dataset in the paper comes from, and we built the
+instrument we measure it with. We sell the measurement, and only the measurement.</p>
 <h2 id="next-step">Next step</h2>
-<p>Pick a tier in <code>pricing.md</code>. The audit starts with one loop, one day, one breakdown page. If the numbers do not show a tax worth cutting, you pay the base fee and keep the data.</p>
+<p>Pick a tier in the pricing table above. The audit starts with one loop, one day, one breakdown page. If the numbers do not show a tax worth cutting, you pay the base fee and keep the data.</p>
 <p>See the shape of that breakdown page before you buy — a blank template filled with one labelled example loop, no client data in it: <strong><a href="https://focalis.cc/audit/sample/">https://focalis.cc/audit/sample/</a></strong></p>
-<p>The starting questions, and the rest of the working paper, are public. Write to
-<strong>hola@focalis.cc</strong> with the word <code>TAX</code> in the subject and the three questions we
-send are the same ones we publish.</p>
+<p>The three questions we ask every prospect, what to attach and what you get, are public:
+<strong><a href="https://focalis.cc/audit/intake/">https://focalis.cc/audit/intake/</a></strong>. Write to
+<strong>hello@focalis.cc</strong> with the word <code>TAX</code> in the subject — the three questions we send are
+exactly the ones published there.</p>
+<p>Focalis S.A.S. (Bogotá, Colombia) is the seller. Fixed fee, prepaid 50% and balance on
+delivery; card payment is collected by our merchant of record, which handles tax and
+issues the receipt. Terms, privacy and refunds are published at
+<strong><a href="https://focalis.cc/terms">https://focalis.cc/terms</a></strong>,
+<strong><a href="https://focalis.cc/privacy">https://focalis.cc/privacy</a></strong> and
+<strong><a href="https://focalis.cc/refunds">https://focalis.cc/refunds</a></strong>.</p>
 <p>No promises of sub-second miracles. Just the tax, measured, then lowered.</p></section>
   <section id="pricing"><p>All tiers are fixed-fee, prepaid 50 percent, balance on delivery of the report. No success fee, no token-based billing, no access to funds or keys ever.</p>
 <h2 id="does-it-pay-for-itself-run-roi-py-sweep-first">Does it pay for itself? (run <code>roi.py --sweep</code> first)</h2>
@@ -168,8 +180,15 @@ show you.</p>
 <ul>
 <li>Everything in Tier 1, for up to 5 loops</li>
 <li>Cache measured and reported (hit rate, cached tokens per turn, wall at fixed input) — reported, not prescribed: it did not separate fast from slow turns in our own data (paper §6)</li>
-<li>Transcript-size curve for your loops (when to compact: our default gate is ~100 KB)</li>
+<li>Transcript-size curve for your loops, measured as ranges. When to compact: our default is a
+  ~100 KB heuristic and we label it as that — we tried to fit a size coefficient of our own and it
+  did not reproduce (paper §8), so we measure your curve and you set the threshold</li>
 <li>Prioritized cut list with expected seconds and token savings per fix</li>
+<li><strong>The route is priced, not assumed.</strong> If the same model is cheaper, or answers faster, on another
+  route you already have access to, the cut list says so with the numbers — measured on our own
+  keys and published at <a href="https://focalis.cc/audit/routes/">https://focalis.cc/audit/routes/</a> (one model's input price runs 20.5x
+  between routes; on another the cheap route is 5.7x slower to first token). When every route
+  charges the same list price we say that instead, and the finding is the latency.</li>
 <li>Regression check script you keep (fails CI if steady-state wall regresses)</li>
 <li>60-min readout + 30-day follow-up questions by message</li>
 <li>Delivery: 10 business days from access</li>
@@ -369,15 +388,39 @@ files, only behind your code review.</p>
 $12,600/yr token bill is 11% of one year, and it buys the split and the cut list
 that keep applying after we leave. If the sweep says your fleet does not clear
 the bar, we will say so and sell you the $290 single-loop measurement or nothing
-at all.</p></section>
+at all.</p>
+<h2 id="you-publish-the-instrument-and-the-gate-why-would-i-pay-for-the-audit">"You publish the instrument and the gate — why would I pay for the audit?"</h2>
+<p>Because you already have the tool and still cannot act on it: the monitor tells you what one
+turn cost, not which slice of it is removable. Concretely, on our own window the panel shows
+8.11 s per turn and 3.2% wasted turns; the audit is what turned that into "the provider
+roundtrip is 52% and the residual is 4 ms at p50" and then into a ranked cut list. The gate is
+worthless without a baseline that was taken <em>after</em> a change you trust, which is the part the
+audit produces. If you would rather do that work yourself, do it — the tool, the paper and the
+calculator are all public, and that is on purpose: it is the only honest way to sell
+measurement.</p>
+<h2 id="your-example-pages-are-your-own-data-where-is-the-case-study">"Your example pages are your own data. Where is the case study?"</h2>
+<p>There is no case study yet, and we will not publish one with invented numbers. What we publish
+instead is everything that does not need a client: our own window (<code>fleet/</code> in the repo, raw),
+the filled example deliverables (<code>/audit/sample/</code>), the claims audit of our own copy, and the
+retractions. The first real client gets a before/after with their numbers, and only with their
+written approval — the 48-hour veto in the terms is not decoration.</p>
+<h2 id="i-have-no-turn-log-do-i-still-have-an-audit">"I have no turn log. Do I still have an audit?"</h2>
+<p>Yes, but it starts one step earlier: the monitor is free and takes an afternoon to have writing
+rows, or you send a day of logs from whatever harness you already run and we write the adapter
+(that is in scope, not an extra). The browser preview at <code>/audit/preview/</code> reads our format
+directly and any CSV you map by column, so you can see the shape of the answer before you pay.
+What we will not do is audit from a description: without rows, all we would have is an opinion.</p></section>
   <section id="start">
     <div class="cta">
       <p><strong>Start with one loop.</strong> Reply <code>TAX</code> or write to
-      <a href="mailto:hola@focalis.cc">hola@focalis.cc</a> and we send the three questions we need.
+      <a href="mailto:hello@focalis.cc">hello@focalis.cc</a> and we send the three questions we need.
       If the numbers do not show a tax worth cutting, you keep the data and we say so.</p>
     </div></section>
 </main>
-<footer>No analytics of our own, no external fonts, no cookies. On the hosted copy Cloudflare adds
+<footer>Seller: Focalis S.A.S. (Bogotá, Colombia) · <a href="https://focalis.cc/company">Company</a> ·
+<a href="https://focalis.cc/terms">Terms</a> · <a href="https://focalis.cc/privacy">Privacy</a> ·
+<a href="https://focalis.cc/refunds">Refund policy</a>.<br>
+No analytics of our own, no external fonts, no cookies. On the hosted copy Cloudflare adds
 an email-obfuscation script and a cookieless page-view beacon; we keep no visitor data. Text CC BY 4.0.
 Method and data: <code>bench.csv</code> + <code>analyze.py</code> + <code>tools/roi.py</code>.</footer>
 <script>/* ROI calculator — the browser twin of tools/roi.py (same arithmetic, same defaults).

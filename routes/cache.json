@@ -1,0 +1,221 @@
+[
+ {
+  "anchor": "deepseek-v4.1-flash",
+  "provider": "openrouter",
+  "model": "deepseek/deepseek-v4.1-flash",
+  "first": {
+   "ok": true,
+   "ttft_ms": 1006,
+   "total_ms": 1059,
+   "in_tokens": 4122,
+   "cached_tokens": 0,
+   "out_tokens": 16
+  },
+  "second": {
+   "ok": true,
+   "ttft_ms": null,
+   "total_ms": 872,
+   "in_tokens": 4122,
+   "cached_tokens": 4096,
+   "out_tokens": 16
+  },
+  "state": "ok",
+  "hit": true,
+  "cached_share": 0.994,
+  "wall_delta_ms": -187
+ },
+ {
+  "anchor": "deepseek-v4.1-flash",
+  "provider": "opencode-go",
+  "model": "deepseek-v4.1-flash",
+  "first": {
+   "ok": true,
+   "ttft_ms": 1986,
+   "total_ms": 2060,
+   "in_tokens": 4122,
+   "cached_tokens": 0,
+   "out_tokens": 16
+  },
+  "second": {
+   "ok": true,
+   "ttft_ms": 1300,
+   "total_ms": 1464,
+   "in_tokens": 4122,
+   "cached_tokens": 0,
+   "out_tokens": 16
+  },
+  "state": "ok",
+  "hit": false,
+  "cached_share": 0.0,
+  "wall_delta_ms": -596
+ },
+ {
+  "anchor": "deepseek-v4.1-flash",
+  "provider": "chutes",
+  "model": "deepseek-ai/DeepSeek-V4-Flash-0731-TEE",
+  "first": {
+   "ok": true,
+   "ttft_ms": 1839,
+   "total_ms": 1903,
+   "in_tokens": 4096,
+   "cached_tokens": null,
+   "out_tokens": 3
+  },
+  "second": {
+   "ok": true,
+   "ttft_ms": 1459,
+   "total_ms": 1482,
+   "in_tokens": 4096,
+   "cached_tokens": 3840,
+   "out_tokens": 3
+  },
+  "state": "ok",
+  "hit": true,
+  "cached_share": 0.938,
+  "wall_delta_ms": -421
+ },
+ {
+  "anchor": "gpt-oss-120b",
+  "provider": "groq",
+  "model": "openai/gpt-oss-120b",
+  "first": {
+   "ok": true,
+   "ttft_ms": null,
+   "total_ms": 1050,
+   "in_tokens": 4163,
+   "cached_tokens": null,
+   "out_tokens": 16
+  },
+  "second": {
+   "ok": false,
+   "error": "http 429: {\"error\":{\"message\":\"Rate limit reached for model `openai/gpt-oss-120b` in organization `org_01jjmddd22fqyrgespq11mzent`"
+  },
+  "state": "failed",
+  "error": "http 429: {\"error\":{\"message\":\"Rate limit reached for model `openai/gpt-oss-120b` in organization `org_01jjmddd22fqyrgespq11mzent`"
+ },
+ {
+  "anchor": "gpt-oss-120b",
+  "provider": "openrouter",
+  "model": "openai/gpt-oss-120b",
+  "first": {
+   "ok": true,
+   "ttft_ms": null,
+   "total_ms": 2082,
+   "in_tokens": 4146,
+   "cached_tokens": 0,
+   "out_tokens": 16
+  },
+  "second": {
+   "ok": true,
+   "ttft_ms": null,
+   "total_ms": 1315,
+   "in_tokens": 4159,
+   "cached_tokens": 48,
+   "out_tokens": 16
+  },
+  "state": "ok",
+  "hit": true,
+  "cached_share": 0.012,
+  "wall_delta_ms": -767
+ },
+ {
+  "anchor": "deepseek-v4-pro",
+  "provider": "deepseek",
+  "model": "deepseek-v4-pro",
+  "first": {
+   "ok": true,
+   "ttft_ms": 1739,
+   "total_ms": 1956,
+   "in_tokens": 4175,
+   "cached_tokens": 0,
+   "out_tokens": 16
+  },
+  "second": {
+   "ok": true,
+   "ttft_ms": 1364,
+   "total_ms": 1634,
+   "in_tokens": 4175,
+   "cached_tokens": 4096,
+   "out_tokens": 16
+  },
+  "state": "ok",
+  "hit": true,
+  "cached_share": 0.981,
+  "wall_delta_ms": -322
+ },
+ {
+  "anchor": "gemini-3-flash-preview",
+  "provider": "venice",
+  "model": "gemini-3-flash-preview",
+  "first": {
+   "ok": true,
+   "ttft_ms": 1596,
+   "total_ms": 1612,
+   "in_tokens": 6104,
+   "cached_tokens": 1772,
+   "out_tokens": 12
+  },
+  "second": {
+   "ok": true,
+   "ttft_ms": 1672,
+   "total_ms": 1672,
+   "in_tokens": 6104,
+   "cached_tokens": 1772,
+   "out_tokens": 12
+  },
+  "state": "ok",
+  "hit": true,
+  "cached_share": 0.29,
+  "wall_delta_ms": 60
+ },
+ {
+  "anchor": "gemini-3-flash-preview",
+  "provider": "openrouter",
+  "model": "google/gemini-3-flash-preview",
+  "first": {
+   "ok": true,
+   "ttft_ms": 1652,
+   "total_ms": 1846,
+   "in_tokens": 4333,
+   "cached_tokens": 0,
+   "out_tokens": 2
+  },
+  "second": {
+   "ok": true,
+   "ttft_ms": 1076,
+   "total_ms": 1295,
+   "in_tokens": 4333,
+   "cached_tokens": 0,
+   "out_tokens": 2
+  },
+  "state": "ok",
+  "hit": false,
+  "cached_share": 0.0,
+  "wall_delta_ms": -551
+ },
+ {
+  "anchor": "kimi-k3",
+  "provider": "openrouter",
+  "model": "moonshotai/kimi-k3",
+  "first": {
+   "ok": true,
+   "ttft_ms": null,
+   "total_ms": 1039,
+   "in_tokens": 4177,
+   "cached_tokens": 0,
+   "out_tokens": 16
+  },
+  "second": {
+   "ok": true,
+   "ttft_ms": null,
+   "total_ms": 918,
+   "in_tokens": 4177,
+   "cached_tokens": 4096,
+   "out_tokens": 16
+  },
+  "state": "ok",
+  "hit": true,
+  "cached_share": 0.981,
+  "wall_delta_ms": -121
+ }
+]

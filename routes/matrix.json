@@ -1,0 +1,1098 @@
+[
+ {
+  "anchor": "deepseek-v4.1-flash",
+  "provider": "opencode-go",
+  "model": "deepseek-v4.1-flash",
+  "price": null,
+  "state": "ok",
+  "reps": [
+   {
+    "ok": true,
+    "streamed": true,
+    "ttft_ms": 1411,
+    "total_ms": 1504,
+    "out_tokens": 16,
+    "in_tokens": 41,
+    "cached_tokens": 0,
+    "text": "The user wants a single "
+   },
+   {
+    "ok": true,
+    "streamed": true,
+    "ttft_ms": 1590,
+    "total_ms": 1636,
+    "out_tokens": 16,
+    "in_tokens": 41,
+    "cached_tokens": 0,
+    "text": "The user wants exactly o"
+   }
+  ],
+  "ttft_p50": 1500,
+  "total_p50": 1570,
+  "out_tokens": 16,
+  "streamed": true,
+  "cached_tokens": 0,
+  "text": "The user wants a single ",
+  "error": null
+ },
+ {
+  "anchor": "deepseek-v4.1-flash",
+  "provider": "openrouter",
+  "model": "deepseek/deepseek-v4.1-flash",
+  "price": [
+   0.0536,
+   0.144,
+   0.0016
+  ],
+  "state": "ok",
+  "reps": [
+   {
+    "ok": true,
+    "streamed": true,
+    "ttft_ms": 921,
+    "total_ms": 1121,
+    "out_tokens": 16,
+    "in_tokens": 41,
+    "cached_tokens": 0,
+    "text": "We need answer single wo"
+   },
+   {
+    "ok": true,
+    "streamed": true,
+    "ttft_ms": 542,
+    "total_ms": 669,
+    "out_tokens": 16,
+    "in_tokens": 41,
+    "cached_tokens": 0,
+    "text": "We need answer exact sin"
+   }
+  ],
+  "ttft_p50": 732,
+  "total_p50": 895,
+  "out_tokens": 16,
+  "streamed": true,
+  "cached_tokens": 0,
+  "text": "We need answer single wo",
+  "error": null
+ },
+ {
+  "anchor": "deepseek-v4.1-flash",
+  "provider": "dashscope",
+  "model": "deepseek-v4.1-flash",
+  "price": null,
+  "state": "ok",
+  "reps": [
+   {
+    "ok": true,
+    "streamed": true,
+    "ttft_ms": 1660,
+    "total_ms": 1887,
+    "out_tokens": null,
+    "in_tokens": null,
+    "cached_tokens": null,
+    "text": "We need answer single wo"
+   },
+   {
+    "ok": true,
+    "streamed": true,
+    "ttft_ms": 1725,
+    "total_ms": 1882,
+    "out_tokens": null,
+    "in_tokens": null,
+    "cached_tokens": null,
+    "text": "We need answer single wo"
+   }
+  ],
+  "ttft_p50": 1692,
+  "total_p50": 1884,
+  "out_tokens": null,
+  "streamed": true,
+  "cached_tokens": null,
+  "text": "We need answer single wo",
+  "error": null
+ },
+ {
+  "anchor": "deepseek-v4.1-flash",
+  "provider": "aihubmix",
+  "model": "deepseek-v4.1-flash",
+  "price": null,
+  "state": "failed",
+  "reps": [
+   {
+    "ok": false,
+    "error": "http 403: {\"error\":{\"message\":\"Your account balance is insufficient. Please recharge your account to continue using the API. (tid:"
+   },
+   {
+    "ok": false,
+    "error": "http 403: {\"error\":{\"message\":\"Your account balance is insufficient. Please recharge your account to continue using the API. (tid:"
+   }
+  ],
+  "ttft_p50": null,
+  "total_p50": null,
+  "out_tokens": null,
+  "streamed": null,
+  "cached_tokens": null,
+  "text": null,
+  "error": "http 403: {\"error\":{\"message\":\"Your account balance is insufficient. Please recharge your account to continue using the API. (tid:"
+ },
+ {
+  "anchor": "deepseek-v4.1-flash",
+  "provider": "chutes",
+  "model": "deepseek-ai/DeepSeek-V4-Flash-0731-TEE",
+  "price": [
+   0.44,
+   1.32,
+   0.044
+  ],
+  "state": "ok",
+  "reps": [
+   {
+    "ok": true,
+    "streamed": true,
+    "ttft_ms": 1476,
+    "total_ms": 1533,
+    "out_tokens": 3,
+    "in_tokens": 15,
+    "cached_tokens": null,
+    "text": "PONG"
+   },
+   {
+    "ok": true,
+    "streamed": true,
+    "ttft_ms": 1328,
+    "total_ms": 1364,
+    "out_tokens": 3,
+    "in_tokens": 15,
+    "cached_tokens": null,
+    "text": "PONG"
+   }
+  ],
+  "ttft_p50": 1402,
+  "total_p50": 1448,
+  "out_tokens": 3,
+  "streamed": true,
+  "cached_tokens": null,
+  "text": "PONG",
+  "error": null
+ },
+ {
+  "anchor": "gpt-oss-120b",
+  "provider": "groq",
+  "model": "openai/gpt-oss-120b",
+  "price": [
+   0.15,
+   0.6,
+   0.075
+  ],
+  "state": "ok",
+  "reps": [
+   {
+    "ok": true,
+    "streamed": true,
+    "ttft_ms": 397,
+    "total_ms": 423,
+    "out_tokens": 16,
+    "in_tokens": 82,
+    "cached_tokens": null,
+    "text": "The user asks: \"Reply wi"
+   },
+   {
+    "ok": true,
+    "streamed": true,
+    "ttft_ms": 450,
+    "total_ms": 473,
+    "out_tokens": 16,
+    "in_tokens": 82,
+    "cached_tokens": null,
+    "text": "The user says: \"Reply wi"
+   }
+  ],
+  "ttft_p50": 424,
+  "total_p50": 448,
+  "out_tokens": 16,
+  "streamed": true,
+  "cached_tokens": null,
+  "text": "The user asks: \"Reply wi",
+  "error": null
+ },
+ {
+  "anchor": "gpt-oss-120b",
+  "provider": "openrouter",
+  "model": "openai/gpt-oss-120b",
+  "price": [
+   0.15,
+   0.6,
+   0.075
+  ],
+  "state": "ok",
+  "reps": [
+   {
+    "ok": true,
+    "streamed": true,
+    "ttft_ms": 816,
+    "total_ms": 951,
+    "out_tokens": 16,
+    "in_tokens": 65,
+    "cached_tokens": 0,
+    "text": "The user asks: \"Reply wi"
+   },
+   {
+    "ok": true,
+    "streamed": true,
+    "ttft_ms": 602,
+    "total_ms": 841,
+    "out_tokens": 16,
+    "in_tokens": 78,
+    "cached_tokens": 64,
+    "text": "The user says: \"Reply wi"
+   }
+  ],
+  "ttft_p50": 709,
+  "total_p50": 896,
+  "out_tokens": 16,
+  "streamed": true,
+  "cached_tokens": 0,
+  "text": "The user asks: \"Reply wi",
+  "error": null
+ },
+ {
+  "anchor": "gpt-oss-120b",
+  "provider": "cerebras",
+  "model": "gpt-oss-120b",
+  "price": null,
+  "state": "failed",
+  "reps": [
+   {
+    "ok": false,
+    "error": "http 402: {\"message\":\"Payment required to access this resource. Visit your billing tab.\",\"type\":\"payment_required_error\",\"param\":\""
+   },
+   {
+    "ok": false,
+    "error": "http 402: {\"message\":\"Payment required to access this resource. Visit your billing tab.\",\"type\":\"payment_required_error\",\"param\":\""
+   }
+  ],
+  "ttft_p50": null,
+  "total_p50": null,
+  "out_tokens": null,
+  "streamed": null,
+  "cached_tokens": null,
+  "text": null,
+  "error": "http 402: {\"message\":\"Payment required to access this resource. Visit your billing tab.\",\"type\":\"payment_required_error\",\"param\":\""
+ },
+ {
+  "anchor": "qwen3.8-27b",
+  "provider": "groq",
+  "model": "qwen/qwen3.8-27b",
+  "price": [
+   0.8,
+   4.0,
+   0.4
+  ],
+  "state": "ok",
+  "reps": [
+   {
+    "ok": true,
+    "streamed": true,
+    "ttft_ms": 315,
+    "total_ms": 320,
+    "out_tokens": 3,
+    "in_tokens": 23,
+    "cached_tokens": null,
+    "text": "PONG"
+   },
+   {
+    "ok": true,
+    "streamed": true,
+    "ttft_ms": 264,
+    "total_ms": 267,
+    "out_tokens": 3,
+    "in_tokens": 23,
+    "cached_tokens": null,
+    "text": "PONG"
+   }
+  ],
+  "ttft_p50": 290,
+  "total_p50": 294,
+  "out_tokens": 3,
+  "streamed": true,
+  "cached_tokens": null,
+  "text": "PONG",
+  "error": null
+ },
+ {
+  "anchor": "qwen3.8-27b",
+  "provider": "openrouter",
+  "model": "qwen/qwen3.8-27b",
+  "price": [
+   0.24,
+   2.2,
+   0.05
+  ],
+  "state": "ok",
+  "reps": [
+   {
+    "ok": true,
+    "streamed": true,
+    "ttft_ms": 818,
+    "total_ms": 1179,
+    "out_tokens": 16,
+    "in_tokens": 63,
+    "cached_tokens": 0,
+    "text": "The user is asking me to"
+   },
+   {
+    "ok": true,
+    "streamed": true,
+    "ttft_ms": 644,
+    "total_ms": 1153,
+    "out_tokens": 16,
+    "in_tokens": 63,
+    "cached_tokens": 0,
+    "text": "User asks: \"Reply with t"
+   }
+  ],
+  "ttft_p50": 731,
+  "total_p50": 1166,
+  "out_tokens": 16,
+  "streamed": true,
+  "cached_tokens": 0,
+  "text": "The user is asking me to",
+  "error": null
+ },
+ {
+  "anchor": "qwen3.8-27b",
+  "provider": "chutes",
+  "model": "Qwen/Qwen3.8-27B-TEE",
+  "price": [
+   0.039,
+   1.25,
+   0.0039
+  ],
+  "state": "ok",
+  "reps": [
+   {
+    "ok": true,
+    "streamed": true,
+    "ttft_ms": 1966,
+    "total_ms": 2206,
+    "out_tokens": 16,
+    "in_tokens": 63,
+    "cached_tokens": 0,
+    "text": "user: \"Reply with the si"
+   },
+   {
+    "ok": true,
+    "streamed": true,
+    "ttft_ms": 1529,
+    "total_ms": 1776,
+    "out_tokens": 16,
+    "in_tokens": 63,
+    "cached_tokens": 0,
+    "text": "{\n  \"model\": \"gpt-4o-min"
+   }
+  ],
+  "ttft_p50": 1748,
+  "total_p50": 1991,
+  "out_tokens": 16,
+  "streamed": true,
+  "cached_tokens": 0,
+  "text": "user: \"Reply with the si",
+  "error": null
+ },
+ {
+  "anchor": "qwen3.8-27b",
+  "provider": "dashscope",
+  "model": "qwen3.8-27b",
+  "price": null,
+  "state": "ok",
+  "reps": [
+   {
+    "ok": true,
+    "streamed": true,
+    "ttft_ms": 1386,
+    "total_ms": 2611,
+    "out_tokens": 74,
+    "in_tokens": 59,
+    "cached_tokens": 0,
+    "text": "{\n  \"instruction\": \"Repl"
+   },
+   {
+    "ok": true,
+    "streamed": true,
+    "ttft_ms": 2114,
+    "total_ms": 4299,
+    "out_tokens": 131,
+    "in_tokens": 59,
+    "cached_tokens": 0,
+    "text": "Thinking:\n\n1.  **Analyze"
+   }
+  ],
+  "ttft_p50": 1750,
+  "total_p50": 3455,
+  "out_tokens": 74,
+  "streamed": true,
+  "cached_tokens": 0,
+  "text": "{\n  \"instruction\": \"Repl",
+  "error": null
+ },
+ {
+  "anchor": "deepseek-v4-pro",
+  "provider": "opencode-go",
+  "model": "deepseek-v4-pro",
+  "price": null,
+  "state": "ok",
+  "reps": [
+   {
+    "ok": true,
+    "streamed": true,
+    "ttft_ms": 1705,
+    "total_ms": 1919,
+    "out_tokens": 16,
+    "in_tokens": 94,
+    "cached_tokens": 0,
+    "text": "We need answer user asks"
+   },
+   {
+    "ok": true,
+    "streamed": true,
+    "ttft_ms": 1689,
+    "total_ms": 1866,
+    "out_tokens": 16,
+    "in_tokens": 94,
+    "cached_tokens": 0,
+    "text": "We need answer single wo"
+   }
+  ],
+  "ttft_p50": 1697,
+  "total_p50": 1892,
+  "out_tokens": 16,
+  "streamed": true,
+  "cached_tokens": 0,
+  "text": "We need answer user asks",
+  "error": null
+ },
+ {
+  "anchor": "deepseek-v4-pro",
+  "provider": "deepseek",
+  "model": "deepseek-v4-pro",
+  "price": null,
+  "state": "ok",
+  "reps": [
+   {
+    "ok": true,
+    "streamed": true,
+    "ttft_ms": 1407,
+    "total_ms": 1612,
+    "out_tokens": 16,
+    "in_tokens": 94,
+    "cached_tokens": 0,
+    "text": "We need answer user asks"
+   },
+   {
+    "ok": true,
+    "streamed": true,
+    "ttft_ms": 1218,
+    "total_ms": 1421,
+    "out_tokens": 16,
+    "in_tokens": 94,
+    "cached_tokens": 0,
+    "text": "We need answer user asks"
+   }
+  ],
+  "ttft_p50": 1312,
+  "total_p50": 1516,
+  "out_tokens": 16,
+  "streamed": true,
+  "cached_tokens": 0,
+  "text": "We need answer user asks",
+  "error": null
+ },
+ {
+  "anchor": "deepseek-v4-pro",
+  "provider": "openrouter",
+  "model": "deepseek/deepseek-v4-pro",
+  "price": [
+   0.2088,
+   0.4176,
+   0.0174
+  ],
+  "state": "ok",
+  "reps": [
+   {
+    "ok": true,
+    "streamed": true,
+    "ttft_ms": 931,
+    "total_ms": 1117,
+    "out_tokens": 16,
+    "in_tokens": 15,
+    "cached_tokens": 0,
+    "text": "We are asked: \"Reply wit"
+   },
+   {
+    "ok": true,
+    "streamed": true,
+    "ttft_ms": 1385,
+    "total_ms": 1583,
+    "out_tokens": 16,
+    "in_tokens": 15,
+    "cached_tokens": 0,
+    "text": "We are asked: \"Reply wit"
+   }
+  ],
+  "ttft_p50": 1158,
+  "total_p50": 1350,
+  "out_tokens": 16,
+  "streamed": true,
+  "cached_tokens": 0,
+  "text": "We are asked: \"Reply wit",
+  "error": null
+ },
+ {
+  "anchor": "deepseek-v4-pro",
+  "provider": "dashscope",
+  "model": "deepseek-v4-pro",
+  "price": null,
+  "state": "ok",
+  "reps": [
+   {
+    "ok": true,
+    "streamed": true,
+    "ttft_ms": 2418,
+    "total_ms": 2664,
+    "out_tokens": null,
+    "in_tokens": null,
+    "cached_tokens": null,
+    "text": "We are asked: \"Reply wit"
+   },
+   {
+    "ok": true,
+    "streamed": true,
+    "ttft_ms": 2052,
+    "total_ms": 2365,
+    "out_tokens": null,
+    "in_tokens": null,
+    "cached_tokens": null,
+    "text": "We are asked: \"Reply wit"
+   }
+  ],
+  "ttft_p50": 2235,
+  "total_p50": 2514,
+  "out_tokens": null,
+  "streamed": true,
+  "cached_tokens": null,
+  "text": "We are asked: \"Reply wit",
+  "error": null
+ },
+ {
+  "anchor": "kimi-k3",
+  "provider": "opencode-go",
+  "model": "kimi-k3",
+  "price": null,
+  "state": "ok",
+  "reps": [
+   {
+    "ok": true,
+    "streamed": true,
+    "ttft_ms": 1526,
+    "total_ms": 1605,
+    "out_tokens": 15,
+    "in_tokens": 96,
+    "cached_tokens": 64,
+    "text": "PONG"
+   },
+   {
+    "ok": true,
+    "streamed": true,
+    "ttft_ms": 1093,
+    "total_ms": 1207,
+    "out_tokens": 16,
+    "in_tokens": 96,
+    "cached_tokens": 0,
+    "text": "The user wants me to rep"
+   }
+  ],
+  "ttft_p50": 1310,
+  "total_p50": 1406,
+  "out_tokens": 15,
+  "streamed": true,
+  "cached_tokens": 64,
+  "text": "PONG",
+  "error": null
+ },
+ {
+  "anchor": "kimi-k3",
+  "provider": "openrouter",
+  "model": "moonshotai/kimi-k3",
+  "price": [
+   0.304,
+   11.936,
+   0.21
+  ],
+  "state": "ok",
+  "reps": [
+   {
+    "ok": true,
+    "streamed": true,
+    "ttft_ms": 791,
+    "total_ms": 1051,
+    "out_tokens": 16,
+    "in_tokens": 99,
+    "cached_tokens": 0,
+    "text": "The user wants a ping-po"
+   },
+   {
+    "ok": true,
+    "streamed": true,
+    "ttft_ms": 1189,
+    "total_ms": 1267,
+    "out_tokens": 15,
+    "in_tokens": 96,
+    "cached_tokens": 64,
+    "text": "PONG"
+   }
+  ],
+  "ttft_p50": 990,
+  "total_p50": 1159,
+  "out_tokens": 16,
+  "streamed": true,
+  "cached_tokens": 0,
+  "text": "The user wants a ping-po",
+  "error": null
+ },
+ {
+  "anchor": "kimi-k3",
+  "provider": "dashscope",
+  "model": "kimi-k3",
+  "price": null,
+  "state": "ok",
+  "reps": [
+   {
+    "ok": true,
+    "streamed": true,
+    "ttft_ms": 1581,
+    "total_ms": 1850,
+    "out_tokens": null,
+    "in_tokens": null,
+    "cached_tokens": null,
+    "text": "The user is asking me to"
+   },
+   {
+    "ok": true,
+    "streamed": true,
+    "ttft_ms": 1621,
+    "total_ms": 1842,
+    "out_tokens": null,
+    "in_tokens": null,
+    "cached_tokens": null,
+    "text": "The user wants me to rep"
+   }
+  ],
+  "ttft_p50": 1601,
+  "total_p50": 1846,
+  "out_tokens": null,
+  "streamed": true,
+  "cached_tokens": null,
+  "text": "The user is asking me to",
+  "error": null
+ },
+ {
+  "anchor": "kimi-k3",
+  "provider": "chutes",
+  "model": "moonshotai/Kimi-K3-TEE",
+  "price": [
+   1.85,
+   9.5,
+   0.185
+  ],
+  "state": "ok",
+  "reps": [
+   {
+    "ok": true,
+    "streamed": true,
+    "ttft_ms": 1864,
+    "total_ms": 2355,
+    "out_tokens": 16,
+    "in_tokens": 96,
+    "cached_tokens": null,
+    "text": "The human is asking me t"
+   },
+   {
+    "ok": true,
+    "streamed": true,
+    "ttft_ms": 2409,
+    "total_ms": 2988,
+    "out_tokens": 16,
+    "in_tokens": 96,
+    "cached_tokens": null,
+    "text": "The user wants me to rep"
+   }
+  ],
+  "ttft_p50": 2136,
+  "total_p50": 2672,
+  "out_tokens": 16,
+  "streamed": true,
+  "cached_tokens": null,
+  "text": "The human is asking me t",
+  "error": null
+ },
+ {
+  "anchor": "glm-5.2",
+  "provider": "opencode-go",
+  "model": "glm-5.2",
+  "price": null,
+  "state": "ok",
+  "reps": [
+   {
+    "ok": true,
+    "streamed": true,
+    "ttft_ms": 1079,
+    "total_ms": 1255,
+    "out_tokens": 16,
+    "in_tokens": 23,
+    "cached_tokens": 10,
+    "text": "The user wants me to rep"
+   },
+   {
+    "ok": true,
+    "streamed": true,
+    "ttft_ms": 1157,
+    "total_ms": 1263,
+    "out_tokens": 16,
+    "in_tokens": 23,
+    "cached_tokens": 10,
+    "text": "The user has asked me to"
+   }
+  ],
+  "ttft_p50": 1118,
+  "total_p50": 1259,
+  "out_tokens": 16,
+  "streamed": true,
+  "cached_tokens": 10,
+  "text": "The user wants me to rep",
+  "error": null
+ },
+ {
+  "anchor": "glm-5.2",
+  "provider": "openrouter",
+  "model": "z-ai/glm-5.2",
+  "price": [
+   0.62,
+   2.42,
+   0.14
+  ],
+  "state": "ok",
+  "reps": [
+   {
+    "ok": true,
+    "streamed": true,
+    "ttft_ms": 676,
+    "total_ms": 824,
+    "out_tokens": 16,
+    "in_tokens": 23,
+    "cached_tokens": 0,
+    "text": "1.  **Analyze the Reques"
+   },
+   {
+    "ok": true,
+    "streamed": true,
+    "ttft_ms": 788,
+    "total_ms": 976,
+    "out_tokens": 16,
+    "in_tokens": 23,
+    "cached_tokens": 0,
+    "text": "1.  **Analyze the Reques"
+   }
+  ],
+  "ttft_p50": 732,
+  "total_p50": 900,
+  "out_tokens": 16,
+  "streamed": true,
+  "cached_tokens": 0,
+  "text": "1.  **Analyze the Reques",
+  "error": null
+ },
+ {
+  "anchor": "glm-5.2",
+  "provider": "dashscope",
+  "model": "glm-5.2",
+  "price": null,
+  "state": "ok",
+  "reps": [
+   {
+    "ok": true,
+    "streamed": true,
+    "ttft_ms": 1576,
+    "total_ms": 1865,
+    "out_tokens": 16,
+    "in_tokens": 23,
+    "cached_tokens": 0,
+    "text": "1.  **Analyze the Reques"
+   },
+   {
+    "ok": true,
+    "streamed": true,
+    "ttft_ms": 1435,
+    "total_ms": 1750,
+    "out_tokens": 16,
+    "in_tokens": 23,
+    "cached_tokens": 0,
+    "text": "1.  **Analyze the Reques"
+   }
+  ],
+  "ttft_p50": 1506,
+  "total_p50": 1808,
+  "out_tokens": 16,
+  "streamed": true,
+  "cached_tokens": 0,
+  "text": "1.  **Analyze the Reques",
+  "error": null
+ },
+ {
+  "anchor": "glm-5.2",
+  "provider": "chutes",
+  "model": "zai-org/GLM-5.2-TEE",
+  "price": [
+   1.25,
+   3.95,
+   0.125
+  ],
+  "state": "failed",
+  "reps": [
+   {
+    "ok": false,
+    "error": "http 429: {\"detail\":\"Infrastructure is at maximum capacity, try again later\"}"
+   },
+   {
+    "ok": false,
+    "error": "http 429: {\"detail\":\"Infrastructure is at maximum capacity, try again later\"}"
+   }
+  ],
+  "ttft_p50": null,
+  "total_p50": null,
+  "out_tokens": null,
+  "streamed": null,
+  "cached_tokens": null,
+  "text": null,
+  "error": "http 429: {\"detail\":\"Infrastructure is at maximum capacity, try again later\"}"
+ },
+ {
+  "anchor": "claude-haiku-5-5",
+  "provider": "opencode-go",
+  "model": "claude-haiku-5-5",
+  "price": null,
+  "state": "failed",
+  "reps": [
+   {
+    "ok": false,
+    "error": "http 400: {\"type\":\"error\",\"error\":{\"type\":\"ModelProtocolUnsupported\",\"message\":\"Model does not support this protocol.\"}}"
+   },
+   {
+    "ok": false,
+    "error": "http 400: {\"type\":\"error\",\"error\":{\"type\":\"ModelProtocolUnsupported\",\"message\":\"Model does not support this protocol.\"}}"
+   }
+  ],
+  "ttft_p50": null,
+  "total_p50": null,
+  "out_tokens": null,
+  "streamed": null,
+  "cached_tokens": null,
+  "text": null,
+  "error": "http 400: {\"type\":\"error\",\"error\":{\"type\":\"ModelProtocolUnsupported\",\"message\":\"Model does not support this protocol.\"}}"
+ },
+ {
+  "anchor": "claude-haiku-5-5",
+  "provider": "venice",
+  "model": "claude-haiku-5-5",
+  "price": null,
+  "state": "ok",
+  "reps": [
+   {
+    "ok": true,
+    "streamed": true,
+    "ttft_ms": 874,
+    "total_ms": 881,
+    "out_tokens": 5,
+    "in_tokens": 2719,
+    "cached_tokens": 0,
+    "text": "PONG"
+   },
+   {
+    "ok": true,
+    "streamed": true,
+    "ttft_ms": 1208,
+    "total_ms": 1210,
+    "out_tokens": 5,
+    "in_tokens": 2719,
+    "cached_tokens": 2697,
+    "text": "PONG"
+   }
+  ],
+  "ttft_p50": 1041,
+  "total_p50": 1046,
+  "out_tokens": 5,
+  "streamed": true,
+  "cached_tokens": 0,
+  "text": "PONG",
+  "error": null
+ },
+ {
+  "anchor": "claude-haiku-5-5",
+  "provider": "aihubmix",
+  "model": "claude-haiku-5-5",
+  "price": null,
+  "state": "failed",
+  "reps": [
+   {
+    "ok": false,
+    "error": "http 403: {\"error\":{\"message\":\"Your account balance is insufficient. Please recharge your account to continue using the API. (tid:"
+   },
+   {
+    "ok": false,
+    "error": "http 403: {\"error\":{\"message\":\"Your account balance is insufficient. Please recharge your account to continue using the API. (tid:"
+   }
+  ],
+  "ttft_p50": null,
+  "total_p50": null,
+  "out_tokens": null,
+  "streamed": null,
+  "cached_tokens": null,
+  "text": null,
+  "error": "http 403: {\"error\":{\"message\":\"Your account balance is insufficient. Please recharge your account to continue using the API. (tid:"
+ },
+ {
+  "anchor": "gemini-3-flash-preview",
+  "provider": "openrouter",
+  "model": "google/gemini-3-flash-preview",
+  "price": [
+   0.5,
+   3.0,
+   0.05
+  ],
+  "state": "ok",
+  "reps": [
+   {
+    "ok": true,
+    "streamed": true,
+    "ttft_ms": 985,
+    "total_ms": 1055,
+    "out_tokens": 2,
+    "in_tokens": 11,
+    "cached_tokens": 0,
+    "text": "PONG"
+   },
+   {
+    "ok": true,
+    "streamed": true,
+    "ttft_ms": 941,
+    "total_ms": 1100,
+    "out_tokens": 2,
+    "in_tokens": 11,
+    "cached_tokens": 0,
+    "text": "PONG"
+   }
+  ],
+  "ttft_p50": 963,
+  "total_p50": 1078,
+  "out_tokens": 2,
+  "streamed": true,
+  "cached_tokens": 0,
+  "text": "PONG",
+  "error": null
+ },
+ {
+  "anchor": "gemini-3-flash-preview",
+  "provider": "venice",
+  "model": "gemini-3-flash-preview",
+  "price": null,
+  "state": "ok",
+  "reps": [
+   {
+    "ok": true,
+    "streamed": true,
+    "ttft_ms": 1428,
+    "total_ms": 1456,
+    "out_tokens": 12,
+    "in_tokens": 1782,
+    "cached_tokens": 1772,
+    "text": "**Generating Single Word"
+   },
+   {
+    "ok": true,
+    "streamed": true,
+    "ttft_ms": 1410,
+    "total_ms": 1433,
+    "out_tokens": 12,
+    "in_tokens": 1782,
+    "cached_tokens": 1772,
+    "text": "**Processing Request**\n\n"
+   }
+  ],
+  "ttft_p50": 1419,
+  "total_p50": 1444,
+  "out_tokens": 12,
+  "streamed": true,
+  "cached_tokens": 1772,
+  "text": "**Generating Single Word",
+  "error": null
+ },
+ {
+  "anchor": "gemini-3-flash-preview",
+  "provider": "gemini",
+  "model": "models/gemini-3-flash-preview",
+  "price": null,
+  "state": "ok",
+  "reps": [
+   {
+    "ok": true,
+    "streamed": false,
+    "ttft_ms": null,
+    "total_ms": 1036,
+    "out_tokens": null,
+    "in_tokens": null,
+    "cached_tokens": null,
+    "text": ""
+   },
+   {
+    "ok": true,
+    "streamed": false,
+    "ttft_ms": null,
+    "total_ms": 824,
+    "out_tokens": null,
+    "in_tokens": null,
+    "cached_tokens": null,
+    "text": ""
+   }
+  ],
+  "ttft_p50": null,
+  "total_p50": 930,
+  "out_tokens": null,
+  "streamed": false,
+  "cached_tokens": null,
+  "text": "",
+  "error": null
+ },
+ {
+  "anchor": "gemini-3-flash-preview",
+  "provider": "aihubmix",
+  "model": "gemini-3-flash-preview",
+  "price": null,
+  "state": "failed",
+  "reps": [
+   {
+    "ok": false,
+    "error": "http 403: {\"error\":{\"message\":\"Your account balance is insufficient. Please recharge your account to continue using the API. (tid:"
+   },
+   {
+    "ok": false,
+    "error": "http 403: {\"error\":{\"message\":\"Your account balance is insufficient. Please recharge your account to continue using the API. (tid:"
+   }
+  ],
+  "ttft_p50": null,
+  "total_p50": null,
+  "out_tokens": null,
+  "streamed": null,
+  "cached_tokens": null,
+  "text": null,
+  "error": "http 403: {\"error\":{\"message\":\"Your account balance is insufficient. Please recharge your account to continue using the API. (tid:"
+ }
+]
