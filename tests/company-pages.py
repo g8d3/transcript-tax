@@ -156,6 +156,17 @@ def main() -> int:
         check("/audit/ keeps its (correct) version of the same sentence",
               "any csv you map by column" in offer.lower())
 
+        # 1d. the front door says "N numbers from our own fleet" and then shows N tiles; it said
+        #     "Five" over six boxes until 2026-10-18. Count them instead of trusting the word.
+        _, _, home = fetch(BASE + "/")
+        words = {"one": 1, "two": 2, "three": 3, "four": 4, "five": 5, "six": 6,
+                 "seven": 7, "eight": 8, "nine": 9, "ten": 10}
+        stated = re.search(r"(\w+) numbers? from our own fleet", home, re.I)
+        tiles = home.count('class="stat"')
+        check("the home's stated number of fleet figures equals the number it shows",
+              bool(stated) and words.get(stated.group(1).lower()) == tiles,
+              f"says {stated.group(1) if stated else '?'}, shows {tiles}")
+
         # 2. the private address must not be served from any public asset either
         if PRIVATE_ADDR:
             for asset in ("/assets/js/site-config.js", "/audit/", "/audit/preview/", "/tps/"):
