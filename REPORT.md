@@ -5,7 +5,7 @@
 
 ## TL;DR (claims)
 
-1. **Steady-state floor is ~2.5–3.5 s per no-op turn on every harness tested.** Median PONG wall (runs 1–10): pi 2.94 s (100 KB ctx) / 2.42 s (2 MB ctx*), pi-rust 3.26 / 3.35 s, zero 3.06 / 3.36 s. The LLM call itself is milliseconds; the tax is harness overhead.
+1. **Steady-state floor is ~2.4–3.4 s per no-op turn on every harness tested.** Median PONG wall (runs 1–10): pi 2.94 s (100 KB ctx) / 2.42 s (2 MB ctx*), pi-rust 3.26 / 3.35 s, zero 3.05 / 3.36 s. The LLM call itself is milliseconds; the tax is harness overhead.
 2. **Transcript size does cost, but sub-linearly with a ~1 s floor, and our stated fit was wrong.** Prior session series (n=8 pi sessions, coarse ranges): ~1 s overhead at 30–108 KB, 1.5–1.7 s at 170–228 KB, ~5 s at 3.2 MB and 9 MB. The draft's `1.0 s + 0.5 ms/KB` is a mis-stated coefficient — its own table implies ~5–6 ms/KB across 100–230 KB and saturation beyond (see §8). A fresh attempt to reproduce the ladder failed: a 452 KB ingest produced a 108 KB session, and two workspaces with the same 108–111 KB session differed by 1.4 s in median wall.
 3. **The 2 MB "ladder" in this dataset is invalid as a size experiment.** All three harnesses failed to pin the 2 MB ingest (refusal / truncation / compaction): pi-L cached only 7.7 k vs pi-S 41 k; zero-L compacted 103 k → ~9.4 k by pong 1. Read the grinder as a *steady-state + cache-behavior* study, not a size sweep.
 4. **Cache hits dominate wall time more than token counts do.** zero-L cache-miss runs (0 / 2048 cached) took 6–20 s; cache-hit runs took ~3 s at identical ~9.4 k input. Wall correlates with cache state, not with input tokens.

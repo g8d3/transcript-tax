@@ -80,6 +80,14 @@ if report.exists():
     text = report.read_text()
     check("the paper's claim 1 quotes the same range", any(f in text for f in forms),
           f"looked for {forms}")
+    # and its six per-cell medians, which is where a wrong figure hides: claim 1 said zero-S
+    # "3.06 s" (the mean) while its own table and errata say the median is 3.05 s.
+    claim = next((l for l in text.splitlines() if l.startswith("1. **Steady-state floor")), "")
+    pairs = (("pi", "S"), ("pi", "L"), ("pirust", "S"), ("pirust", "L"), ("zero", "S"), ("zero", "L"))
+    wanted = [f"{medians[p]:.2f}" for p in pairs]
+    missing = [w for w in wanted if w not in claim]
+    check("claim 1 quotes the six per-cell medians from bench.csv", not missing,
+          f"missing {missing} from claim 1")
 
 print(f"\n{len(fails)} failing check(s)")
 sys.exit(1 if fails else 0)
