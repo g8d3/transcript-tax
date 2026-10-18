@@ -150,6 +150,25 @@ def main() -> int:
     else:
         check("cache.json found for the §10 cache sentence", False, str(cache_path))
 
+    # SECCIÓN 10's own summary is republished as `article.html`, the single artifact people
+    # share. If the report is edited and the page is not regenerated, the most-shared copy is
+    # silently stale — which is how the previous 37% sentence survived. Check the HTML carries
+    # the same figures the report does.
+    article = ROOT / "article.html"
+    if article.exists():
+        html = article.read_text(encoding="utf-8")
+        if m:
+            same_counts = (f"{m.group(1)} base models" in html
+                           and f"{m.group(2)} route/model pairs" in html)
+            check("article.html carries the same §10 counts as the report", same_counts,
+                  "" if same_counts else "regenerate with build_article.py")
+        if cache_path.exists():
+            check("article.html carries the same cache-probe count as the report",
+                  f"{hits} reported a hit" in html,
+                  f"report says '{hits} reported a hit' and article.html does not")
+    else:
+        check("article.html found for the staleness check", False, str(article))
+
     print(f"\n{len(fails)} failing check(s)")
     return 1 if fails else 0
 
