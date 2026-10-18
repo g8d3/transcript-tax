@@ -13,6 +13,7 @@ Paths: `REPORT_MD` and `MATRIX_MD` env vars, else the repository root next to th
 """
 from __future__ import annotations
 
+import json
 import os
 import re
 import sys
@@ -124,6 +125,30 @@ def main() -> int:
               int(m.group(2)) == len(matrix), f"paper {m.group(2)} vs {len(matrix)}")
     else:
         check("§10 states how many models and pairs it measured", False)
+
+    # the same section also states a probed-route count for the cache probe, which is a second
+    # generated artifact: recompute it from cache.json or the sentence drifts when it is re-probed.
+    cache_path = MATRIX_MD.parent / "cache.json"
+    if cache_path.exists():
+        cache = json.loads(cache_path.read_text(encoding="utf-8"))
+        readable = []
+        for r in cache:
+            first, second = r.get("first") or {}, r.get("second") or {}
+            if not (first.get("ok") and second.get("ok")):
+                continue
+            cached, tokens = second.get("cached_tokens"), second.get("in_tokens")
+            if cached is None or not tokens:
+                continue
+            readable.append(cached > 0)
+        hits = sum(readable)
+        check(f"§10 cache sentence: readable routes match cache.json ({len(readable)} of {len(cache)})",
+              f"{len(readable)} of the {len(cache)}" in report,
+              f"cache.json says {len(readable)} of {len(cache)}")
+        check(f"§10 cache sentence: hit count matches cache.json ({hits} hits, "
+              f"{len(readable) - hits} misses)", f"{hits} reported a hit" in report,
+              f"cache.json says {hits} hits, {len(readable) - hits} misses")
+    else:
+        check("cache.json found for the §10 cache sentence", False, str(cache_path))
 
     print(f"\n{len(fails)} failing check(s)")
     return 1 if fails else 0
