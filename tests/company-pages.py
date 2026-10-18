@@ -145,6 +145,17 @@ def main() -> int:
         check("/terms puts the merchant of record in the future tense",
               "will be collected by a merchant of record" in terms.lower())
 
+        # 1c. the free preview reads our JSONL *and* a CSV with columns the prospect maps, so no
+        #     page may tell an "other harness" reader that the preview cannot read their log.
+        #     The intake said exactly that (and contradicted the offer page) until 2026-10-18.
+        _, _, intake = fetch(BASE + "/audit/intake/")
+        check("/audit/intake/ does not claim the preview only reads our own format",
+              "the preview reads our format and the audit does not" not in intake.lower())
+        check("/audit/intake/ tells another-harness readers the preview takes a mapped CSV",
+              "as a csv" in intake.lower() and "map the columns" in intake.lower())
+        check("/audit/ keeps its (correct) version of the same sentence",
+              "any csv you map by column" in offer.lower())
+
         # 2. the private address must not be served from any public asset either
         if PRIVATE_ADDR:
             for asset in ("/assets/js/site-config.js", "/audit/", "/audit/preview/", "/tps/"):
