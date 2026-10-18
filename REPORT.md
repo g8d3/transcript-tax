@@ -389,7 +389,7 @@ things follow, and both are now checkable:
   (the rows contain no prompt text and no tool output), and `analyze` recomputes the
   decomposition, the tail and the wasted rate from a window. The window published
   alongside it (`fleet-turns-2026-10-17.jsonl`, 500 turns, 15:16Z → 20:40Z) is **not** the
-  one §1.3 used — it is a heavier workload (mean 16.3 s/turn, p50 7.3 s, p90 29.3 s), and
+  one §1.3 used — it is a heavier workload (mean 16.3 s/turn, p50 7.2 s, p90 29.3 s), and
   saying so is the point of publishing it.
 - **The residual collapses once you measure the provider roundtrip.** Same window, two
   methods:
