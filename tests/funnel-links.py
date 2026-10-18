@@ -60,6 +60,9 @@ SEEDS = [
     "https://focalis.cc/audit/routes/",
     "https://focalis.cc/tps/",
     "https://focalis.cc/tps/article.html",
+    # the raw data §5.4 links: a published claim's evidence must not be a dead hop
+    "https://focalis.cc/tps/procsplit/measure.py",
+    "https://focalis.cc/tps/procsplit/procsplit-2026-10-18-warm.json",
     "https://github.com/g8d3/transcript-tax",
     "https://github.com/g8d3/pi-web-tps-monitor",
 ]

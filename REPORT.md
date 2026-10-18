@@ -270,8 +270,9 @@ process warm does not pay it per turn. For a 10-loop fleet at 100 turns/day that
 Everything else in the sum is either the provider's latency (1.5 s, unattackable from here)
 or the transcript the turn carries.
 
-Raw artifacts: `procsplit/measure.py` plus the two raw runs it wrote (`procsplit-2026-10-18-
-warm.json`, `-cold.json`) are published in this repository, and `tests/procsplit-claims.py`
+Raw artifacts: [`procsplit/measure.py`](procsplit/measure.py) plus the two raw runs it wrote
+([`procsplit-2026-10-18-warm.json`](procsplit/procsplit-2026-10-18-warm.json),
+[`...-cold.json`](procsplit/procsplit-2026-10-18-cold.json)) are published in this repository, and `tests/procsplit-claims.py`
 recomputes the two 2026-10-18 columns from them and checks this section against them. The
 2026-10-17 log was a working run and was not kept — the cold run reproduces it (940 ms against
 929 ms), which is why it is the one we publish. `bench.csv`, `analyze.py` and

@@ -585,8 +585,9 @@ process warm does not pay it per turn. For a 10-loop fleet at 100 turns/day that
 <strong>26 wall-hours a year warm, 65 if every turn paid the cold fetch</strong> (see <code>roi.py --warm</code>).
 Everything else in the sum is either the provider's latency (1.5 s, unattackable from here)
 or the transcript the turn carries.</p>
-<p>Raw artifacts: <code>procsplit/measure.py</code> plus the two raw runs it wrote (<code>procsplit-2026-10-18-
-warm.json</code>, <code>-cold.json</code>) are published in this repository, and <code>tests/procsplit-claims.py</code>
+<p>Raw artifacts: <a href="procsplit/measure.py"><code>procsplit/measure.py</code></a> plus the two raw runs it wrote
+(<a href="procsplit/procsplit-2026-10-18-warm.json"><code>procsplit-2026-10-18-warm.json</code></a>,
+<a href="procsplit/procsplit-2026-10-18-cold.json"><code>...-cold.json</code></a>) are published in this repository, and <code>tests/procsplit-claims.py</code>
 recomputes the two 2026-10-18 columns from them and checks this section against them. The
 2026-10-17 log was a working run and was not kept — the cold run reproduces it (940 ms against
 929 ms), which is why it is the one we publish. <code>bench.csv</code>, <code>analyze.py</code> and
