@@ -73,18 +73,19 @@ def get(target: str) -> tuple[int, str]:
 # 1. the canonical pages are alive and still the real thing
 for canon, marker in ((f"{LIVE}/audit/", "3,900 USD"), (f"{LIVE}/audit/intake/", 'id="intake"')):
     code, body = get(canon)
-    check(f"canonical {canon} is live", code == 200, str(code))
-    check(f"canonical {canon} is still the offer itself", marker in body, f"missing {marker!r}")
+    check(f"canonical {canon} is live", code == 200, f"HTTP {code}")
+    check(f"canonical {canon} is still the offer itself", marker in body, f"marker {marker!r}")
 
 # 2. every public copy of the path is a pointer, never a second offer
 for name, target, required, canonical, forbidden in MIRRORS:
     code, body = get(target)
-    check(f"{name} is reachable", code == 200, str(code))
-    check(f"{name} points at the canonical page",
-          f'rel="canonical" href="{canonical}"' in body and required in body,
-          "no canonical link")
+    check(f"{name} is reachable", code == 200, f"HTTP {code}")
+    points = f'rel="canonical" href="{canonical}"' in body and required in body
+    check(f"{name} points at the canonical page", points,
+          "" if points else f"canonical href to {canonical} not found")
     hits = [m for m in forbidden if m in body]
-    check(f"{name} is a pointer, not a copy (no offer content)", not hits, f"found {hits}")
+    check(f"{name} is a pointer, not a copy (no offer content)", not hits,
+          f"found {hits}" if hits else "")
 
 # 3. the clone on disk already keeps the pointers (fail before the push, not after)
 repo = os.environ.get("TRANSCRIPT_TAX_REPO") or next(
@@ -94,10 +95,10 @@ if repo:
             ("audit/index.html", "https://focalis.cc/audit/", ["3,900", "$12,600"]),
             ("audit/intake/index.html", "https://focalis.cc/audit/intake/", ['id="intake"', "$3,900"])):
         code, body = get(str(Path(repo) / rel))
-        check(f"clone {rel} kept the pointer", code == 200 and f'rel="canonical" href="{canonical}"' in body,
-              str(code))
+        ok = code == 200 and f'rel="canonical" href="{canonical}"' in body
+        check(f"clone {rel} kept the pointer", ok, "" if ok else f"HTTP {code}")
         hits = [m for m in forbidden if m in body]
-        check(f"clone {rel} carries no offer copy", not hits, f"found {hits}")
+        check(f"clone {rel} carries no offer copy", not hits, f"found {hits}" if hits else "")
     print(f"checked clone: {repo}")
 else:
     print("no local clone found — set TRANSCRIPT_TAX_REPO to also fail before the push")
