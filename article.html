@@ -50,7 +50,7 @@ footer { margin-top: 3rem; font-size: .85rem; opacity: .75; }
 <li><strong>Transcript size does cost, but sub-linearly with a ~1 s floor, and our stated fit was wrong.</strong> Prior session series (n=8 pi sessions, coarse ranges): ~1 s overhead at 30–108 KB, 1.5–1.7 s at 170–228 KB, ~5 s at 3.2 MB and 9 MB. The draft's <code>1.0 s + 0.5 ms/KB</code> is a mis-stated coefficient — its own table implies ~5–6 ms/KB across 100–230 KB and saturation beyond (see §8). A fresh attempt to reproduce the ladder failed: a 452 KB ingest produced a 108 KB session, and two workspaces with the same 108–111 KB session differed by 1.4 s in median wall.</li>
 <li><strong>The 2 MB "ladder" in this dataset is invalid as a size experiment.</strong> All three harnesses failed to pin the 2 MB ingest (refusal / truncation / compaction): pi-L cached only 7.7 k vs pi-S 41 k; zero-L compacted 103 k → ~9.4 k by pong 1. Read the grinder as a <em>steady-state + cache-behavior</em> study, not a size sweep.</li>
 <li><strong>Cache hits dominate wall time more than token counts do.</strong> zero-L cache-miss runs (0 / 2048 cached) took 6–20 s; cache-hit runs took ~3 s at identical ~9.4 k input. Wall correlates with cache state, not with input tokens.</li>
-<li><strong>Same model, different route: input price up to 29.1x apart, and the cheapest route is not always the fastest (6.0x slower to first token).</strong> Measured across 18 base models and 46 route/model pairs; on one model a <strong>1.4% price difference came with a 7.7x latency difference</strong> (14.8 s vs 1.9 s to first token), which is the case a price table cannot see (§10).</li>
+<li><strong>Same model, different route: input price up to 22.1x apart, and the cheapest route is not always the fastest (6.0x slower to first token).</strong> Measured across 18 base models and 46 route/model pairs; on one model a <strong>1.4% price difference came with a 7.7x latency difference</strong> (14.8 s vs 1.9 s to first token), which is the case a price table cannot see (§10).</li>
 <li><strong>Money implication: compact early, budget per turn.</strong> At observed floors, 1,000 no-op turns ≈ 1 hour of wall and the provider bill of whatever your context window carries. A stale 40 k-token context re-sent (or re-read) every turn is the line item, not the model reply.</li>
 </ol>
 <p>* The "2 MB" label names the ingest <em>attempt</em>; post-ingest cached context shows it did not stick (see §3).</p>
@@ -855,18 +855,18 @@ from them by <code>routes/render_matrix.py</code>, and <code>routes/matrix.py</c
 <tr>
 <td>deepseek-v4.1-flash</td>
 <td>openrouter</td>
-<td>$0.0648</td>
+<td>$0.04</td>
 <td>$0.144</td>
-<td>680 ms</td>
-<td>870 ms</td>
+<td>1728 ms</td>
+<td>1731 ms</td>
 </tr>
 <tr>
 <td>deepseek-v4.1-flash</td>
 <td>chutes</td>
 <td>$0.44</td>
 <td>$1.32</td>
-<td>1402 ms</td>
-<td>1448 ms</td>
+<td>1148 ms</td>
+<td>1188 ms</td>
 </tr>
 <tr>
 <td>gpt-oss-120b</td>
@@ -992,7 +992,7 @@ from them by <code>routes/render_matrix.py</code>, and <code>routes/matrix.py</c
 </table>
 <p>What the spread looks like, measured:</p>
 <ul>
-<li>One model's <strong>input price runs 29.1x</strong> between routes (<code>$0.0151/M</code> on one, <code>$0.44/M</code> on another —
+<li>One model's <strong>input price runs 22.1x</strong> between routes (<code>$0.0199/M</code> on one, <code>$0.44/M</code> on another —
   <code>deepseek-v4-flash-0731</code>), and the cheapest of the routes we priced is <strong>not</strong> the fastest: 1748 ms
   to first token on the cheap one (chutes, <code>qwen3.8-27b</code>) vs 290 ms on the fast one (groq) (<strong>6.0x</strong>).</li>
 <li>For another model, <strong>every route we could price charges the same list price</strong> (<code>$0.15/$0.60</code> per

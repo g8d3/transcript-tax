@@ -16,16 +16,16 @@ median of 2 reps on one machine: **first token** and **total**, the same split t
 | claude-sonnet-5-5 | venice | $2 | $10 | $0.1 | 1191 ms | 1206 ms | yes |
 | deepseek-v3.2 | chutes | $1 | $1 | $0.1 | 1386 ms | 1528 ms | yes |
 | deepseek-v3.2 | openrouter | $0.28 | $0.42 | $0.028 | 2174 ms | 2218 ms | yes |
-| deepseek-v4-flash-0731 | chutes | $0.44 | $1.32 | $0.044 | 1610 ms | 1782 ms | yes |
-| deepseek-v4-flash-0731 | openrouter | $0.0151 | $0.45 | $0.0151 | 674 ms | 904 ms | yes |
+| deepseek-v4-flash-0731 | chutes | $0.44 | $1.32 | $0.044 | 1060 ms | 1086 ms | yes |
+| deepseek-v4-flash-0731 | openrouter | $0.0199 | $0.45 | $0.0199 | 875 ms | 1094 ms | yes |
 | deepseek-v4-pro | dashscope | – | – | – | 2235 ms | 2514 ms | yes |
 | deepseek-v4-pro | deepseek | – | – | – | 1312 ms | 1516 ms | yes |
 | deepseek-v4-pro | opencode-go | – | – | – | 1697 ms | 1892 ms | yes |
 | deepseek-v4-pro | openrouter | $0.2088 | $0.4176 | $0.0174 | 1158 ms | 1350 ms | yes |
-| deepseek-v4.1-flash | chutes | $0.44 | $1.32 | $0.044 | 1011 ms | 1025 ms | yes |
-| deepseek-v4.1-flash | dashscope | – | – | – | 1638 ms | 1726 ms | yes |
-| deepseek-v4.1-flash | opencode-go | – | – | – | 4660 ms | 4712 ms | yes |
-| deepseek-v4.1-flash | openrouter | $0.0648 | $0.144 | $0.0016 | 680 ms | 870 ms | yes |
+| deepseek-v4.1-flash | chutes | $0.44 | $1.32 | $0.044 | 1148 ms | 1188 ms | yes |
+| deepseek-v4.1-flash | dashscope | – | – | – | 1724 ms | 1810 ms | yes |
+| deepseek-v4.1-flash | opencode-go | – | – | – | 2814 ms | 2902 ms | yes |
+| deepseek-v4.1-flash | openrouter | $0.04 | $0.144 | $0.0016 | 1728 ms | 1731 ms | yes |
 | gemini-3-8-flash | openrouter | $0.825 | $4.125 | $0.0825 | 2056 ms | 2104 ms | yes |
 | gemini-3-8-flash | venice | $0.9375 | $4.6875 | $0.0938 | 2263 ms | 2276 ms | yes |
 | gemini-3-flash-preview | gemini | – | – | – | 1347 ms | 1227 ms | yes |
@@ -61,10 +61,10 @@ median of 2 reps on one machine: **first token** and **total**, the same split t
 |---|---|---|
 | gpt-oss-120b | cerebras | http 402: {"message":"Payment required to access this resource. Visit your billing tab.","type":"payment_requi |
 | glm-5.2 | chutes | http 429: {"detail":"Infrastructure is at maximum capacity, try again later"} |
-| deepseek-v4.1-flash | aihubmix | http 403: {"error":{"message":"Your account balance is insufficient. Please recharge your account to continue  |
 | gemini-3-flash-preview | aihubmix | http 403: {"error":{"message":"Your account balance is insufficient. Please recharge your account to continue  |
 | claude-haiku-5-5 | opencode-go | http 500:  |
 | claude-haiku-5-5 | aihubmix | http 403: {"error":{"message":"Your account balance is insufficient. Please recharge your account to continue  |
+| deepseek-v4.1-flash | aihubmix | http 403: {"error":{"message":"Your account balance is insufficient. Please recharge your account to continue  |
 
 ## What the table says
 
@@ -76,11 +76,11 @@ median of 2 reps on one machine: **first token** and **total**, the same split t
 - **claude-sonnet-5-5**: first token 1166 ms on openrouter vs 1191 ms on venice (1.0x) — the cheapest route is also the fastest one here.
 - **deepseek-v3.2**: input price runs 3.6x between routes (openrouter $0.28/M vs chutes $1/M).
 - **deepseek-v3.2**: first token 1386 ms on chutes vs 2174 ms on openrouter (1.6x) — the cheapest priced route (openrouter) is not the fastest one.
-- **deepseek-v4-flash-0731**: input price runs 29.1x between routes (openrouter $0.0151/M vs chutes $0.44/M).
-- **deepseek-v4-flash-0731**: first token 674 ms on openrouter vs 1610 ms on chutes (2.4x) — the cheapest route is also the fastest one here.
+- **deepseek-v4-flash-0731**: input price runs 22.1x between routes (openrouter $0.0199/M vs chutes $0.44/M).
+- **deepseek-v4-flash-0731**: first token 875 ms on openrouter vs 1060 ms on chutes (1.2x) — the cheapest route is also the fastest one here.
 - **deepseek-v4-pro**: first token 1158 ms on openrouter vs 2235 ms on dashscope (1.9x) — prices are not published for most of these routes.
-- **deepseek-v4.1-flash**: input price runs 6.8x between routes (openrouter $0.0648/M vs chutes $0.44/M).
-- **deepseek-v4.1-flash**: first token 680 ms on openrouter vs 4660 ms on opencode-go (6.9x) — the cheapest route is also the fastest one here.
+- **deepseek-v4.1-flash**: input price runs 11.0x between routes (openrouter $0.04/M vs chutes $0.44/M).
+- **deepseek-v4.1-flash**: first token 1148 ms on chutes vs 2814 ms on opencode-go (2.5x) — the cheapest priced route (openrouter) is not the fastest one.
 - **gemini-3-8-flash**: input price runs 1.1x between routes (openrouter $0.825/M vs venice $0.9375/M).
 - **gemini-3-8-flash**: first token 2056 ms on openrouter vs 2263 ms on venice (1.1x) — the cheapest route is also the fastest one here.
 - **gemini-3-flash-preview**: input price runs 1.4x between routes (openrouter $0.5/M vs venice $0.7/M).
@@ -129,12 +129,12 @@ same artifact.
 
 | base model | routes that publish a price (input $/M) | spread |
 |---|---|---|
-| deepseek-v4-flash-0731 | openrouter $0.0151, venice $0.13, venice $0.35, chutes $0.44 | 29.14x |
+| deepseek-v4-flash-0731 | openrouter $0.0199, venice $0.13, venice $0.35, chutes $0.44 | 22.11x |
 | qwen3-8-27b | chutes $0.039, openrouter $0.24, groq $0.8 | 20.51x |
 | kimi-k3 | openrouter $0.304, chutes $1.85, venice $3.75 | 12.34x |
 | deepseek-v4-pro | openrouter $0.2088, venice $1.65 | 7.90x |
+| deepseek-v4-1-flash | openrouter $0.04, venice $0.3 | 7.50x |
 | mercury-2-5 | openrouter $0.04, venice $0.25 | 6.25x |
-| deepseek-v4-1-flash | openrouter $0.0648, venice $0.3 | 4.63x |
 | gpt-oss-20b | openrouter $0.018, groq $0.075 | 4.17x |
 | deepseek-v3-2 | openrouter $0.28, venice $0.33, chutes $1 | 3.57x |
 | deepseek-v4-pro-0813 | openrouter $0.66, venice $1.65 | 2.50x |
@@ -143,7 +143,7 @@ same artifact.
 | claude-opus-5 | openrouter $5, venice $5, venice $10 | 2.00x |
 
 **61 base models are carried by more than one of our routes with a published
-price.** Median spread 1.25x, p90 4.17x, worst 29.14x. So the honest
+price.** Median spread 1.25x, p90 4.17x, worst 22.11x. So the honest
 version of the pitch is not "everything is 20x cheaper elsewhere": for most models the
 list price is the same everywhere and the difference shows up in latency; the price spread
 lives in a handful of routes, and finding them is the work.

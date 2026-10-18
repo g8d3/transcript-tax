@@ -139,18 +139,18 @@ median of 2 reps on one machine: <strong>first token</strong> and <strong>total<
 <td>$0.44</td>
 <td>$1.32</td>
 <td>$0.044</td>
-<td>1610 ms</td>
-<td>1782 ms</td>
+<td>1060 ms</td>
+<td>1086 ms</td>
 <td>yes</td>
 </tr>
 <tr>
 <td>deepseek-v4-flash-0731</td>
 <td>openrouter</td>
-<td>$0.0151</td>
+<td>$0.0199</td>
 <td>$0.45</td>
-<td>$0.0151</td>
-<td>674 ms</td>
-<td>904 ms</td>
+<td>$0.0199</td>
+<td>875 ms</td>
+<td>1094 ms</td>
 <td>yes</td>
 </tr>
 <tr>
@@ -199,8 +199,8 @@ median of 2 reps on one machine: <strong>first token</strong> and <strong>total<
 <td>$0.44</td>
 <td>$1.32</td>
 <td>$0.044</td>
-<td>1011 ms</td>
-<td>1025 ms</td>
+<td>1148 ms</td>
+<td>1188 ms</td>
 <td>yes</td>
 </tr>
 <tr>
@@ -209,8 +209,8 @@ median of 2 reps on one machine: <strong>first token</strong> and <strong>total<
 <td>–</td>
 <td>–</td>
 <td>–</td>
-<td>1638 ms</td>
-<td>1726 ms</td>
+<td>1724 ms</td>
+<td>1810 ms</td>
 <td>yes</td>
 </tr>
 <tr>
@@ -219,18 +219,18 @@ median of 2 reps on one machine: <strong>first token</strong> and <strong>total<
 <td>–</td>
 <td>–</td>
 <td>–</td>
-<td>4660 ms</td>
-<td>4712 ms</td>
+<td>2814 ms</td>
+<td>2902 ms</td>
 <td>yes</td>
 </tr>
 <tr>
 <td>deepseek-v4.1-flash</td>
 <td>openrouter</td>
-<td>$0.0648</td>
+<td>$0.04</td>
 <td>$0.144</td>
 <td>$0.0016</td>
-<td>680 ms</td>
-<td>870 ms</td>
+<td>1728 ms</td>
+<td>1731 ms</td>
 <td>yes</td>
 </tr>
 <tr>
@@ -536,11 +536,6 @@ median of 2 reps on one machine: <strong>first token</strong> and <strong>total<
 <td>http 429: {"detail":"Infrastructure is at maximum capacity, try again later"}</td>
 </tr>
 <tr>
-<td>deepseek-v4.1-flash</td>
-<td>aihubmix</td>
-<td>http 403: {"error":{"message":"Your account balance is insufficient. Please recharge your account to continue</td>
-</tr>
-<tr>
 <td>gemini-3-flash-preview</td>
 <td>aihubmix</td>
 <td>http 403: {"error":{"message":"Your account balance is insufficient. Please recharge your account to continue</td>
@@ -552,6 +547,11 @@ median of 2 reps on one machine: <strong>first token</strong> and <strong>total<
 </tr>
 <tr>
 <td>claude-haiku-5-5</td>
+<td>aihubmix</td>
+<td>http 403: {"error":{"message":"Your account balance is insufficient. Please recharge your account to continue</td>
+</tr>
+<tr>
+<td>deepseek-v4.1-flash</td>
 <td>aihubmix</td>
 <td>http 403: {"error":{"message":"Your account balance is insufficient. Please recharge your account to continue</td>
 </tr>
@@ -567,11 +567,11 @@ median of 2 reps on one machine: <strong>first token</strong> and <strong>total<
 <li><strong>claude-sonnet-5-5</strong>: first token 1166 ms on openrouter vs 1191 ms on venice (1.0x) — the cheapest route is also the fastest one here.</li>
 <li><strong>deepseek-v3.2</strong>: input price runs 3.6x between routes (openrouter $0.28/M vs chutes $1/M).</li>
 <li><strong>deepseek-v3.2</strong>: first token 1386 ms on chutes vs 2174 ms on openrouter (1.6x) — the cheapest priced route (openrouter) is not the fastest one.</li>
-<li><strong>deepseek-v4-flash-0731</strong>: input price runs 29.1x between routes (openrouter $0.0151/M vs chutes $0.44/M).</li>
-<li><strong>deepseek-v4-flash-0731</strong>: first token 674 ms on openrouter vs 1610 ms on chutes (2.4x) — the cheapest route is also the fastest one here.</li>
+<li><strong>deepseek-v4-flash-0731</strong>: input price runs 22.1x between routes (openrouter $0.0199/M vs chutes $0.44/M).</li>
+<li><strong>deepseek-v4-flash-0731</strong>: first token 875 ms on openrouter vs 1060 ms on chutes (1.2x) — the cheapest route is also the fastest one here.</li>
 <li><strong>deepseek-v4-pro</strong>: first token 1158 ms on openrouter vs 2235 ms on dashscope (1.9x) — prices are not published for most of these routes.</li>
-<li><strong>deepseek-v4.1-flash</strong>: input price runs 6.8x between routes (openrouter $0.0648/M vs chutes $0.44/M).</li>
-<li><strong>deepseek-v4.1-flash</strong>: first token 680 ms on openrouter vs 4660 ms on opencode-go (6.9x) — the cheapest route is also the fastest one here.</li>
+<li><strong>deepseek-v4.1-flash</strong>: input price runs 11.0x between routes (openrouter $0.04/M vs chutes $0.44/M).</li>
+<li><strong>deepseek-v4.1-flash</strong>: first token 1148 ms on chutes vs 2814 ms on opencode-go (2.5x) — the cheapest priced route (openrouter) is not the fastest one.</li>
 <li><strong>gemini-3-8-flash</strong>: input price runs 1.1x between routes (openrouter $0.825/M vs venice $0.9375/M).</li>
 <li><strong>gemini-3-8-flash</strong>: first token 2056 ms on openrouter vs 2263 ms on venice (1.1x) — the cheapest route is also the fastest one here.</li>
 <li><strong>gemini-3-flash-preview</strong>: input price runs 1.4x between routes (openrouter $0.5/M vs venice $0.7/M).</li>
@@ -627,8 +627,8 @@ same artifact.</p>
 <tbody>
 <tr>
 <td>deepseek-v4-flash-0731</td>
-<td>openrouter $0.0151, venice $0.13, venice $0.35, chutes $0.44</td>
-<td>29.14x</td>
+<td>openrouter $0.0199, venice $0.13, venice $0.35, chutes $0.44</td>
+<td>22.11x</td>
 </tr>
 <tr>
 <td>qwen3-8-27b</td>
@@ -646,14 +646,14 @@ same artifact.</p>
 <td>7.90x</td>
 </tr>
 <tr>
+<td>deepseek-v4-1-flash</td>
+<td>openrouter $0.04, venice $0.3</td>
+<td>7.50x</td>
+</tr>
+<tr>
 <td>mercury-2-5</td>
 <td>openrouter $0.04, venice $0.25</td>
 <td>6.25x</td>
-</tr>
-<tr>
-<td>deepseek-v4-1-flash</td>
-<td>openrouter $0.0648, venice $0.3</td>
-<td>4.63x</td>
 </tr>
 <tr>
 <td>gpt-oss-20b</td>
@@ -688,7 +688,7 @@ same artifact.</p>
 </tbody>
 </table>
 <p><strong>61 base models are carried by more than one of our routes with a published
-price.</strong> Median spread 1.25x, p90 4.17x, worst 29.14x. So the honest
+price.</strong> Median spread 1.25x, p90 4.17x, worst 22.11x. So the honest
 version of the pitch is not "everything is 20x cheaper elsewhere": for most models the
 list price is the same everywhere and the difference shows up in latency; the price spread
 lives in a handful of routes, and finding them is the work.</p>

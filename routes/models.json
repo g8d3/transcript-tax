@@ -855,7 +855,7 @@
     "input_cache_read": "0.000000012"
    },
    "deepseek/deepseek-v4.1-flash": {
-    "prompt": "0.0000000648",
+    "prompt": "0.00000004",
     "completion": "0.000000144",
     "input_cache_read": "0.0000000016"
    },
@@ -983,9 +983,9 @@
     "completion": "0.000000295"
    },
    "~z-ai/glm-latest": {
-    "prompt": "0.0000000632",
-    "completion": "0.0000044",
-    "input_cache_read": "0.0000000588"
+    "prompt": "0.000000075",
+    "completion": "0.0000022",
+    "input_cache_read": "0.00000007"
    },
    "tencent/hy-mt2-7b": {
     "prompt": "0.000000074",
@@ -1077,14 +1077,14 @@
     "input_cache_read": "0.00000015"
    },
    "~deepseek/deepseek-v4-flash-latest": {
-    "prompt": "0.00000001208",
+    "prompt": "0.00000001592",
     "completion": "0.000000143616",
     "input_cache_read": "0.000000001523"
    },
    "deepseek/deepseek-v4-flash-0731": {
-    "prompt": "0.0000000151",
+    "prompt": "0.0000000199",
     "completion": "0.00000045",
-    "input_cache_read": "0.0000000151"
+    "input_cache_read": "0.0000000199"
    },
    "thinkingmachines/inkling-small": {
     "prompt": "0.00000045",
@@ -1455,9 +1455,9 @@
     "input_cache_read": "0.0000001"
    },
    "~moonshotai/kimi-latest": {
-    "prompt": "0.00000027",
-    "completion": "0.000014",
-    "input_cache_read": "0.00000027"
+    "prompt": "0.00000025",
+    "completion": "0.000008",
+    "input_cache_read": "0.00000018"
    },
    "~google/gemini-flash-latest": {
     "prompt": "0.00000075",
@@ -2746,8 +2746,8 @@
    "Qwen/Qwen3-32B-TEE",
    "moonshotai/Kimi-K3-TEE",
    "unsloth/Mistral-Nemo-Instruct-2407-TEE",
-   "Nemotron-3-Nano-Omni-30B-TEE",
-   "Qwen/Qwen3-235B-A22B-Thinking-2507-TEE"
+   "Qwen/Qwen3-235B-A22B-Thinking-2507-TEE",
+   "Nemotron-3-Nano-Omni-30B-TEE"
   ],
   "priced": {
    "google/gemma-4-31B-turbo-TEE": {
@@ -2810,15 +2810,15 @@
     "completion": 0.0978,
     "input_cache_read": 0.0024499999999999995
    },
-   "Nemotron-3-Nano-Omni-30B-TEE": {
-    "prompt": 0.0245,
-    "completion": 0.0978,
-    "input_cache_read": 0.0024499999999999995
-   },
    "Qwen/Qwen3-235B-A22B-Thinking-2507-TEE": {
     "prompt": 0.2989,
     "completion": 1.1957,
     "input_cache_read": 0.029889999999999993
+   },
+   "Nemotron-3-Nano-Omni-30B-TEE": {
+    "prompt": 0.0245,
+    "completion": 0.0978,
+    "input_cache_read": 0.0024499999999999995
    }
   }
  },
@@ -2835,39 +2835,19 @@
   "state": "ok",
   "n": 11,
   "ids": [
-   "openai/gpt-oss-safeguard-20b",
-   "openai/gpt-oss-20b",
-   "meta-llama/llama-prompt-guard-2-86m",
-   "qwen/qwen3.8-27b",
+   "allam-2-7b",
    "canopylabs/orpheus-v1-english",
    "meta-llama/llama-prompt-guard-2-22m",
-   "openai/gpt-oss-120b",
    "whisper-large-v3",
-   "allam-2-7b",
+   "qwen/qwen3.8-27b",
+   "openai/gpt-oss-20b",
+   "openai/gpt-oss-120b",
+   "whisper-large-v3-turbo",
+   "openai/gpt-oss-safeguard-20b",
    "canopylabs/orpheus-arabic-saudi",
-   "whisper-large-v3-turbo"
+   "meta-llama/llama-prompt-guard-2-86m"
   ],
   "priced": {
-   "openai/gpt-oss-safeguard-20b": {
-    "prompt": "0.000000075",
-    "completion": "0.0000003",
-    "input_cache_read": "0.0000000375"
-   },
-   "openai/gpt-oss-20b": {
-    "prompt": "0.000000075",
-    "completion": "0.0000003",
-    "input_cache_read": "0.0000000375"
-   },
-   "meta-llama/llama-prompt-guard-2-86m": {
-    "prompt": "0.00000004",
-    "completion": "0.00000004",
-    "input_cache_read": "0.00000002"
-   },
-   "qwen/qwen3.8-27b": {
-    "prompt": "0.0000008",
-    "completion": "0.000004",
-    "input_cache_read": "0.0000004"
-   },
    "canopylabs/orpheus-v1-english": {
     "prompt": "0.000022",
     "input_cache_read": "0.000011"
@@ -2877,14 +2857,34 @@
     "completion": "0.00000003",
     "input_cache_read": "0.000000015"
    },
+   "qwen/qwen3.8-27b": {
+    "prompt": "0.0000008",
+    "completion": "0.000004",
+    "input_cache_read": "0.0000004"
+   },
+   "openai/gpt-oss-20b": {
+    "prompt": "0.000000075",
+    "completion": "0.0000003",
+    "input_cache_read": "0.0000000375"
+   },
    "openai/gpt-oss-120b": {
     "prompt": "0.00000015",
     "completion": "0.0000006",
     "input_cache_read": "0.000000075"
    },
+   "openai/gpt-oss-safeguard-20b": {
+    "prompt": "0.000000075",
+    "completion": "0.0000003",
+    "input_cache_read": "0.0000000375"
+   },
    "canopylabs/orpheus-arabic-saudi": {
     "prompt": "0.00004",
     "input_cache_read": "0.00002"
+   },
+   "meta-llama/llama-prompt-guard-2-86m": {
+    "prompt": "0.00000004",
+    "completion": "0.00000004",
+    "input_cache_read": "0.00000002"
    }
   }
  },

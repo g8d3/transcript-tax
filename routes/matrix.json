@@ -1100,262 +1100,6 @@
   "error": null
  },
  {
-  "anchor": "deepseek-v4.1-flash",
-  "provider": "opencode-go",
-  "model": "deepseek-v4.1-flash",
-  "price": null,
-  "state": "ok",
-  "reps": [
-   {
-    "ok": true,
-    "streamed": true,
-    "ttft_ms": 2192,
-    "total_ms": 2294,
-    "out_tokens": 16,
-    "in_tokens": 41,
-    "cached_tokens": 0,
-    "text": "We need answer single wo"
-   },
-   {
-    "ok": true,
-    "streamed": true,
-    "ttft_ms": 7129,
-    "total_ms": 7130,
-    "out_tokens": 16,
-    "in_tokens": 41,
-    "cached_tokens": 0,
-    "text": "We need answer single wo"
-   }
-  ],
-  "ttft_p50": 4660,
-  "total_p50": 4712,
-  "out_tokens": 16,
-  "streamed": true,
-  "cached_tokens": 0,
-  "text": "We need answer single wo",
-  "error": null
- },
- {
-  "anchor": "deepseek-v4.1-flash",
-  "provider": "openrouter",
-  "model": "deepseek/deepseek-v4.1-flash",
-  "price": [
-   0.0648,
-   0.144,
-   0.0016
-  ],
-  "state": "ok",
-  "reps": [
-   {
-    "ok": true,
-    "streamed": true,
-    "ttft_ms": 1024,
-    "total_ms": 1224,
-    "out_tokens": 16,
-    "in_tokens": 41,
-    "cached_tokens": 0,
-    "text": "We need answer single wo"
-   },
-   {
-    "ok": true,
-    "streamed": true,
-    "ttft_ms": 336,
-    "total_ms": 516,
-    "out_tokens": 16,
-    "in_tokens": 41,
-    "cached_tokens": 0,
-    "text": "We need answer single wo"
-   }
-  ],
-  "ttft_p50": 680,
-  "total_p50": 870,
-  "out_tokens": 16,
-  "streamed": true,
-  "cached_tokens": 0,
-  "text": "We need answer single wo",
-  "error": null
- },
- {
-  "anchor": "deepseek-v4.1-flash",
-  "provider": "dashscope",
-  "model": "deepseek-v4.1-flash",
-  "price": null,
-  "state": "ok",
-  "reps": [
-   {
-    "ok": true,
-    "streamed": true,
-    "ttft_ms": 1905,
-    "total_ms": 1984,
-    "out_tokens": null,
-    "in_tokens": null,
-    "cached_tokens": null,
-    "text": "We need answer single wo"
-   },
-   {
-    "ok": true,
-    "streamed": true,
-    "ttft_ms": 1370,
-    "total_ms": 1469,
-    "out_tokens": null,
-    "in_tokens": null,
-    "cached_tokens": null,
-    "text": "We need answer single wo"
-   }
-  ],
-  "ttft_p50": 1638,
-  "total_p50": 1726,
-  "out_tokens": null,
-  "streamed": true,
-  "cached_tokens": null,
-  "text": "We need answer single wo",
-  "error": null
- },
- {
-  "anchor": "deepseek-v4.1-flash",
-  "provider": "aihubmix",
-  "model": "deepseek-v4.1-flash",
-  "price": null,
-  "state": "failed",
-  "reps": [
-   {
-    "ok": false,
-    "error": "http 403: {\"error\":{\"message\":\"Your account balance is insufficient. Please recharge your account to continue using the API. (tid:"
-   },
-   {
-    "ok": false,
-    "error": "http 403: {\"error\":{\"message\":\"Your account balance is insufficient. Please recharge your account to continue using the API. (tid:"
-   }
-  ],
-  "ttft_p50": null,
-  "total_p50": null,
-  "out_tokens": null,
-  "streamed": null,
-  "cached_tokens": null,
-  "text": null,
-  "error": "http 403: {\"error\":{\"message\":\"Your account balance is insufficient. Please recharge your account to continue using the API. (tid:"
- },
- {
-  "anchor": "deepseek-v4.1-flash",
-  "provider": "chutes",
-  "model": "deepseek-ai/DeepSeek-V4-Flash-0731-TEE",
-  "price": [
-   0.44,
-   1.32,
-   0.044
-  ],
-  "state": "ok",
-  "reps": [
-   {
-    "ok": true,
-    "streamed": true,
-    "ttft_ms": 1026,
-    "total_ms": 1054,
-    "out_tokens": 3,
-    "in_tokens": 15,
-    "cached_tokens": null,
-    "text": "PONG"
-   },
-   {
-    "ok": true,
-    "streamed": true,
-    "ttft_ms": 996,
-    "total_ms": 996,
-    "out_tokens": 3,
-    "in_tokens": 15,
-    "cached_tokens": null,
-    "text": "PONG"
-   }
-  ],
-  "ttft_p50": 1011,
-  "total_p50": 1025,
-  "out_tokens": 3,
-  "streamed": true,
-  "cached_tokens": null,
-  "text": "PONG",
-  "error": null
- },
- {
-  "anchor": "deepseek-v4-flash-0731",
-  "provider": "openrouter",
-  "model": "deepseek/deepseek-v4-flash-0731",
-  "price": [
-   0.0151,
-   0.45,
-   0.0151
-  ],
-  "state": "ok",
-  "reps": [
-   {
-    "ok": true,
-    "streamed": true,
-    "ttft_ms": 919,
-    "total_ms": 1099,
-    "out_tokens": 16,
-    "in_tokens": 94,
-    "cached_tokens": 0,
-    "text": "We need to reply with si"
-   },
-   {
-    "ok": true,
-    "streamed": true,
-    "ttft_ms": 430,
-    "total_ms": 709,
-    "out_tokens": 16,
-    "in_tokens": 94,
-    "cached_tokens": 0,
-    "text": "We need to respond with "
-   }
-  ],
-  "ttft_p50": 674,
-  "total_p50": 904,
-  "out_tokens": 16,
-  "streamed": true,
-  "cached_tokens": 0,
-  "text": "We need to reply with si",
-  "error": null
- },
- {
-  "anchor": "deepseek-v4-flash-0731",
-  "provider": "chutes",
-  "model": "deepseek-ai/DeepSeek-V4-Flash-0731-TEE",
-  "price": [
-   0.44,
-   1.32,
-   0.044
-  ],
-  "state": "ok",
-  "reps": [
-   {
-    "ok": true,
-    "streamed": true,
-    "ttft_ms": 1171,
-    "total_ms": 1208,
-    "out_tokens": 3,
-    "in_tokens": 15,
-    "cached_tokens": null,
-    "text": "PONG"
-   },
-   {
-    "ok": true,
-    "streamed": true,
-    "ttft_ms": 2050,
-    "total_ms": 2356,
-    "out_tokens": 3,
-    "in_tokens": 15,
-    "cached_tokens": null,
-    "text": "PONG"
-   }
-  ],
-  "ttft_p50": 1610,
-  "total_p50": 1782,
-  "out_tokens": 3,
-  "streamed": true,
-  "cached_tokens": null,
-  "text": "PONG",
-  "error": null
- },
- {
   "anchor": "gemini-3-flash-preview",
   "provider": "openrouter",
   "model": "google/gemini-3-flash-preview",
@@ -1941,6 +1685,262 @@
   "streamed": true,
   "cached_tokens": 1152,
   "text": "The user wants a single-",
+  "error": null
+ },
+ {
+  "anchor": "deepseek-v4-flash-0731",
+  "provider": "openrouter",
+  "model": "deepseek/deepseek-v4-flash-0731",
+  "price": [
+   0.0199,
+   0.45,
+   0.0199
+  ],
+  "state": "ok",
+  "reps": [
+   {
+    "ok": true,
+    "streamed": true,
+    "ttft_ms": 957,
+    "total_ms": 1242,
+    "out_tokens": 16,
+    "in_tokens": 94,
+    "cached_tokens": 0,
+    "text": "We need to respond with "
+   },
+   {
+    "ok": true,
+    "streamed": true,
+    "ttft_ms": 793,
+    "total_ms": 945,
+    "out_tokens": 16,
+    "in_tokens": 94,
+    "cached_tokens": 0,
+    "text": "We need to reply with ju"
+   }
+  ],
+  "ttft_p50": 875,
+  "total_p50": 1094,
+  "out_tokens": 16,
+  "streamed": true,
+  "cached_tokens": 0,
+  "text": "We need to respond with ",
+  "error": null
+ },
+ {
+  "anchor": "deepseek-v4-flash-0731",
+  "provider": "chutes",
+  "model": "deepseek-ai/DeepSeek-V4-Flash-0731-TEE",
+  "price": [
+   0.44,
+   1.32,
+   0.044
+  ],
+  "state": "ok",
+  "reps": [
+   {
+    "ok": true,
+    "streamed": true,
+    "ttft_ms": 1101,
+    "total_ms": 1127,
+    "out_tokens": 3,
+    "in_tokens": 15,
+    "cached_tokens": null,
+    "text": "PONG"
+   },
+   {
+    "ok": true,
+    "streamed": true,
+    "ttft_ms": 1018,
+    "total_ms": 1044,
+    "out_tokens": 3,
+    "in_tokens": 15,
+    "cached_tokens": null,
+    "text": "PONG"
+   }
+  ],
+  "ttft_p50": 1060,
+  "total_p50": 1086,
+  "out_tokens": 3,
+  "streamed": true,
+  "cached_tokens": null,
+  "text": "PONG",
+  "error": null
+ },
+ {
+  "anchor": "deepseek-v4.1-flash",
+  "provider": "opencode-go",
+  "model": "deepseek-v4.1-flash",
+  "price": null,
+  "state": "ok",
+  "reps": [
+   {
+    "ok": true,
+    "streamed": true,
+    "ttft_ms": 2641,
+    "total_ms": 2755,
+    "out_tokens": 16,
+    "in_tokens": 41,
+    "cached_tokens": 0,
+    "text": "We need answer single wo"
+   },
+   {
+    "ok": true,
+    "streamed": true,
+    "ttft_ms": 2987,
+    "total_ms": 3050,
+    "out_tokens": 13,
+    "in_tokens": 41,
+    "cached_tokens": 0,
+    "text": "We need answer only PONG"
+   }
+  ],
+  "ttft_p50": 2814,
+  "total_p50": 2902,
+  "out_tokens": 16,
+  "streamed": true,
+  "cached_tokens": 0,
+  "text": "We need answer single wo",
+  "error": null
+ },
+ {
+  "anchor": "deepseek-v4.1-flash",
+  "provider": "openrouter",
+  "model": "deepseek/deepseek-v4.1-flash",
+  "price": [
+   0.04,
+   0.144,
+   0.0016
+  ],
+  "state": "ok",
+  "reps": [
+   {
+    "ok": true,
+    "streamed": true,
+    "ttft_ms": 1922,
+    "total_ms": 1923,
+    "out_tokens": 16,
+    "in_tokens": 41,
+    "cached_tokens": 0,
+    "text": "The user wants me to rep"
+   },
+   {
+    "ok": true,
+    "streamed": true,
+    "ttft_ms": 1535,
+    "total_ms": 1539,
+    "out_tokens": 16,
+    "in_tokens": 41,
+    "cached_tokens": 0,
+    "text": "The user wants exactly o"
+   }
+  ],
+  "ttft_p50": 1728,
+  "total_p50": 1731,
+  "out_tokens": 16,
+  "streamed": true,
+  "cached_tokens": 0,
+  "text": "The user wants me to rep",
+  "error": null
+ },
+ {
+  "anchor": "deepseek-v4.1-flash",
+  "provider": "dashscope",
+  "model": "deepseek-v4.1-flash",
+  "price": null,
+  "state": "ok",
+  "reps": [
+   {
+    "ok": true,
+    "streamed": true,
+    "ttft_ms": 1824,
+    "total_ms": 1937,
+    "out_tokens": null,
+    "in_tokens": null,
+    "cached_tokens": null,
+    "text": "We need answer only PONG"
+   },
+   {
+    "ok": true,
+    "streamed": true,
+    "ttft_ms": 1624,
+    "total_ms": 1684,
+    "out_tokens": null,
+    "in_tokens": null,
+    "cached_tokens": null,
+    "text": "We need answer single wo"
+   }
+  ],
+  "ttft_p50": 1724,
+  "total_p50": 1810,
+  "out_tokens": null,
+  "streamed": true,
+  "cached_tokens": null,
+  "text": "We need answer only PONG",
+  "error": null
+ },
+ {
+  "anchor": "deepseek-v4.1-flash",
+  "provider": "aihubmix",
+  "model": "deepseek-v4.1-flash",
+  "price": null,
+  "state": "failed",
+  "reps": [
+   {
+    "ok": false,
+    "error": "http 403: {\"error\":{\"message\":\"Your account balance is insufficient. Please recharge your account to continue using the API. (tid:"
+   },
+   {
+    "ok": false,
+    "error": "http 403: {\"error\":{\"message\":\"Your account balance is insufficient. Please recharge your account to continue using the API. (tid:"
+   }
+  ],
+  "ttft_p50": null,
+  "total_p50": null,
+  "out_tokens": null,
+  "streamed": null,
+  "cached_tokens": null,
+  "text": null,
+  "error": "http 403: {\"error\":{\"message\":\"Your account balance is insufficient. Please recharge your account to continue using the API. (tid:"
+ },
+ {
+  "anchor": "deepseek-v4.1-flash",
+  "provider": "chutes",
+  "model": "deepseek-ai/DeepSeek-V4-Flash-0731-TEE",
+  "price": [
+   0.44,
+   1.32,
+   0.044
+  ],
+  "state": "ok",
+  "reps": [
+   {
+    "ok": true,
+    "streamed": true,
+    "ttft_ms": 1329,
+    "total_ms": 1359,
+    "out_tokens": 3,
+    "in_tokens": 15,
+    "cached_tokens": null,
+    "text": "PONG"
+   },
+   {
+    "ok": true,
+    "streamed": true,
+    "ttft_ms": 968,
+    "total_ms": 1017,
+    "out_tokens": 3,
+    "in_tokens": 15,
+    "cached_tokens": null,
+    "text": "PONG"
+   }
+  ],
+  "ttft_p50": 1148,
+  "total_p50": 1188,
+  "out_tokens": 3,
+  "streamed": true,
+  "cached_tokens": null,
+  "text": "PONG",
   "error": null
  }
 ]
