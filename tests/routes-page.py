@@ -54,6 +54,11 @@ def fetch(url: str) -> tuple[int, str]:
         return e.code, ""
 
 
+# The host adds its own script to served pages (documented in CLAIMS); strip it so copies of the
+# same artifact can be compared byte for byte.
+HOST_SCRIPT = re.compile(r"\n?<script[^>]*(?:cloudflareinsights|cdn-cgi)[^>]*>.*?</script>", re.S)
+
+
 def main() -> int:
     rows = json.loads((PACK / "routes" / "matrix.json").read_text())
     ok_rows = [r for r in rows if r["state"] == "ok"]
@@ -76,6 +81,18 @@ def main() -> int:
                 check(f"published {asset} parses", False, str(e)[:80])
 
     check("page serves 200", status == 200, str(status))
+    if not LOCAL:
+        # The same page is published three ways and only one of them was guarded. R73 is the
+        # precedent: a hand-copied offer page drifted in the repository and stayed public at
+        # /tps/audit/ and on GitHub Pages, unlinked, for a crawler to index. Compare the copies.
+        hostless = lambda b: HOST_SCRIPT.sub("", b)  # noqa: E731
+        canon = hostless(fetch(BASE + "/audit/routes/")[1])
+        for url, label in ((BASE + "/tps/routes/", "focalis.cc/tps/routes/"),
+                           ("https://g8d3.github.io/transcript-tax/routes/", "GitHub Pages")):
+            st, body = fetch(url)
+            check(f"the routes page served at {label} is the same artifact",
+                  st == 200 and hostless(body) == canon,
+                  f"{st}, {len(hostless(body))} B vs {len(canon)} B")
     check("page carries every measured route", all(r["provider"] in html for r in ok_rows))
     check("page states the limits", "not a benchmark" in html and "Limits." in html)
 
