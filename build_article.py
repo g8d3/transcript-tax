@@ -39,11 +39,25 @@ footer { margin-top: 3rem; font-size: .85rem; opacity: .75; }
 .cta { margin-top: 3rem; padding: 1rem 1.1rem; border: 1px solid color-mix(in srgb, currentColor 25%, transparent);
   border-radius: .5rem; font-size: .95rem; }
 .cta p { margin: .3rem 0; }
+.top { margin: 0 0 1.6rem; padding: .8rem 1rem; border: 1px solid color-mix(in srgb, currentColor 25%, transparent);
+  border-radius: .5rem; font-size: .95rem; background: color-mix(in srgb, currentColor 4%, transparent); }
+.top p { margin: .2rem 0; }
 """
 
 # The offer, at the end of the paper. Same on the hosted copy and in the repo.
 OFFER_URL = "https://focalis.cc/audit/"
-CONTACT = "hola@focalis.cc"
+PREVIEW_URL = "https://focalis.cc/audit/preview/"
+CONTACT = "hello@focalis.cc"
+# One line at the top: a reader who lands here from a link should not have to reach the
+# end of a 200 KB document to find the free way to measure their own fleet.
+TOP = f"""
+<div class="top">
+  <p><strong>Measure your own fleet first, free:</strong> drop your turn log into
+  <a href="{PREVIEW_URL}">{PREVIEW_URL}</a> — it runs in your browser and nothing is
+  uploaded. <a href="{OFFER_URL}">The audit, its fixed prices and the arguments against
+  buying</a>.</p>
+</div>
+"""
 CTA = f"""
 <div class="cta">
   <p><strong>Who measured this:</strong> we run agent fleets ourselves and this is the
@@ -76,6 +90,7 @@ def main() -> None:
     text = (HERE / "REPORT.md").read_text()
     body = markdown.markdown(text, extensions=["tables", "fenced_code", "sane_lists"])
     body = inline_images(body)
+    body = body.replace("</h1>", "</h1>\n" + TOP, 1)
     html = f"""<!doctype html>
 <html lang="en"><head><meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
