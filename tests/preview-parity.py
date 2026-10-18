@@ -27,6 +27,7 @@ import os
 import re
 import statistics
 import sys
+import urllib.request
 from pathlib import Path
 
 from playwright.sync_api import sync_playwright
@@ -127,6 +128,75 @@ def check_routes(label: str, page, m: dict) -> None:
                   cells[4] == as_ms(statistics.median(R["pre_only"])), cells[4])
 
 
+def norm_model(name: str) -> str:
+    """The same normalisation the engine and the page use (dot and hyphen are one separator)."""
+    n = str(name).split("/")[-1].lower()
+    n = re.sub(r"-(tee|turbo|fast|preview|free|contributor)$", "", n)
+    return re.sub(r"[^a-z0-9]+", "-", n.replace("_", "-")).strip("-")
+
+
+def route_mirror(rows: list[dict], matrix: list[dict]) -> list[dict]:
+    """Python mirror of the page's section 2b: which of the log's model names we measured."""
+    by: dict[str, list[dict]] = {}
+    for r in matrix:
+        by.setdefault(norm_model(r["a"]), []).append(r)
+    per: dict[str, dict] = {}
+    for o in rows:
+        M = per.setdefault(o["model"], {"n": 0, "routes": set()})
+        M["n"] += 1
+        if isinstance(o.get("provider"), str) and o["provider"]:
+            M["routes"].add(o["provider"].lower())
+    out = []
+    for model, M in per.items():
+        hit = by.get(norm_model(model))
+        if not hit:
+            out.append({"model": model, "n": M["n"], "covered": False})
+            continue
+        prices = [r["i"] for r in hit if isinstance(r.get("i"), (int, float))]
+        times = [r["t"] for r in hit if isinstance(r.get("t"), (int, float))]
+        out.append({"model": model, "n": M["n"], "covered": True, "anchor": hit[0]["a"],
+                    "routes": [r["p"] for r in hit],
+                    "price_spread": (max(prices) / min(prices)) if len(prices) > 1 and min(prices) > 0 else None,
+                    "lat_spread": (max(times) / min(times)) if len(times) > 1 else None})
+    return sorted(out, key=lambda r: -r["n"])
+
+
+def check_match(label: str, page, m: list[dict], anchors: int) -> None:
+    """The route comparison is the one thing on this page that talks about the reader's own
+    routes; it must agree with the matrix, and it must not smuggle in a dollar figure."""
+    if not m:
+        return
+    check(f"{label}: route-comparison table shown", page.is_visible("#matchBox"))
+    rows = page.eval_on_selector_all(
+        "#match tbody tr",
+        "trs => trs.map(tr => Array.from(tr.children).map(td => td.innerText.trim()))")
+    check(f"{label}: route-comparison row count matches python", len(rows) == len(m),
+          f"page {len(rows)} vs python {len(m)}")
+    for r, cells in zip(m, rows):
+        check(f"{label}: route-comparison names {r['model']}", cells[0] == r["model"], cells[0])
+        check(f"{label}: route-comparison turns for {r['model']}", cells[2] == str(r["n"]), cells[2])
+        if r["covered"]:
+            check(f"{label}: {r['model']} shows the measured routes",
+                  all(p in cells[3] for p in r["routes"]), cells[3])
+            want = f"{r['price_spread']:.1f}x" if r["price_spread"] else "one price"
+            check(f"{label}: {r['model']} price spread matches python", cells[4] == want, f"{cells[4]} vs {want}")
+            want_lat = f"{r['lat_spread']:.1f}x" if r["lat_spread"] else "one route"
+            check(f"{label}: {r['model']} first-token spread matches python", cells[5] == want_lat, f"{cells[5]} vs {want_lat}")
+        else:
+            check(f"{label}: {r['model']} says it is outside the measured matrix",
+                  "not one of the" in cells[3] and str(anchors) in cells[3], cells[3])
+    txt = page.inner_text("#matchBox")
+    # the page's posture is "no money": the note says "No $ here" on purpose, so look for an
+    # actual amount rather than the character.
+    check(f"{label}: route comparison carries no dollar amount",
+          re.search(r"\$\s?\d", txt) is None, txt[:120])
+    href = page.eval_on_selector("#match-note a", "a => a.getAttribute('href')")
+    check(f"{label}: route comparison links the full matrix",
+          href == "https://focalis.cc/audit/routes/", str(href))
+    check(f"{label}: route comparison states the limit (our keys, list prices)",
+          "our measurements on our keys" in txt)
+
+
 with sync_playwright() as p:
     browser = p.chromium.launch()
     page = browser.new_page(viewport={"width": 1280, "height": 900})
@@ -156,9 +226,26 @@ with sync_playwright() as p:
     page.click("#demo")
     page.wait_for_selector("#out:not([hidden])")
     text = page.inner_text("#out")
-    body = Path(BUILD).read_text()
+    # the embedded route matrix must come from the page under test: reading the local build every
+    # time would let the SERVED page embed a stale matrix and still pass (the defect this whole
+    # pack keeps finding).
+    if TARGET.startswith(("http", "file")):
+        req = urllib.request.Request(TARGET, headers={"User-Agent": "Mozilla/5.0 Chrome/130"})
+        body = urllib.request.urlopen(req, timeout=30).read().decode("utf-8", "replace")
+    else:
+        body = Path(BUILD).read_text()
     sample = json.loads(re.search(r'<script id="sample" type="application/json">(.*?)</script>',
                                   body, re.S).group(1).replace("<\\/", "</"))
+    embedded_matrix = json.loads(re.search(r'<script id="matrix" type="application/json">(.*?)</script>',
+                                           body, re.S).group(1))
+    matrix_rows = json.loads((PACK / "routes" / "matrix.json").read_text())
+    expected_matrix = [{"a": r["anchor"], "p": r["provider"], "i": r["price"][0],
+                        "t": r.get("ttft_p50")}
+                       for r in matrix_rows if r.get("state") == "ok" and r.get("price")]
+    check("embedded route matrix == the measured one", embedded_matrix == expected_matrix,
+          f"page {len(embedded_matrix)} rows vs matrix.json {len(expected_matrix)}")
+    m_route = route_mirror([o for o in sample if is_turn(o)], embedded_matrix)
+    anchors = len({norm_model(r["a"]) for r in embedded_matrix})
     m = mirror([o for o in sample if is_turn(o)])
     kp = kpi(page.inner_text("#kpis"))
     kpis = page.inner_text("#kpis")
@@ -169,6 +256,7 @@ with sync_playwright() as p:
     check("demo: limits waste bullet reuses the KPI count",
           f"{m['wasted']} wasted turns" in page.inner_text("#limits"))
     check_routes("demo", page, m)
+    check_match("demo", page, m_route, anchors)
     story = page.inner_text("#story")
     check("story line computes the roundtrip share", f"{m['sum_pre'] / m['sum_wall'] * 100:.0f}%" in story, story[:90])
     if m["no_pre"]:
@@ -281,7 +369,7 @@ with sync_playwright() as p:
     # ---- 4. honesty claims
     lumps = page.inner_text("#limits")
     check("no-$ claim present", "$ figure" in lumps and "No money" in lumps)
-    check("boot caveat present", "No process boot" in lumps and "929 ms" in lumps)
+    check("boot caveat present", "No process boot" in lumps and "372 ms" in lumps)
     check("page makes the local-only claim", "no request with your data" in lumps.lower())
     # #limits belongs to the render that is currently on screen: by section 4 that is the mapped
     # CSV, not the embedded demo (this check compared the two and so passed only while both had
